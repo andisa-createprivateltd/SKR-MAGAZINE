@@ -2086,6 +2086,14 @@
       { category: "Lifestyle", title: "Mark Webber at the Formula 1 Rolex <em>Australian Grand Prix</em>", image: "linear-gradient(160deg,#0d1a0d 0%,#152515 50%,#1a2a1a 100%)" },
       { category: "Automobiles", title: "Airbus ACH H160 — <em>luxury reimagined</em> at altitude", image: "linear-gradient(140deg,#0a0f1a 0%,#121a2a 50%,#0d1520 100%)" }
     ];
+    const fallbackStoryImages = {
+      sport: "https://cfonxqjjpfjyvperqoee.supabase.co/storage/v1/object/public/skr-images/stories/1779572609739-hitsd-axqaako97.jpeg",
+      automobiles: "https://cfonxqjjpfjyvperqoee.supabase.co/storage/v1/object/public/skr-images/stories/1779790762696-55be71b8-cde9-4aaa-9c97-2fb21077d6d2.jpeg",
+      watches: "https://cfonxqjjpfjyvperqoee.supabase.co/storage/v1/object/public/skr-images/stories/1779572474719-apxswatch-ecom-2-1920x1283-10.jpeg",
+      lifestyle: "https://cfonxqjjpfjyvperqoee.supabase.co/storage/v1/object/public/skr-images/stories/1779572609739-hitsd-axqaako97.jpeg",
+      art: "https://cfonxqjjpfjyvperqoee.supabase.co/storage/v1/object/public/skr-images/stories/1779572474719-apxswatch-ecom-2-1920x1283-10.jpeg",
+      travel: "https://cfonxqjjpfjyvperqoee.supabase.co/storage/v1/object/public/skr-images/stories/1779790762696-55be71b8-cde9-4aaa-9c97-2fb21077d6d2.jpeg"
+    };
 
     const supabaseReady = Boolean(window.supabase && SUPABASE_URL && SUPABASE_ANON_KEY);
     const supabaseClient = supabaseReady ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
@@ -3365,15 +3373,25 @@
       const historyMode = options.historyMode || "replace";
       activeArticleStoryId = story.id || "";
       const renderableImageUrl = getRenderableImageUrl(story);
-      if (renderableImageUrl) {
-        articleImage.src = renderableImageUrl;
+      const fallbackImageUrl = getFallbackStoryImage(story);
+      const articleImageUrl = renderableImageUrl || fallbackImageUrl;
+      if (articleImageUrl) {
+        articleImage.dataset.fallbackSrc = fallbackImageUrl || "";
+        articleImage.src = articleImageUrl;
         articleImage.alt = getStoryDisplayTitle(story, "SKR article image");
         articleImage.onerror = () => {
+          const fallbackSrc = articleImage.dataset.fallbackSrc || "";
+          if (fallbackSrc && articleImage.getAttribute("src") !== fallbackSrc) {
+            articleImage.src = fallbackSrc;
+            articleImage.style.display = "block";
+            return;
+          }
           articleImage.removeAttribute("src");
           articleImage.style.display = "none";
         };
         articleImage.style.display = "block";
       } else {
+        articleImage.removeAttribute("data-fallback-src");
         articleImage.removeAttribute("src");
         articleImage.alt = "SKR article image";
         articleImage.style.display = "none";
@@ -3566,8 +3584,13 @@
       const title = getStoryDisplayTitle(story, placeholderFeatures[index].title);
       const category = story.category || placeholderFeatures[index].category;
       const renderableImageUrl = getRenderableImageUrl(story);
-      const imageStyle = renderableImageUrl
-        ? `background:${placeholderFeatures[index].image};background-image:url("${cssImageUrl(renderableImageUrl)}");`
+      const fallbackImageUrl = getFallbackStoryImage(story);
+      const featureImages = [renderableImageUrl, fallbackImageUrl]
+        .filter(Boolean)
+        .filter((value, valueIndex, values) => values.indexOf(value) === valueIndex)
+        .map((value) => `url("${cssImageUrl(value)}")`);
+      const imageStyle = featureImages.length
+        ? `background:${placeholderFeatures[index].image};background-image:${featureImages.join(",")};`
         : `background:${placeholderFeatures[index].image};`;
       const readTarget = story && story.id ? ' data-read-id="' + escapeHtml(story.id) + '"' : "";
       const readHref = story && story.id ? escapeHtml(getStoryCanonicalPath(story)) : "#";
@@ -3588,10 +3611,16 @@
       const tag = story.brand ? story.category + " · " + story.brand : story.category;
       const readHref = escapeHtml(getStoryCanonicalPath(story));
       const renderableImageUrl = getRenderableImageUrl(story);
+      const fallbackImageUrl = getFallbackStoryImage(story);
+      const imageUrl = renderableImageUrl || fallbackImageUrl;
+      const fallbackAttr = escapeHtml(fallbackImageUrl || "");
+      const imageError = fallbackImageUrl && renderableImageUrl !== fallbackImageUrl
+        ? 'this.onerror=null;this.src=this.getAttribute(&quot;data-fallback-src&quot;);'
+        : 'this.style.display=&quot;none&quot;';
       return '<article class="story-card">' +
         '<div class="story-card-img">' +
-          (renderableImageUrl
-            ? '<img src="' + escapeHtml(renderableImageUrl) + '" alt="' + escapeHtml(getStoryDisplayTitle(story)) + '" loading="lazy" decoding="async" onerror="this.style.display=&quot;none&quot;">'
+          (imageUrl
+            ? '<img src="' + escapeHtml(imageUrl) + '" data-fallback-src="' + fallbackAttr + '" alt="' + escapeHtml(getStoryDisplayTitle(story)) + '" loading="lazy" decoding="async" onerror="' + imageError + '">'
             : '<div class="story-card-img-placeholder" aria-hidden="true"></div>') +
           '<div class="story-img-overlay"></div>' +
         '</div>' +
@@ -3635,8 +3664,13 @@
       }
       const displayTitle = getStoryDisplayTitle(story, "SKR Cover Story");
       const renderableImageUrl = getRenderableImageUrl(story);
-      if (renderableImageUrl) {
-        heroBg.style.setProperty("--hero-cover-image", `url("${cssImageUrl(renderableImageUrl)}")`);
+      const fallbackImageUrl = getFallbackStoryImage(story);
+      const heroImages = [renderableImageUrl, fallbackImageUrl]
+        .filter(Boolean)
+        .filter((value, valueIndex, values) => values.indexOf(value) === valueIndex)
+        .map((value) => `url("${cssImageUrl(value)}")`);
+      if (heroImages.length) {
+        heroBg.style.setProperty("--hero-cover-image", heroImages.join(","));
         heroBg.classList.add("has-cover");
       } else {
         heroBg.classList.remove("has-cover");
@@ -4061,6 +4095,11 @@
       return src && !isSessionOnlyImageUrl(src) ? src : "";
     }
 
+    function getFallbackStoryImage(story) {
+      const category = String(story && story.category || "").trim().toLowerCase();
+      return fallbackStoryImages[category] || fallbackStoryImages.lifestyle;
+    }
+
     function cssImageUrl(value) {
       return String(value || "").replace(/\\/g, "\\\\").replace(/"/g, '\\"');
     }
@@ -4092,15 +4131,10 @@
 
     async function removeBrokenStoryImages(sourceStories) {
       const list = Array.isArray(sourceStories) ? sourceStories : [];
-      const checked = await Promise.all(list.map(async (story) => {
-        const renderableImageUrl = getRenderableImageUrl(story);
-        if (!renderableImageUrl) {
-          return Object.assign({}, story, { image_url: "" });
-        }
-        const ok = await canLoadPublicImage(renderableImageUrl);
-        return ok ? story : Object.assign({}, story, { image_url: "" });
-      }));
-      return checked;
+      return list.map((story) => {
+        if (!story || !isSessionOnlyImageUrl(story.image_url)) return story;
+        return Object.assign({}, story, { image_url: "" });
+      });
     }
 
     function buildMinimalStoryPayload(payload) {
