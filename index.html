@@ -1,0 +1,4953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SKR Magazine — Lifestyle. Art. Automobiles.</title>
+  <meta name="description" content="SKR Magazine is a luxury editorial platform covering lifestyle, art, automobiles, sport and watches.">
+  <link rel="canonical" href="https://skrmagazine.vercel.app/">
+  <meta property="og:url" content="https://skrmagazine.vercel.app/">
+  <meta name="twitter:url" content="https://skrmagazine.vercel.app/">
+  <script>
+    (function () {
+      try {
+        if (!/^https?:$/.test(window.location.protocol)) return;
+        var canonicalPath = (window.location.pathname || "/")
+          .replace(/\/{2,}/g, "/")
+          .replace(/\/+$/, "") || "/";
+        var canonicalHref = window.location.origin + canonicalPath;
+        var canonicalNode = document.querySelector('link[rel="canonical"]');
+        if (canonicalNode) canonicalNode.setAttribute("href", canonicalHref);
+        var ogUrlNode = document.querySelector('meta[property="og:url"]');
+        if (ogUrlNode) ogUrlNode.setAttribute("content", canonicalHref);
+        var twitterUrlNode = document.querySelector('meta[name="twitter:url"]');
+        if (twitterUrlNode) twitterUrlNode.setAttribute("content", canonicalHref);
+      } catch (error) {
+        // Keep the default homepage canonical when path bootstrapping fails.
+      }
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --black: #0a0a0a;
+      --white: #f8f7f5;
+      --warm: #f2f0ec;
+      --mid: #8a8a8a;
+      --light-mid: #c8c5c0;
+      --line: rgba(248,247,245,0.12);
+      --line-strong: rgba(248,247,245,0.24);
+      --success: #6f9a70;
+      --error: #b65b49;
+      --serif: "Cormorant Garamond", Georgia, serif;
+      --sans: "Montserrat", sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--sans);
+      font-weight: 300;
+      overflow-x: hidden;
+      -webkit-text-size-adjust: 100%;
+    }
+    body.refresh-pending {
+      overflow: hidden;
+    }
+    body.refresh-pending > :not(.refresh-screen) {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    body.modal-open { overflow: hidden; }
+    button, input, textarea, select { font: inherit; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.8rem 4rem;
+      background: rgba(10,10,10,0);
+      border-bottom: 1px solid transparent;
+      transition: background 0.4s ease, border-color 0.4s ease;
+    }
+    nav.scrolled {
+      background: rgba(10,10,10,0.97);
+      border-bottom-color: rgba(255,255,255,0.06);
+    }
+    .nav-logo {
+      display: inline-flex;
+      align-items: center;
+      color: var(--white);
+    }
+    .nav-logo img {
+      display: block;
+      width: 132px;
+      height: auto;
+    }
+    .nav-links {
+      list-style: none;
+      display: none;
+      gap: 2.5rem;
+    }
+    .nav-links a, .nav-issue, .admin-btn, .hero-read, .section-header a, .story-tag, .cat-label, .cat-count, .sub-eyebrow, .sub-btn, .foot-tag, .foot-col-title, .foot-social a, .foot-bottom p, .login-panel p, .login-btn, .admin-tab, .admin-logout, .form-label, .submit-story-btn, .delete-btn, .admin-story-badge, .issue-band p, .issue-band strong, .marquee-item, .news-updated, .news-refresh, .news-warning, .news-topic-label, .news-meta, .news-use, .form-success, .form-error, .form-status, .connection-pill, .nav-menu-trigger, .nav-menu-panel a {
+      font-size: 0.58rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+    }
+    .nav-links a { color: var(--light-mid); transition: color 0.3s ease; }
+    .nav-links a:hover, .section-header a:hover, .foot-social a:hover, .foot-links a:hover { color: var(--white); }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .nav-menu {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
+    .nav-menu-trigger {
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--mid);
+      cursor: pointer;
+      padding: 0.45rem 1rem;
+      transition: border-color 0.3s ease, color 0.3s ease, background 0.3s ease;
+    }
+    .nav-menu-trigger:hover,
+    .nav-menu-trigger[aria-expanded="true"] {
+      color: var(--white);
+      border-color: var(--line-strong);
+    }
+    .nav-menu-panel {
+      position: absolute;
+      top: calc(100% + 0.85rem);
+      right: 0;
+      min-width: 220px;
+      background: rgba(10,10,10,0.98);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 0.85rem 0;
+      display: none;
+      flex-direction: column;
+      gap: 0.1rem;
+      z-index: 220;
+      backdrop-filter: blur(14px);
+    }
+    .nav-menu.open .nav-menu-panel { display: flex; }
+    .nav-menu-panel a {
+      color: var(--light-mid);
+      padding: 0.85rem 1.1rem;
+      transition: color 0.3s ease, background 0.3s ease;
+    }
+    .nav-menu-panel a:hover {
+      color: var(--white);
+      background: rgba(255,255,255,0.04);
+    }
+    .nav-issue {
+      color: var(--mid);
+      display: inline-flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+    .nav-issue-live {
+      color: var(--success);
+    }
+    .nav-issue-sep {
+      color: rgba(138,138,138,0.55);
+    }
+    .admin-btn, .hero-read, .sub-btn, .login-btn, .admin-logout, .submit-story-btn, .delete-btn, .news-refresh, .news-use {
+      border: 1px solid var(--line);
+      background: transparent;
+      color: inherit;
+      cursor: pointer;
+      transition: border-color 0.3s ease, background 0.3s ease, color 0.3s ease, opacity 0.3s ease;
+    }
+    .admin-btn {
+      padding: 0.45rem 1rem;
+      color: var(--mid);
+    }
+    #addStoryBtn {
+      display: none;
+    }
+    body.admin-revealed #addStoryBtn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .admin-btn:hover, .admin-logout:hover, .news-refresh:hover, .news-use:hover {
+      color: var(--white);
+      border-color: var(--line-strong);
+    }
+    .hero {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      padding-bottom: 6rem;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: var(--black);
+      background-size: cover;
+      background-position: center;
+      transition: background-image 0.6s ease, opacity 0.6s ease;
+    }
+    .hero-bg.has-cover {
+      background-image:
+        linear-gradient(to bottom, rgba(10,10,10,0.38) 0%, rgba(10,10,10,0.12) 35%, rgba(10,10,10,0.68) 72%, rgba(10,10,10,0.92) 100%),
+        var(--hero-cover-image);
+    }
+    .hero-bg::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(10,10,10,0.3) 0%, rgba(10,10,10,0.05) 35%, rgba(10,10,10,0.82) 75%, rgba(10,10,10,1) 100%);
+    }
+    .hero-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.06;
+      animation: pulse 8s ease-in-out infinite;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+      padding: 0 4rem;
+    }
+    .hero-tag {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .hero-tag-line { width: 2rem; height: 1px; background: var(--light-mid); }
+    .hero-tag span {
+      font-size: 0.6rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--light-mid);
+    }
+    .hero-title {
+      font-family: var(--serif);
+      font-size: clamp(3rem, 7vw, 6rem);
+      font-weight: 300;
+      line-height: 1.05;
+      margin-bottom: 1.5rem;
+    }
+    .hero-title em, .section-header h2 em, .story-title em, .cat-name em, .sub-headline em, .fc-title em { font-style: italic; }
+    .hero-meta {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .hero-read {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.8rem 2rem;
+      border-color: rgba(248,247,245,0.35);
+    }
+    .hero-read:hover { background: var(--white); color: var(--black); }
+    .hero-cat {
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--mid);
+    }
+    .refresh-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(circle at center, rgba(18,18,18,0.98) 0%, rgba(10,10,10,0.985) 58%, rgba(4,4,4,0.995) 100%);
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.45s ease, visibility 0.45s ease;
+    }
+    .refresh-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .refresh-screen-inner {
+      width: min(100%, 24rem);
+      padding: 2.25rem 1.6rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      text-align: center;
+    }
+    .refresh-screen-logo img {
+      width: 118px;
+      height: auto;
+      opacity: 0.96;
+    }
+    .refresh-screen-label {
+      font-size: 0.64rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--mid);
+    }
+    .refresh-screen-live {
+      color: var(--success);
+    }
+    .refresh-screen-copy {
+      font-family: var(--serif);
+      font-size: clamp(1.5rem, 5vw, 2.1rem);
+      line-height: 1.1;
+      font-weight: 300;
+      max-width: 14ch;
+    }
+    .refresh-screen-spinner {
+      width: 2.7rem;
+      height: 2.7rem;
+      border: 3px solid rgba(248,247,245,0.2);
+      border-top-color: var(--white);
+      border-radius: 999px;
+      animation: refresh-spin 0.85s linear infinite;
+    }
+    .refresh-screen-note {
+      font-size: 0.58rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--light-mid);
+    }
+    .issue-band {
+      background: var(--warm);
+      color: var(--black);
+      padding: 1.1rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .issue-band-left {
+      display: flex;
+      align-items: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+    }
+    .issue-band p { color: #666; }
+    .issue-band strong { color: var(--black); font-weight: 500; }
+    .marquee-wrap {
+      overflow: hidden;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 1.4rem 0;
+    }
+    .marquee-track {
+      display: flex;
+      gap: 4rem;
+      white-space: nowrap;
+      animation: marquee 30s linear infinite;
+    }
+    .marquee-item { color: var(--mid); }
+    .marquee-dot {
+      display: inline-block;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: var(--mid);
+      margin: 0 1.5rem;
+      vertical-align: middle;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      padding: 4rem 4rem 2.5rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .section-header h2 {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 300;
+    }
+    .section-header a {
+      color: var(--mid);
+      border-bottom: 1px solid rgba(138,138,138,0.3);
+      padding-bottom: 2px;
+    }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      padding: 0 4rem 4rem;
+    }
+    .feature-card {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .feature-card:first-child {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
+    .fc-inner { position: relative; min-height: 320px; height: 100%; }
+    .feature-card:first-child .fc-inner { min-height: 640px; }
+    .fc-img {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      transition: transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+    .feature-card:hover .fc-img, .story-card:hover .story-card-img img { transform: scale(1.04); }
+    .fc-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.35) 45%, transparent 70%);
+    }
+    .fc-content {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 2.5rem 2rem;
+      z-index: 2;
+    }
+    .feature-card:first-child .fc-content { padding: 3rem; }
+    .fc-tag {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 1rem;
+    }
+    .fc-tag::before {
+      content: "+";
+      font-size: 0.8rem;
+      color: var(--mid);
+      font-weight: 200;
+    }
+    .fc-tag span {
+      font-size: 0.54rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--light-mid);
+    }
+    .fc-title {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      font-weight: 300;
+      line-height: 1.25;
+      margin-bottom: 1.2rem;
+    }
+    .feature-card:first-child .fc-title { font-size: 2.2rem; }
+    .fc-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 10rem;
+      height: 2.4rem;
+      border: 1px solid rgba(248,247,245,0.25);
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--white);
+    }
+    .stories-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 3rem;
+      padding: 0 4rem 4rem;
+    }
+    .story-card { cursor: pointer; }
+    .story-card-img {
+      aspect-ratio: 3 / 4;
+      overflow: hidden;
+      position: relative;
+      margin-bottom: 1.4rem;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: linear-gradient(140deg,#0d0d0d 0%,#171717 52%,#0a0a0a 100%);
+    }
+    .story-card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+    .story-card-img-placeholder {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(140deg,#0d0d0d 0%,#171717 52%,#0a0a0a 100%);
+    }
+    .story-img-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(10,10,10,0.55) 0%, transparent 60%);
+    }
+    .story-tag {
+      color: var(--mid);
+      margin-bottom: 0.6rem;
+    }
+    .story-title {
+      font-family: var(--serif);
+      font-size: 1.25rem;
+      font-weight: 300;
+      line-height: 1.3;
+      margin-bottom: 0.75rem;
+    }
+    .story-excerpt {
+      font-size: 0.72rem;
+      line-height: 1.75;
+      color: var(--mid);
+    }
+    .stories-empty, .no-admin-stories {
+      padding: 3rem 0;
+      text-align: center;
+      font-family: var(--serif);
+      font-size: 1.15rem;
+      color: var(--mid);
+      font-style: italic;
+    }
+    .categories { padding: 1rem 4rem 4rem; }
+    .cat-label {
+      color: var(--mid);
+      margin-bottom: 2rem;
+    }
+    .cat-grid {
+      display: flex;
+      gap: 0.9rem;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 0.35rem;
+      scroll-snap-type: x proximity;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      overscroll-behavior-x: contain;
+    }
+    .cat-grid::-webkit-scrollbar {
+      display: none;
+    }
+    .cat-card {
+      flex: 0 0 clamp(16rem, 22vw, 21rem);
+      position: relative;
+      padding: 2.5rem 2rem;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: transparent;
+      color: inherit;
+      text-align: left;
+      min-height: 16rem;
+      cursor: pointer;
+      scroll-snap-align: start;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .cat-card:hover {
+      background: rgba(255,255,255,0.03);
+      border-color: rgba(255,255,255,0.14);
+    }
+    .cat-card.active {
+      background: rgba(255,255,255,0.04);
+      border-color: rgba(255,255,255,0.22);
+    }
+    .cat-num {
+      position: absolute;
+      top: 1.5rem;
+      right: 2rem;
+      font-family: var(--serif);
+      font-size: 3rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.06);
+      line-height: 1;
+    }
+    .cat-name {
+      font-family: var(--serif);
+      font-size: 1.7rem;
+      font-weight: 300;
+      margin-bottom: 0.6rem;
+    }
+    .cat-count { color: var(--mid); }
+    .archive-shell {
+      display: none;
+      padding: 0 4rem 4rem;
+    }
+    .archive-shell.visible { display: block; }
+    .archive-header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .archive-label {
+      color: var(--mid);
+      margin-bottom: 0.8rem;
+    }
+    .archive-title {
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      font-weight: 300;
+      line-height: 1.1;
+    }
+    .archive-summary {
+      color: var(--light-mid);
+      white-space: nowrap;
+    }
+    .archive-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 3rem;
+    }
+    .archive-empty {
+      padding: 2rem 0;
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      color: var(--mid);
+      font-style: italic;
+    }
+    .subscribe {
+      padding: 8rem 4rem;
+      background: var(--warm);
+      color: var(--black);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4rem;
+    }
+    .sub-eyebrow {
+      color: #888;
+      margin-bottom: 1.5rem;
+    }
+    .sub-headline {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 300;
+      line-height: 1.1;
+      max-width: 480px;
+    }
+    .sub-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      min-width: 320px;
+    }
+    .sub-input, .login-input, .form-control {
+      background: transparent;
+      color: inherit;
+      outline: none;
+    }
+    .sub-input {
+      border: none;
+      border-bottom: 1px solid rgba(0,0,0,0.2);
+      padding: 0.75rem 0;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--black);
+    }
+    .sub-btn {
+      background: var(--black);
+      color: var(--white);
+      padding: 1rem 2.5rem;
+      align-self: flex-start;
+      border-color: var(--black);
+    }
+    footer {
+      padding: 4rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 3rem;
+    }
+    .foot-logo {
+      margin-bottom: 0.4rem;
+    }
+    .foot-logo img {
+      display: block;
+      width: 156px;
+      height: auto;
+    }
+    .foot-tag {
+      color: var(--mid);
+      margin-bottom: 2rem;
+    }
+    .foot-social {
+      display: flex;
+      gap: 1.5rem;
+    }
+    .foot-social a, .foot-col-title, .foot-bottom p { color: var(--mid); }
+    .foot-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+    .foot-links a {
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+      color: rgba(248,247,245,0.55);
+    }
+    .foot-bottom {
+      padding: 2rem 4rem;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      background: rgba(0,0,0,0.85);
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .overlay.open { display: flex; }
+    .overlay-close {
+      position: absolute;
+      top: 2rem;
+      right: 2rem;
+      background: none;
+      border: none;
+      color: var(--mid);
+      font-size: 1.5rem;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .login-panel, .admin-panel {
+      background: #111;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .article-panel {
+      width: 100%;
+      max-width: 980px;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      background: #0f0f0f;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .article-inner {
+      padding: 2.5rem 3rem 3rem;
+    }
+    .article-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .article-back,
+    .article-share {
+      border: 1px solid rgba(255,255,255,0.12);
+      background: transparent;
+      color: var(--mid);
+      padding: 0.7rem 1rem;
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+    .article-media {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      background: rgba(255,255,255,0.03);
+      margin-bottom: 1.5rem;
+    }
+    .article-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .article-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.45rem 0.8rem;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--mid);
+      font-size: 0.55rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+    }
+    .article-title {
+      font-family: var(--serif);
+      font-size: clamp(2.5rem, 5vw, 4.6rem);
+      line-height: 0.95;
+      font-weight: 300;
+      margin-bottom: 1rem;
+    }
+    .article-standfirst {
+      max-width: 760px;
+      color: var(--light-mid);
+      font-size: 1rem;
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+    }
+    .article-meta {
+      color: var(--mid);
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+    .article-body {
+      max-width: 760px;
+      color: var(--white);
+      font-size: 0.92rem;
+      line-height: 1.95;
+      white-space: pre-wrap;
+    }
+    .article-empty-note {
+      color: var(--mid);
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      margin-top: 1.5rem;
+    }
+    .login-panel {
+      width: 100%;
+      max-width: 420px;
+      padding: 4rem;
+      text-align: center;
+      position: relative;
+    }
+    .login-panel h2, .admin-header h2 {
+      font-family: var(--serif);
+      font-size: 2rem;
+      font-weight: 300;
+      margin-bottom: 0.5rem;
+    }
+    .login-panel p { color: var(--mid); margin-bottom: 3rem; }
+    .login-input {
+      width: 100%;
+      border: none;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+      padding: 0.85rem 0;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+    }
+    .login-btn {
+      width: 100%;
+      background: var(--white);
+      color: var(--black);
+      padding: 1rem;
+    }
+    .login-error, .form-error { color: var(--error); }
+    .login-error, .form-success, .form-error, .form-status {
+      margin-top: 1rem;
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+    .admin-panel {
+      width: 100%;
+      max-width: 920px;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      background: #0f0f0f;
+    }
+    .admin-header {
+      padding: 2.5rem 3rem 2rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+    .admin-header p {
+      color: var(--mid);
+      font-size: 0.55rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      margin-top: 0.3rem;
+    }
+    .connection-pill {
+      margin-top: 1rem;
+      color: var(--mid);
+    }
+    .connection-pill.success { color: var(--success); }
+    .connection-pill.error { color: var(--error); }
+    .admin-logout { padding: 0.4rem 0.9rem; color: var(--mid); }
+    .admin-body { padding: 2.5rem 3rem; }
+    .admin-tabs {
+      display: flex;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 2.5rem;
+    }
+    .admin-tab {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-bottom: 2px solid transparent;
+      background: none;
+      color: var(--mid);
+      cursor: pointer;
+      margin-bottom: -1px;
+    }
+    .admin-tab.active {
+      color: var(--white);
+      border-bottom-color: var(--white);
+    }
+    .upload-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .upload-type-switcher {
+      display: flex;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 0.5rem;
+    }
+    .upload-type-btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-bottom: 2px solid transparent;
+      background: none;
+      color: var(--mid);
+      cursor: pointer;
+      margin-bottom: -1px;
+      font-family: var(--sans);
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-weight: 300;
+    }
+    .upload-type-btn.active {
+      color: var(--white);
+      border-bottom-color: var(--white);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .form-group.full { grid-column: span 2; }
+    .form-label { color: var(--mid); }
+    .form-control {
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.04);
+      padding: 0.75rem 1rem;
+      font-size: 0.75rem;
+      color: var(--white);
+    }
+    select.form-control option { background: #1a1a1a; }
+    textarea.form-control {
+      resize: vertical;
+      min-height: 96px;
+      line-height: 1.6;
+    }
+    .drop-zone {
+      position: relative;
+      border: 1px dashed rgba(255,255,255,0.2);
+      padding: 3rem 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.3s ease, background 0.3s ease;
+    }
+    .drop-zone.dragover, .drop-zone:hover {
+      border-color: rgba(255,255,255,0.5);
+      background: rgba(255,255,255,0.03);
+    }
+    .drop-zone input {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+    .drop-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: var(--mid);
+    }
+    .drop-zone p {
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 0.4rem;
+    }
+    .drop-zone span {
+      font-size: 0.55rem;
+      color: rgba(255,255,255,0.2);
+    }
+    .drop-preview {
+      max-width: 100%;
+      max-height: 220px;
+      margin: 1.5rem auto 0;
+      object-fit: contain;
+      display: none;
+    }
+    .submit-story-btn {
+      background: var(--white);
+      color: var(--black);
+      padding: 1rem 3rem;
+    }
+    .submit-story-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .publish-feedback {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      min-width: 260px;
+    }
+    .story-read-link {
+      border: none;
+      background: none;
+      padding: 0;
+      margin-top: 0.8rem;
+      color: var(--white);
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-align: left;
+    }
+    .progress-shell {
+      width: 100%;
+      height: 1px;
+      background: rgba(255,255,255,0.08);
+      overflow: hidden;
+    }
+    .progress-bar {
+      width: 0;
+      height: 100%;
+      background: var(--white);
+      transition: width 0.35s ease;
+    }
+    .form-success { color: var(--success); }
+    .form-status { color: var(--mid); }
+    .admin-stories {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .admin-story-row {
+      display: grid;
+      grid-template-columns: 60px minmax(0, 1fr) auto;
+      gap: 1.5rem;
+      align-items: center;
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .admin-story-thumb {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+    }
+    .admin-story-info h4 {
+      font-family: var(--serif);
+      font-size: 1rem;
+      font-weight: 300;
+      margin-bottom: 0.25rem;
+    }
+    .admin-story-info p {
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mid);
+    }
+    .admin-story-badge {
+      padding: 0.3rem 0.7rem;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--light-mid);
+      font-size: 0.5rem;
+    }
+    .admin-story-info {
+      min-width: 0;
+    }
+    .admin-story-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      min-width: 220px;
+    }
+    .admin-story-confirm {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      width: 100%;
+    }
+    .admin-story-action-buttons {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .admin-story-confirm-text {
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,100,100,0.75);
+      white-space: nowrap;
+    }
+    .admin-story-actions .admin-story-badge,
+    .admin-story-actions .admin-btn,
+    .admin-story-actions .delete-btn {
+      margin: 0;
+    }
+    .delete-btn {
+      padding: 0.3rem 0.7rem;
+      border-color: rgba(255,80,80,0.2);
+      color: rgba(255,100,100,0.75);
+    }
+    .news-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    .news-key-shell {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 1rem;
+      align-items: end;
+      padding: 1rem 0 0.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .news-key-shell.hidden {
+      display: none;
+    }
+    .news-key-shell .form-group { gap: 0.65rem; }
+    .news-key-status-row {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1rem 0 0.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      flex-wrap: wrap;
+    }
+    .news-key-status-row.visible {
+      display: flex;
+    }
+    .news-key-status {
+      display: none;
+      color: var(--success);
+      padding: 0;
+      border-bottom: none;
+    }
+    .news-key-status.visible {
+      display: block;
+    }
+    .news-search-shell {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 1rem;
+      align-items: end;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .news-disconnect {
+      color: var(--light-mid);
+      border-color: rgba(255,255,255,0.14);
+    }
+    .news-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      flex-wrap: wrap;
+    }
+    .news-updated { color: var(--mid); }
+    .news-refresh {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      padding: 0.65rem 1rem;
+    }
+    .news-live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--success);
+      flex-shrink: 0;
+    }
+    .news-warning {
+      border: 1px solid rgba(182,91,73,0.35);
+      color: var(--error);
+      padding: 1rem 1.2rem;
+    }
+    .news-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    .news-topic {
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 1.25rem 1.25rem 0;
+    }
+    .news-topic-header {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      margin-bottom: 1rem;
+    }
+    .news-topic-bar {
+      width: 18px;
+      height: 1px;
+      background: var(--white);
+    }
+    .news-topic-label { color: var(--light-mid); }
+    .news-list {
+      display: flex;
+      flex-direction: column;
+    }
+    .news-card, .news-skeleton {
+      display: grid;
+      grid-template-columns: 56px 1fr auto;
+      gap: 1rem;
+      align-items: center;
+      padding: 1rem 0;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    .news-thumb, .news-thumb-placeholder, .news-skeleton-thumb {
+      width: 56px;
+      height: 56px;
+      object-fit: cover;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.04);
+    }
+    .news-card-copy { min-width: 0; }
+    .news-headline {
+      font-family: var(--serif);
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.2;
+      margin-bottom: 0.35rem;
+    }
+    .news-meta { color: var(--mid); }
+    .news-use {
+      padding: 0.55rem 0.8rem;
+      font-size: 0.5rem;
+      white-space: nowrap;
+    }
+    .news-empty {
+      padding: 0 0 1rem;
+      color: var(--mid);
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+    .news-skeleton-line {
+      height: 10px;
+      background: rgba(255,255,255,0.08);
+      margin-bottom: 0.5rem;
+    }
+    .news-skeleton-line.short {
+      width: 45%;
+      margin-bottom: 0;
+    }
+    .news-skeleton-action {
+      width: 82px;
+      height: 28px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .news-prefill {
+      display: none;
+      padding: 0.85rem 1rem;
+      border: 1px solid rgba(111,154,112,0.35);
+      color: var(--success);
+      font-size: 0.58rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    .news-prefill.visible { display: block; }
+    .media-helper {
+      margin-top: 0.5rem;
+      font-size: 0.58rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--mid);
+    }
+    .media-helper.success {
+      color: var(--success);
+    }
+    .media-helper.error {
+      color: var(--error);
+    }
+    .form-section-divider {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding-top: 1.5rem;
+      margin-top: 0.25rem;
+    }
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.05; }
+      50% { opacity: 0.08; }
+    }
+    @keyframes refresh-spin {
+      to { transform: rotate(360deg); }
+    }
+    @media (max-width: 1100px) {
+      nav, .hero-content, .issue-band, .section-header, .feature-grid, .stories-grid, .categories, .subscribe, footer, .foot-bottom { padding-left: 2rem; padding-right: 2rem; }
+      .feature-grid, .stories-grid, .cat-grid, .archive-grid, footer { grid-template-columns: 1fr 1fr; }
+      .feature-card:first-child { grid-column: span 2; }
+      .subscribe { flex-direction: column; align-items: flex-start; }
+      .nav-links { display: none; }
+      .nav-right { gap: 0.9rem; }
+      .hero-content { max-width: 760px; }
+      .hero-title { font-size: clamp(2.8rem, 6vw, 4.9rem); }
+    }
+    @media (max-width: 900px) {
+      nav {
+        padding-top: 1.2rem;
+        padding-bottom: 1.2rem;
+        gap: 1rem;
+        align-items: flex-start;
+      }
+      .nav-logo img { width: 112px; }
+      .nav-right {
+        width: 100%;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 0.85rem;
+      }
+      .nav-issue {
+        width: 100%;
+        order: 3;
+        line-height: 1.8;
+      }
+      .nav-menu { order: 1; }
+      #addStoryBtn { order: 2; }
+      .hero-content {
+        max-width: none;
+        padding-bottom: 2rem;
+      }
+      .feature-card:first-child .fc-content { padding: 2rem 1.5rem; }
+      .feature-card:first-child .fc-title { font-size: 1.9rem; }
+      .issue-band-left {
+        gap: 1.25rem;
+        align-items: flex-start;
+      }
+      .sub-form {
+        min-width: 0;
+        width: 100%;
+      }
+    }
+    @media (max-width: 720px) {
+      nav { padding-top: 1rem; padding-bottom: 1rem; }
+      .hero {
+        min-height: 100svh;
+        min-height: 100dvh;
+        display: flex;
+        align-items: flex-end;
+        padding-top: 7.5rem;
+        padding-bottom: 2.5rem;
+      }
+      .hero-bg {
+        position: absolute;
+        inset: 0;
+        min-height: 0;
+        background-position: center 26%;
+      }
+      .hero-svg {
+        opacity: 0.03;
+      }
+      .hero-content {
+        max-width: 100%;
+        position: relative;
+        margin-top: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+      }
+      .feature-grid, .stories-grid, .cat-grid, .archive-grid, footer, .form-row { grid-template-columns: 1fr; }
+      .feature-grid {
+        gap: 1.5rem;
+        padding-bottom: 3rem;
+      }
+      .feature-card:first-child { grid-column: span 1; grid-row: span 1; }
+      .fc-inner,
+      .feature-card:first-child .fc-inner {
+        min-height: auto;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+      }
+      .fc-img {
+        position: relative;
+        inset: auto;
+        aspect-ratio: 16 / 11;
+      }
+      .fc-overlay {
+        background: linear-gradient(to top, rgba(10,10,10,0.48) 0%, rgba(10,10,10,0.12) 55%, transparent 78%);
+      }
+      .fc-content,
+      .feature-card:first-child .fc-content {
+        position: relative;
+        padding: 1.25rem 0 0.25rem;
+      }
+      .fc-title,
+      .feature-card:first-child .fc-title {
+        font-size: clamp(1.8rem, 8vw, 2.5rem);
+        line-height: 1.08;
+        margin-bottom: 1rem;
+      }
+      .form-group.full { grid-column: span 1; }
+      .admin-header, .admin-body, .login-panel { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .admin-story-row, .news-card, .news-skeleton { grid-template-columns: 56px 1fr; }
+      .admin-story-row {
+        align-items: start;
+      }
+      .admin-story-actions,
+      .admin-story-confirm,
+      .admin-story-action-buttons {
+        grid-column: 1 / -1;
+        justify-content: flex-start;
+        min-width: 0;
+      }
+      .foot-bottom, .issue-band, .hero-meta, .news-toolbar, .article-topbar { flex-direction: column; align-items: flex-start; }
+      .issue-band-left {
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+      .overlay {
+        padding: 0;
+      }
+      .article-panel,
+      .admin-panel,
+      .login-panel {
+        width: 100%;
+        max-width: none;
+        max-height: 100dvh;
+        height: 100%;
+        border: none;
+      }
+      .article-inner {
+        padding: 1.5rem 1.25rem 2rem;
+      }
+      .article-title {
+        font-size: clamp(2rem, 10vw, 3rem);
+      }
+      .article-standfirst,
+      .article-body {
+        max-width: 100%;
+      }
+      .hero-read,
+      .fc-cta {
+        min-width: 9rem;
+        width: auto;
+      }
+      .nav-menu-panel {
+        left: 0;
+        right: auto;
+        min-width: min(220px, calc(100vw - 3rem));
+      }
+      .archive-header { flex-direction: column; align-items: flex-start; }
+    }
+    @media (max-width: 520px) {
+      nav,
+      .hero-content,
+      .issue-band,
+      .section-header,
+      .feature-grid,
+      .stories-grid,
+      .categories,
+      .subscribe,
+      footer,
+      .foot-bottom {
+        padding-left: 1.1rem;
+        padding-right: 1.1rem;
+      }
+      nav {
+        display: grid;
+        grid-template-columns: 6rem minmax(0, 1fr);
+        align-items: start;
+        column-gap: 1rem;
+        row-gap: 0.85rem;
+      }
+      .nav-logo {
+        grid-column: 1;
+        grid-row: 1 / span 2;
+        align-self: start;
+      }
+      .nav-logo img { width: 96px; }
+      .nav-right {
+        grid-column: 2;
+        grid-row: 1 / span 2;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        gap: 0.8rem;
+      }
+      .nav-menu {
+        order: 1;
+        width: auto;
+      }
+      .nav-menu-trigger {
+        min-width: 9.25rem;
+        padding: 0.55rem 1.4rem;
+      }
+      .nav-issue {
+        order: 2;
+        width: 100%;
+        gap: 0.3rem;
+        line-height: 1.5;
+        justify-content: flex-start;
+      }
+      .nav-menu-panel {
+        min-width: calc(100vw - 2.2rem);
+      }
+      .hero {
+        min-height: 100svh;
+        min-height: 100dvh;
+        padding-top: 7.35rem;
+        padding-bottom: max(1.75rem, env(safe-area-inset-bottom));
+      }
+      .hero-title {
+        font-size: clamp(2.1rem, 12vw, 3.05rem);
+        max-width: 11ch;
+        margin-bottom: 1rem;
+      }
+      .refresh-screen-inner {
+        padding-top: 2.4rem;
+        padding-bottom: 2.4rem;
+      }
+      .refresh-screen-logo img {
+        width: 102px;
+      }
+      .refresh-screen-copy {
+        max-width: 14ch;
+      }
+      .hero-meta {
+        gap: 0.85rem;
+      }
+      .hero-tag {
+        gap: 0.7rem;
+        margin-bottom: 1rem;
+      }
+      .hero-tag-line {
+        width: 1.4rem;
+      }
+      .hero-read,
+      .fc-cta {
+        min-width: 0;
+        width: 100%;
+        justify-content: center;
+      }
+      .hero-cat {
+        line-height: 1.8;
+      }
+      .story-card-img {
+        aspect-ratio: 4 / 5;
+      }
+      .fc-content {
+        padding: 1rem 0 0.1rem;
+      }
+      .admin-header,
+      .admin-body,
+      .login-panel {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+    }
+  </style>
+</head>
+<body class="refresh-pending">
+  <div class="refresh-screen" id="refreshScreen" aria-live="polite" aria-label="Loading SKR Magazine">
+    <div class="refresh-screen-inner">
+      <a href="#top" class="refresh-screen-logo" aria-label="SKR Magazine home">
+        <img src="skr-logo-site.png" alt="SKR Magazine" onerror="this.onerror=null;this.src='skr-logo.png';">
+      </a>
+      <p class="refresh-screen-label">WINTER 2026 · <span class="refresh-screen-live">LIVE</span></p>
+      <p class="refresh-screen-copy">Loading the latest stories</p>
+      <div class="refresh-screen-spinner" aria-hidden="true"></div>
+      <p class="refresh-screen-note">Preparing the next page</p>
+    </div>
+  </div>
+  <nav id="nav">
+    <a href="#top" class="nav-logo" aria-label="SKR Magazine home">
+      <img src="skr-logo-site.png" alt="SKR Magazine" onerror="this.onerror=null;this.src='skr-logo.png';">
+    </a>
+    <ul class="nav-links">
+      <li><a href="#categories">Lifestyle</a></li>
+      <li><a href="#categories">Automobiles</a></li>
+      <li><a href="#categories">Art</a></li>
+      <li><a href="#categories">Sport</a></li>
+      <li><a href="#categories">Watches</a></li>
+      <li><a href="#subscribe">Travel</a></li>
+    </ul>
+    <div class="nav-right">
+      <span class="nav-issue"><span id="navIssueLabel">MAGAZINE / WINTER 2026 · LIVE · 22 MAY · 16:46</span></span>
+      <div class="nav-menu" id="navMenu">
+        <button class="nav-menu-trigger" id="navMenuTrigger" type="button" aria-expanded="false" aria-controls="navMenuPanel">Menu</button>
+        <div class="nav-menu-panel" id="navMenuPanel">
+          <a href="#categories">Lifestyle</a>
+          <a href="#categories">Automobiles</a>
+          <a href="#categories">Art</a>
+          <a href="#categories">Sport</a>
+          <a href="#categories">Watches</a>
+          <a href="#subscribe">Travel</a>
+        </div>
+      </div>
+      <button class="admin-btn" id="addStoryBtn" type="button">+ Add Story</button>
+    </div>
+  </nav>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-bg">
+        <svg class="hero-svg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+          <path d="M180 580 C220 520,300 480,420 460 L560 440 C620 435,680 430,720 432 L960 440 C1020 445,1100 460,1140 480 L1260 540 L1260 620 L180 620 Z" fill="none" stroke="white" stroke-width="1"/>
+          <ellipse cx="380" cy="620" rx="80" ry="30" fill="none" stroke="white" stroke-width="1"/>
+          <ellipse cx="1060" cy="620" rx="80" ry="30" fill="none" stroke="white" stroke-width="1"/>
+          <path d="M420 460 L460 360 L700 330 L900 340 L960 440" fill="none" stroke="white" stroke-width="0.8"/>
+          <line x1="460" y1="360" x2="900" y2="340" stroke="white" stroke-width="0.5" stroke-dasharray="4 8"/>
+        </svg>
+      </div>
+      <div class="hero-content">
+        <div class="hero-tag"><div class="hero-tag-line"></div><span id="heroTagText">Cover Story · Sport</span></div>
+        <h1 class="hero-title" id="heroTitle">The <em>Hardest Seat</em><br>in Formula One</h1>
+        <div class="hero-meta">
+          <a href="#featuredStories" class="hero-read" id="heroReadLink">Read the story</a>
+          <span class="hero-cat" id="heroMetaText">Yuki Tsunoda · Red Bull Racing · 2025</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="issue-band">
+      <div class="issue-band-left">
+        <strong>Now Reading</strong>
+        <p id="issueBandEdition">MAGAZINE / WINTER 2026</p>
+        <p>Lifestyle · Art · Automobiles</p>
+      </div>
+      <p id="issueBandLive">@skr.magazine</p>
+    </div>
+
+    <div class="marquee-wrap">
+      <div class="marquee-track">
+        <span class="marquee-item">Lifestyle</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Automobiles</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Art</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Formula 1</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Rolex</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Airbus ACH H160</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Watches</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Travel</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Lifestyle</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Automobiles</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Art</span><span class="marquee-dot"></span>
+        <span class="marquee-item">Formula 1</span><span class="marquee-dot"></span>
+      </div>
+    </div>
+
+    <div class="section-header" id="featuredStories">
+      <h2>Featured <em>Stories</em></h2>
+      <a href="#newStories">All stories →</a>
+    </div>
+    <div class="feature-grid" id="featureGrid"></div>
+
+    <div class="section-header" id="newStoriesHeader" style="display:none">
+      <h2>New <em>from SKR</em></h2>
+      <a href="#categories">Browse by section →</a>
+    </div>
+    <div class="stories-grid" id="storiesGrid"></div>
+
+    <section class="categories" id="categories">
+      <p class="cat-label">Browse by category</p>
+      <div class="cat-grid">
+        <button class="cat-card" type="button" data-category="Lifestyle"><span class="cat-num">01</span><div class="cat-name"><em>Lifestyle</em></div><div class="cat-count" id="cnt-lifestyle">0 stories</div></button>
+        <button class="cat-card" type="button" data-category="Automobiles"><span class="cat-num">02</span><div class="cat-name">Automobiles</div><div class="cat-count" id="cnt-automobiles">0 stories</div></button>
+        <button class="cat-card" type="button" data-category="Art"><span class="cat-num">03</span><div class="cat-name"><em>Art</em></div><div class="cat-count" id="cnt-art">0 stories</div></button>
+        <button class="cat-card" type="button" data-category="Sport"><span class="cat-num">04</span><div class="cat-name">Sport</div><div class="cat-count" id="cnt-sport">0 stories</div></button>
+        <button class="cat-card" type="button" data-category="Watches"><span class="cat-num">05</span><div class="cat-name">Watches</div><div class="cat-count" id="cnt-watches">0 stories</div></button>
+        <button class="cat-card" type="button" data-category="Travel"><span class="cat-num">06</span><div class="cat-name">Travel</div><div class="cat-count" id="cnt-travel">0 stories</div></button>
+      </div>
+    </section>
+
+    <section class="archive-shell" id="categoryArchive">
+      <div class="archive-header">
+        <div>
+          <p class="archive-label">Category archive</p>
+          <h2 class="archive-title" id="archiveTitle">Lifestyle <em>Archive</em></h2>
+        </div>
+        <p class="archive-summary" id="archiveSummary">0 stories</p>
+      </div>
+      <div class="archive-grid" id="archiveGrid"></div>
+    </section>
+
+    <section class="subscribe" id="subscribe">
+      <div>
+        <p class="sub-eyebrow">Never miss an issue</p>
+        <h2 class="sub-headline">Receive <em>SKR Magazine</em> before it hits the newsstands</h2>
+      </div>
+      <form class="sub-form">
+        <input type="text" class="sub-input" placeholder="First name">
+        <input type="email" class="sub-input" placeholder="Email address">
+        <button class="sub-btn" type="submit">Subscribe to SKR</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <div>
+      <div class="foot-logo">
+        <img src="skr-logo-site.png" alt="SKR Magazine" onerror="this.onerror=null;this.src='skr-logo.png';">
+      </div>
+      <div class="foot-tag">Lifestyle · Art · Automobiles</div>
+      <div class="foot-social"><a href="https://www.instagram.com/skr.magazine" target="_blank" rel="noreferrer">Instagram</a></div>
+    </div>
+    <div>
+      <p class="foot-col-title">Sections</p>
+      <ul class="foot-links">
+        <li><a href="#categories">Lifestyle</a></li>
+        <li><a href="#categories">Automobiles</a></li>
+        <li><a href="#categories">Art</a></li>
+        <li><a href="#categories">Sport</a></li>
+        <li><a href="#categories">Watches</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="foot-col-title">Issues</p>
+      <ul class="foot-links">
+        <li><a href="#top">Vol. 1 Issue 3 — Summer 2024</a></li>
+        <li><a href="#top">Vol. 1 Issue 2 — Spring 2024</a></li>
+        <li><a href="#top">Vol. 1 Issue 1 — Winter 2024</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="foot-col-title">About</p>
+      <ul class="foot-links">
+        <li><a href="#top">About SKR</a></li>
+        <li><a href="#top">Advertise</a></li>
+        <li><a href="#top">Contact</a></li>
+      </ul>
+    </div>
+  </footer>
+  <div class="foot-bottom">
+    <p>© 2024 SKR Magazine. All rights reserved.</p>
+    <p>Privacy Policy · Terms of Use</p>
+  </div>
+
+  <div class="overlay" id="loginOverlay">
+    <button class="overlay-close" id="closeLoginOverlay" type="button">✕</button>
+    <div class="login-panel">
+      <h2>SKR Admin</h2>
+      <p>Editor access only</p>
+      <input type="password" id="pwInput" class="login-input" placeholder="Password">
+      <button class="login-btn" id="loginBtn" type="button">Enter</button>
+      <p class="login-error" id="loginError" hidden>Incorrect password</p>
+    </div>
+  </div>
+
+  <div class="overlay" id="adminOverlay">
+    <div class="admin-panel">
+      <div class="admin-header">
+        <div>
+          <h2>SKR Admin</h2>
+          <p>Manage stories · Lifestyle · Art · Automobiles</p>
+          <p class="connection-pill" id="connectionStatus">Checking Supabase connection</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:1rem">
+          <button class="admin-logout" id="logoutBtn" type="button">Log out</button>
+          <button class="overlay-close" id="closeAdminOverlay" type="button" style="position:static;font-size:1.2rem">✕</button>
+        </div>
+      </div>
+      <div class="admin-body">
+        <div class="admin-tabs">
+          <button class="admin-tab active" type="button" data-tab="upload">Upload Story</button>
+          <button class="admin-tab" type="button" data-tab="manage">Manage Stories</button>
+          <button class="admin-tab" type="button" data-tab="news">Live News</button>
+          <button class="admin-tab" type="button" data-tab="podcast" style="display:none" hidden aria-hidden="true">Podcast</button>
+        </div>
+
+        <div id="tab-upload">
+          <div class="upload-form">
+            <div class="upload-type-switcher">
+              <button class="upload-type-btn active" type="button" data-upload-mode="article">Article</button>
+              <button class="upload-type-btn" type="button" data-upload-mode="video">Video</button>
+            </div>
+            <p class="news-prefill" id="newsPrefillNotice">Form pre-filled — add your image and publish</p>
+            <div class="form-group full">
+              <label class="form-label" id="coverAssetLabel">Story image</label>
+              <div class="drop-zone" id="dropZone">
+                <input type="file" id="imageInput" accept="image/*">
+                <div class="drop-icon">↑</div>
+                <p>Drop image here or click to browse</p>
+                <span>JPG, PNG, WEBP — recommended 9:16 portrait</span>
+                <img id="dropPreview" class="drop-preview" alt="preview">
+              </div>
+              <p class="media-helper" id="imageEditNotice" hidden></p>
+            </div>
+            <div class="form-group full" id="videoUploadGroup" style="display:none">
+              <label class="form-label" for="videoInput">Video file</label>
+              <input type="file" id="videoInput" class="form-control" accept="video/mp4,video/quicktime,video/webm">
+              <p class="media-helper" id="videoDurationStatus">Select an MP4, MOV, or WEBM under 60 seconds.</p>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="fCategory">Category</label>
+                <select id="fCategory" class="form-control">
+                  <option value="Lifestyle">Lifestyle</option>
+                  <option value="Automobiles">Automobiles</option>
+                  <option value="Art">Art</option>
+                  <option value="Sport">Sport</option>
+                  <option value="Watches">Watches</option>
+                  <option value="Travel">Travel</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="fBrand">Brand / Subject tag</label>
+                <input type="text" id="fBrand" class="form-control" placeholder="e.g. Rolex, Ferrari, Converse">
+              </div>
+            </div>
+            <div class="form-group full">
+              <label class="form-label" for="fTitle">Story headline</label>
+              <input type="text" id="fTitle" class="form-control" placeholder="The headline as it will appear on the card">
+            </div>
+            <div class="form-group full">
+              <label class="form-label" for="fExcerpt">Short excerpt</label>
+              <textarea id="fExcerpt" class="form-control" placeholder="One or two sentences below the headline"></textarea>
+            </div>
+            <div class="form-group full">
+              <label class="form-label" for="fBody">Full article body</label>
+              <textarea id="fBody" class="form-control" placeholder="Add the full article for the public reader view"></textarea>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:2rem;flex-wrap:wrap">
+              <button class="submit-story-btn" id="submitBtn" type="button">Publish Story</button>
+              <div class="publish-feedback">
+                <div class="progress-shell"><div class="progress-bar" id="progressBar"></div></div>
+                <p class="form-status" id="formStatus">Ready</p>
+                <p class="form-success" id="formSuccess" hidden>Story published successfully</p>
+                <p class="form-error" id="formError" hidden></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="tab-manage" style="display:none">
+          <div class="admin-stories" id="adminStoriesList">
+            <p class="no-admin-stories">Loading stories...</p>
+          </div>
+        </div>
+
+        <div id="tab-news" style="display:none">
+          <div class="news-panel">
+            <div class="news-key-shell">
+              <div class="form-group">
+                <label class="form-label" for="newsApiKeyInput">NewsAPI key</label>
+                <input type="password" id="newsApiKeyInput" class="form-control" placeholder="Enter your NewsAPI key — get one free at newsapi.org">
+              </div>
+              <button class="news-refresh" id="saveNewsKeyBtn" type="button">Save Key</button>
+            </div>
+            <div class="news-key-status-row">
+              <p class="news-key-status" id="newsKeyStatus">News feed connected</p>
+              <button class="news-refresh news-disconnect" id="disconnectNewsKeyBtn" type="button">Disconnect</button>
+            </div>
+            <div class="news-toolbar">
+              <p class="news-updated" id="newsUpdatedLabel">Last updated just now</p>
+              <button class="news-refresh" id="newsRefreshBtn" type="button">
+                <span class="news-live-dot"></span>
+                Refresh Feed
+              </button>
+            </div>
+            <div class="news-search-shell">
+              <div class="form-group">
+                <label class="form-label" for="newsSearchInput">Search live news</label>
+                <input type="text" id="newsSearchInput" class="form-control" placeholder="Search by headline or source">
+              </div>
+              <button class="news-refresh" id="runNewsSearchBtn" type="button">Search</button>
+              <button class="news-refresh" id="clearNewsSearchBtn" type="button">Clear Search</button>
+            </div>
+            <div class="news-warning" id="newsWarning" hidden>Enter your NewsAPI key — get one free at newsapi.org</div>
+            <div class="news-grid" id="newsGrid"></div>
+          </div>
+        </div>
+
+        <div id="tab-podcast" style="display:none" hidden aria-hidden="true">
+          <div class="upload-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="podcastTitle">Episode title</label>
+                <input type="text" id="podcastTitle" class="form-control" placeholder="The episode title">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="podcastContentType">Content type</label>
+                <select id="podcastContentType" class="form-control">
+                  <option value="audio">Audio episode</option>
+                  <option value="video">Video episode</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="podcastSeason">Season number</label>
+                <input type="number" id="podcastSeason" class="form-control" min="1" value="1">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="podcastEpisode">Episode number</label>
+                <input type="number" id="podcastEpisode" class="form-control" min="1" placeholder="Episode number">
+              </div>
+            </div>
+            <div class="form-group full">
+              <label class="form-label" for="podcastDescription">Description</label>
+              <textarea id="podcastDescription" class="form-control" placeholder="A short summary of the episode"></textarea>
+            </div>
+            <div class="form-row form-section-divider">
+              <div class="form-group">
+                <label class="form-label" for="podcastThumbInput">Thumbnail image</label>
+                <input type="file" id="podcastThumbInput" class="form-control" accept="image/*">
+                <p class="media-helper">Use a portrait thumbnail to match SKR story cards.</p>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="podcastMediaInput">Episode media</label>
+                <input type="file" id="podcastMediaInput" class="form-control" accept="audio/mpeg,audio/wav,audio/aac,audio/mp4">
+                <p class="media-helper" id="podcastDurationStatus">Select audio or video media for this episode.</p>
+              </div>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:2rem;flex-wrap:wrap">
+              <button class="submit-story-btn" id="publishPodcastBtn" type="button">Publish Episode</button>
+              <div class="publish-feedback">
+                <div class="progress-shell"><div class="progress-bar" id="podcastProgressBar"></div></div>
+                <p class="form-status" id="podcastStatus">Ready</p>
+                <p class="form-success" id="podcastSuccess" hidden>Episode published successfully</p>
+                <p class="form-error" id="podcastError" hidden></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="articleOverlay">
+    <div class="article-panel">
+      <button class="overlay-close" id="closeArticleOverlay" type="button">✕</button>
+      <div class="article-inner">
+        <div class="article-topbar">
+          <button class="article-back" id="articleBackBtn" type="button">← Back</button>
+          <button class="article-share" id="shareArticleBtn" type="button">Share story</button>
+        </div>
+        <div class="article-media">
+          <img id="articleImage" alt="SKR article image">
+        </div>
+        <div class="article-pill" id="articleCategory"></div>
+        <h2 class="article-title" id="articleTitle"></h2>
+        <p class="article-standfirst" id="articleExcerpt"></p>
+        <p class="article-meta" id="articleMeta"></p>
+        <div class="article-body" id="articleBody"></div>
+        <p class="article-empty-note" id="articleEmptyNote" hidden>Full article coming soon.</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script>
+    const SUPABASE_URL = "https://cfonxqjjpfjyvperqoee.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_lNRLpvRUqHbQQOFncDew6g_MqaoxW6M";
+    const ADMIN_PASSWORD_HASH = "0e4754d8d45ab2b704af086fe7c4728d442dda3851fb6b4a7ce9f3fb182f5c63";
+    const ADMIN_LOCK_STORAGE = "skr-admin-lock-v1";
+    const ADMIN_MAX_ATTEMPTS = 5;
+    const ADMIN_LOCK_MS = 10 * 60 * 1000;
+    const BUCKET_NAME = "skr-images";
+    const TABLE_NAME = "stories";
+    const MAX_PUBLIC_STORIES = 8;
+    const PODCASTS_TABLE = "podcasts";
+    const VIDEO_BUCKET_NAME = "story-videos";
+    const PODCAST_AUDIO_BUCKET = "podcast-audio";
+    const PODCAST_VIDEO_BUCKET = "podcast-video";
+    const PODCAST_IMAGE_BUCKET = "podcast-thumbnails";
+    const NEWS_REFRESH_MS = 6 * 60 * 60 * 1000;
+    const NEWS_KEY_STORAGE = "skr-news-api-key";
+    const NEWS_CACHE_STORAGE = "skr-news-cache-v2";
+    const PODCAST_CACHE_STORAGE = "skr-podcast-cache-v1";
+    const STORY_CACHE_STORAGE = "skr-story-cache-v1";
+    const STORY_HYDRATION_STORAGE = "skr-story-hydration-v1";
+    const ADMIN_REVEAL_STORAGE = "skr-admin-revealed";
+    const MEDIA_LIBRARY_DB = "skr-media-library";
+    const MEDIA_LIBRARY_STORE = "assets";
+    const NEWS_CACHE_MAX_AGE_MS = 6 * 60 * 60 * 1000;
+    const NEWS_LOOKBACK_HOURS = 36;
+    const REFRESH_SCREEN_MIN_MS = 900;
+    const REFRESH_SCREEN_MAX_MS = 4500;
+    const refreshScreenStartedAt = Date.now();
+
+    const TOPICS = [
+      { name: "Motorsport", category: "Sport", query: "\"Formula 1\" OR MotoGP OR IndyCar", keywords: ["formula 1", "f1", "grand prix", "motogp", "indycar", "wec"], domains: ["autosport.com", "motorsport.com", "formula1.com", "motorsportweek.com", "skysports.com"], accent: "#8b7d69" },
+      { name: "Golf", category: "Sport", query: "\"PGA Tour\" OR \"LIV Golf\" OR Masters", keywords: ["pga tour", "liv golf", "masters", "ryder cup", "open championship", "golf"], domains: ["golfdigest.com", "golfchannel.com", "pgatour.com", "golf.com"], accent: "#6a8d69" },
+      { name: "Tennis", category: "Sport", query: "Wimbledon OR ATP OR WTA", keywords: ["wimbledon", "us open", "roland garros", "atp", "wta", "grand slam tennis"], domains: ["atptour.com", "wtatennis.com", "tennis.com", "tennisworld.com"], accent: "#897261" },
+      { name: "Sailing", category: "Sport", query: "\"America's Cup\" OR sailing OR superyacht", keywords: ["americas cup", "vendee globe", "ocean race", "sailing", "superyacht racing"], domains: ["sail-world.com", "yachtingworld.com", "americascup.com"], accent: "#688191" },
+      { name: "Equestrian", category: "Sport", query: "polo OR equestrian OR \"horse racing\"", keywords: ["royal ascot", "cheltenham", "polo", "horse racing", "grand national", "equestrian"], domains: ["horseandhound.co.uk", "pololine.com", "bloodhorse.com"], accent: "#8a6c57" },
+      { name: "Boxing", category: "Sport", query: "boxing OR heavyweight OR title fight", keywords: ["heavyweight boxing", "wbc", "wba", "ibf", "wbo", "title fight", "boxing"], domains: ["ringtv.com", "boxingscene.com", "skysports.com"], accent: "#9a645b" },
+      { name: "Winter Sports", category: "Sport", query: "skiing OR biathlon OR snowboard", keywords: ["alpine skiing", "ski jump", "biathlon", "snowboard", "world cup skiing"], domains: ["fis-ski.com", "skimag.com", "redbull.com"], accent: "#7d8992" },
+      { name: "Watersports", category: "Sport", query: "surfing OR powerboat OR kiteboarding", keywords: ["surfing", "powerboat", "world surf league", "kiteboarding", "offshore racing"], domains: ["surfer.com", "surfermag.com", "powerboatnation.com"], accent: "#65808b" },
+      { name: "Elite Football", category: "Sport", query: "\"Champions League\" OR \"Premier League\" OR \"El Clasico\"", keywords: ["champions league", "premier league", "el clasico", "serie a", "bundesliga", "world cup football"], domains: ["theathletic.com", "bbc.co.uk", "skysports.com"], accent: "#6a876a" },
+      { name: "Rugby", category: "Sport", query: "\"Six Nations\" OR rugby OR \"Super Rugby\"", keywords: ["six nations", "rugby world cup", "premiership rugby", "super rugby", "british lions"], domains: ["rugbyworld.com", "bbc.co.uk", "espnscrum.com"], accent: "#8a6b61" },
+      { name: "Automobiles", category: "Automobiles", query: "Ferrari OR Porsche OR McLaren", keywords: ["supercar", "hypercar", "ferrari", "lamborghini", "porsche", "mclaren", "bugatti", "luxury car"], domains: ["motortrend.com", "autocar.co.uk", "caranddriver.com", "topgear.com", "roadandtrack.com"], accent: "#9b7968" },
+      { name: "Watches", category: "Watches", query: "Rolex OR horology OR Patek", keywords: ["rolex", "patek philippe", "audemars piguet", "horology", "watches and wonders", "luxury watch"], domains: ["hodinkee.com", "fratellowatches.com", "ablogtowatch.com", "watchtime.com"], accent: "#9d8a63" },
+      { name: "Art", category: "Art", query: "\"Art Basel\" OR Frieze OR Sothebys", keywords: ["sothebys", "christies", "art basel", "frieze", "art auction", "contemporary art"], domains: ["artnet.com", "theartnewspaper.com", "frieze.com", "apollo-magazine.com"], accent: "#8d6a7c" },
+      { name: "Lifestyle", category: "Lifestyle", query: "\"private aviation\" OR superyacht OR monocle", keywords: ["luxury lifestyle", "superyacht", "private aviation", "fashion week", "monocle", "robb report"], domains: ["monocle.com", "wallpaper.com", "robb-report.com", "highsnobiety.com"], accent: "#7b7f68" }
+    ];
+
+    const STANDBY_NEWS = {
+      Motorsport: [
+        { title: "Formula 1 paddock focus shifts to the next decisive performance window", url: "https://www.formula1.com/", publishedAt: "2026-05-03T08:00:00.000Z", urlToImage: "", source: { name: "Formula1.com" } },
+        { title: "Le Mans and endurance contenders sharpen strategy ahead of the summer push", url: "https://www.motorsport.com/", publishedAt: "2026-05-03T07:00:00.000Z", urlToImage: "", source: { name: "Motorsport.com" } }
+      ],
+      Golf: [
+        { title: "Tour form, course management and momentum define the week’s biggest golf narratives", url: "https://www.golfdigest.com/", publishedAt: "2026-05-03T08:10:00.000Z", urlToImage: "", source: { name: "Golf Digest" } },
+        { title: "Elite contenders refine their edge as the championship calendar tightens", url: "https://www.pgatour.com/", publishedAt: "2026-05-03T06:45:00.000Z", urlToImage: "", source: { name: "PGA Tour" } }
+      ],
+      Tennis: [
+        { title: "The tour’s headline names are building rhythm at a crucial stretch of the season", url: "https://www.atptour.com/", publishedAt: "2026-05-03T08:05:00.000Z", urlToImage: "", source: { name: "ATP Tour" } },
+        { title: "Grand Slam positioning is already shaping the conversation around the top seeds", url: "https://www.wtatennis.com/", publishedAt: "2026-05-03T07:20:00.000Z", urlToImage: "", source: { name: "WTA Tennis" } }
+      ],
+      Sailing: [
+        { title: "Offshore programs and superyacht teams enter a sharper competitive phase", url: "https://www.yachtingworld.com/", publishedAt: "2026-05-03T07:50:00.000Z", urlToImage: "", source: { name: "Yachting World" } },
+        { title: "The premium sailing calendar continues to pivot around design, speed and endurance", url: "https://www.sail-world.com/", publishedAt: "2026-05-03T06:35:00.000Z", urlToImage: "", source: { name: "Sail-World" } }
+      ],
+      Equestrian: [
+        { title: "Racing prestige and equestrian form remain at the center of the weekend agenda", url: "https://www.horseandhound.co.uk/", publishedAt: "2026-05-03T08:15:00.000Z", urlToImage: "", source: { name: "Horse & Hound" } },
+        { title: "Polo and elite horse sport continue to set a refined pace across the circuit", url: "https://www.pololine.com/", publishedAt: "2026-05-03T05:55:00.000Z", urlToImage: "", source: { name: "Pololine" } }
+      ],
+      Boxing: [
+        { title: "Title-fight positioning keeps the heavyweight scene under close watch", url: "https://www.ringtv.com/", publishedAt: "2026-05-03T08:00:00.000Z", urlToImage: "", source: { name: "The Ring" } },
+        { title: "The championship picture is tightening as major camps weigh their next move", url: "https://www.boxingscene.com/", publishedAt: "2026-05-03T06:15:00.000Z", urlToImage: "", source: { name: "BoxingScene" } }
+      ],
+      "Winter Sports": [
+        { title: "World Cup-level preparation remains the benchmark across alpine disciplines", url: "https://www.fis-ski.com/", publishedAt: "2026-05-03T07:30:00.000Z", urlToImage: "", source: { name: "FIS Ski" } },
+        { title: "Technique, conditions and timing continue to separate the elite from the field", url: "https://www.skimag.com/", publishedAt: "2026-05-03T06:05:00.000Z", urlToImage: "", source: { name: "Ski Mag" } }
+      ],
+      Watersports: [
+        { title: "Surf and offshore competition remain defined by timing, weather and nerve", url: "https://www.surfer.com/", publishedAt: "2026-05-03T07:10:00.000Z", urlToImage: "", source: { name: "Surfer" } },
+        { title: "Watersports culture continues to merge performance with premium travel appeal", url: "https://www.powerboatnation.com/", publishedAt: "2026-05-03T05:40:00.000Z", urlToImage: "", source: { name: "Powerboat Nation" } }
+      ],
+      "Elite Football": [
+        { title: "The elite football conversation is narrowing around decisive fixtures and margins", url: "https://www.theathletic.com/", publishedAt: "2026-05-03T08:25:00.000Z", urlToImage: "", source: { name: "The Athletic" } },
+        { title: "European and domestic ambitions are converging in the sport’s most watched contests", url: "https://www.skysports.com/football", publishedAt: "2026-05-03T06:50:00.000Z", urlToImage: "", source: { name: "Sky Sports" } }
+      ],
+      Rugby: [
+        { title: "Rugby’s leading programs are already shaping the next phase of the global cycle", url: "https://www.rugbyworld.com/", publishedAt: "2026-05-03T08:12:00.000Z", urlToImage: "", source: { name: "Rugby World" } },
+        { title: "Selection pressure and tactical identity remain the defining themes this week", url: "https://www.espnscrum.com/", publishedAt: "2026-05-03T06:22:00.000Z", urlToImage: "", source: { name: "ESPN Scrum" } }
+      ],
+      Automobiles: [
+        { title: "The luxury performance market continues to revolve around scarcity and engineering theatre", url: "https://www.topgear.com/", publishedAt: "2026-05-03T08:18:00.000Z", urlToImage: "", source: { name: "Top Gear" } },
+        { title: "From Ferrari to Porsche, the next wave of halo cars is being watched closely", url: "https://www.autocar.co.uk/", publishedAt: "2026-05-03T06:48:00.000Z", urlToImage: "", source: { name: "Autocar" } }
+      ],
+      Watches: [
+        { title: "Collectors are watching how maison strategy is reshaping the luxury watch conversation", url: "https://www.hodinkee.com/", publishedAt: "2026-05-03T08:08:00.000Z", urlToImage: "", source: { name: "Hodinkee" } },
+        { title: "The market continues to prize restraint, craft and confident differentiation", url: "https://www.fratellowatches.com/", publishedAt: "2026-05-03T05:58:00.000Z", urlToImage: "", source: { name: "Fratello" } }
+      ],
+      Art: [
+        { title: "The upper end of the art market remains focused on taste, timing and conviction", url: "https://www.theartnewspaper.com/", publishedAt: "2026-05-03T08:03:00.000Z", urlToImage: "", source: { name: "The Art Newspaper" } },
+        { title: "Auction houses and fairs continue to define the rhythm of cultural attention", url: "https://www.artnet.com/", publishedAt: "2026-05-03T06:12:00.000Z", urlToImage: "", source: { name: "Artnet" } }
+      ],
+      Lifestyle: [
+        { title: "Private aviation, refined travel and taste-led living continue to anchor luxury culture", url: "https://www.monocle.com/", publishedAt: "2026-05-03T08:04:00.000Z", urlToImage: "", source: { name: "Monocle" } },
+        { title: "The premium lifestyle conversation is tilting toward discretion, utility and access", url: "https://robbreport.com/", publishedAt: "2026-05-03T06:28:00.000Z", urlToImage: "", source: { name: "Robb Report" } }
+      ]
+    };
+
+    const placeholderFeatures = [
+      { category: "Sport", title: "Yuki Tsunoda steps into what his new boss calls <em>the hardest seat in Formula 1</em>", image: "linear-gradient(135deg,#111 0%,#1e1a14 50%,#111 100%)" },
+      { category: "Lifestyle", title: "Mark Webber at the Formula 1 Rolex <em>Australian Grand Prix</em>", image: "linear-gradient(160deg,#0d1a0d 0%,#152515 50%,#1a2a1a 100%)" },
+      { category: "Automobiles", title: "Airbus ACH H160 — <em>luxury reimagined</em> at altitude", image: "linear-gradient(140deg,#0a0f1a 0%,#121a2a 50%,#0d1520 100%)" }
+    ];
+
+    const supabaseReady = Boolean(window.supabase && SUPABASE_URL && SUPABASE_ANON_KEY);
+    const supabaseClient = supabaseReady ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+
+    let stories = [];
+    let selectedFile = null;
+    let selectedVideoFile = null;
+    let selectedPodcastThumbFile = null;
+    let selectedPodcastMediaFile = null;
+    let uploadMode = "article";
+    let videoDurationSeconds = 0;
+    let podcastDurationSeconds = 0;
+    let localPodcastEpisodes = [];
+    let localStories = [];
+    let isLoggedIn = false;
+    let newsState = {};
+    let newsLastUpdatedAt = null;
+    let newsApiKey = "";
+    let newsSearchQuery = "";
+    let selectedArchiveCategory = "";
+    let heroStoryIndex = 0;
+    let heroRotationTimer = null;
+    let suppressRemoteStoryErrors = false;
+    let activeArticleStoryId = "";
+    let editingStoryId = "";
+    let pendingDeleteStoryId = "";
+    let pendingStoryHydration = null;
+    let pendingArticleLocator = null;
+    let refreshWindowReady = document.readyState === "complete";
+    let refreshStoryLoadComplete = false;
+    let refreshHeroReady = false;
+    let refreshDismissScheduled = false;
+    let refreshHeroWatchStarted = false;
+    let refreshFailSafeTimer = null;
+
+    const nav = document.getElementById("nav");
+    const featureGrid = document.getElementById("featureGrid");
+    const storiesGrid = document.getElementById("storiesGrid");
+    const newStoriesHeader = document.getElementById("newStoriesHeader");
+    const adminStoriesList = document.getElementById("adminStoriesList");
+    const connectionStatus = document.getElementById("connectionStatus");
+    const loginOverlay = document.getElementById("loginOverlay");
+    const adminOverlay = document.getElementById("adminOverlay");
+    const addStoryBtn = document.getElementById("addStoryBtn");
+    const navMenu = document.getElementById("navMenu");
+    const navMenuTrigger = document.getElementById("navMenuTrigger");
+    const navMenuPanel = document.getElementById("navMenuPanel");
+    const closeLoginOverlay = document.getElementById("closeLoginOverlay");
+    const closeAdminOverlay = document.getElementById("closeAdminOverlay");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const pwInput = document.getElementById("pwInput");
+    const loginBtn = document.getElementById("loginBtn");
+    const loginError = document.getElementById("loginError");
+    const imageInput = document.getElementById("imageInput");
+    const dropZone = document.getElementById("dropZone");
+    const dropPreview = document.getElementById("dropPreview");
+    const imageEditNotice = document.getElementById("imageEditNotice");
+    const submitBtn = document.getElementById("submitBtn");
+    const videoInput = document.getElementById("videoInput");
+    const videoUploadGroup = document.getElementById("videoUploadGroup");
+    const videoDurationStatus = document.getElementById("videoDurationStatus");
+    const coverAssetLabel = document.getElementById("coverAssetLabel");
+    const uploadModeButtons = Array.from(document.querySelectorAll(".upload-type-btn"));
+    const progressBar = document.getElementById("progressBar");
+    const formStatus = document.getElementById("formStatus");
+    const formSuccess = document.getElementById("formSuccess");
+    const formError = document.getElementById("formError");
+    const newsPrefillNotice = document.getElementById("newsPrefillNotice");
+    const newsGrid = document.getElementById("newsGrid");
+    const newsWarning = document.getElementById("newsWarning");
+    const newsUpdatedLabel = document.getElementById("newsUpdatedLabel");
+    const newsRefreshBtn = document.getElementById("newsRefreshBtn");
+    const newsApiKeyInput = document.getElementById("newsApiKeyInput");
+    const saveNewsKeyBtn = document.getElementById("saveNewsKeyBtn");
+    const newsKeyStatus = document.getElementById("newsKeyStatus");
+    const disconnectNewsKeyBtn = document.getElementById("disconnectNewsKeyBtn");
+    const newsSearchInput = document.getElementById("newsSearchInput");
+    const runNewsSearchBtn = document.getElementById("runNewsSearchBtn");
+    const clearNewsSearchBtn = document.getElementById("clearNewsSearchBtn");
+    const tabButtons = Array.from(document.querySelectorAll(".admin-tab"));
+    const archiveShell = document.getElementById("categoryArchive");
+    const archiveGrid = document.getElementById("archiveGrid");
+    const archiveTitle = document.getElementById("archiveTitle");
+    const archiveSummary = document.getElementById("archiveSummary");
+    const refreshScreen = document.getElementById("refreshScreen");
+    const categoryCards = Array.from(document.querySelectorAll(".cat-card"));
+    const heroBg = document.querySelector(".hero-bg");
+    const heroTagText = document.getElementById("heroTagText");
+    const heroTitle = document.getElementById("heroTitle");
+    const heroMetaText = document.getElementById("heroMetaText");
+    const heroReadLink = document.getElementById("heroReadLink");
+    const articleOverlay = document.getElementById("articleOverlay");
+    const closeArticleOverlay = document.getElementById("closeArticleOverlay");
+    const articleBackBtn = document.getElementById("articleBackBtn");
+    const shareArticleBtn = document.getElementById("shareArticleBtn");
+    const articleImage = document.getElementById("articleImage");
+    const articleCategory = document.getElementById("articleCategory");
+    const articleTitle = document.getElementById("articleTitle");
+    const articleExcerpt = document.getElementById("articleExcerpt");
+    const articleMeta = document.getElementById("articleMeta");
+    const articleBody = document.getElementById("articleBody");
+    const articleEmptyNote = document.getElementById("articleEmptyNote");
+    const descriptionMeta = document.querySelector('meta[name="description"]');
+    const canonicalLink = document.querySelector('link[rel="canonical"]');
+    const ogUrlMeta = document.querySelector('meta[property="og:url"]');
+    const twitterUrlMeta = document.querySelector('meta[name="twitter:url"]');
+    const podcastTitleInput = document.getElementById("podcastTitle");
+    const podcastDescriptionInput = document.getElementById("podcastDescription");
+    const podcastSeasonInput = document.getElementById("podcastSeason");
+    const podcastEpisodeInput = document.getElementById("podcastEpisode");
+    const podcastContentTypeInput = document.getElementById("podcastContentType");
+    const podcastThumbInput = document.getElementById("podcastThumbInput");
+    const podcastMediaInput = document.getElementById("podcastMediaInput");
+    const podcastDurationStatus = document.getElementById("podcastDurationStatus");
+    const publishPodcastBtn = document.getElementById("publishPodcastBtn");
+    const podcastProgressBar = document.getElementById("podcastProgressBar");
+    const podcastStatus = document.getElementById("podcastStatus");
+    const podcastSuccess = document.getElementById("podcastSuccess");
+    const podcastError = document.getElementById("podcastError");
+    const formCategory = document.getElementById("fCategory");
+    const formBrand = document.getElementById("fBrand");
+    const formTitle = document.getElementById("fTitle");
+    const formExcerpt = document.getElementById("fExcerpt");
+    const formBody = document.getElementById("fBody");
+    const DEFAULT_PAGE_TITLE = document.title;
+    const DEFAULT_PAGE_DESCRIPTION = descriptionMeta ? descriptionMeta.getAttribute("content") || "" : "";
+    const STATIC_SITE_ORIGIN = "https://skrmagazine.vercel.app";
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function formatLiveEditionStamp(short = false) {
+      const now = new Date();
+      const date = now.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric"
+      }).toUpperCase();
+      const shortDate = now.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "short"
+      }).toUpperCase();
+      const time = now.toLocaleTimeString("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false
+      });
+      return short
+        ? `LIVE NOW · ${shortDate} · ${time}`
+        : `LIVE NOW · ${date} · ${time} SAST`;
+    }
+
+    function updateEditionLabels() {
+      const bandStamp = formatLiveEditionStamp(false);
+      const navIssueLabel = document.getElementById("navIssueLabel");
+      const issueBandLive = document.getElementById("issueBandLive");
+      if (navIssueLabel) {
+        navIssueLabel.innerHTML = [
+          "WINTER 2026",
+          '<span class="nav-issue-sep">·</span>',
+          '<span class="nav-issue-live">LIVE</span>'
+        ].join(" ");
+      }
+      if (issueBandLive) issueBandLive.textContent = bandStamp;
+    }
+
+    function normalizeStoryKeyPart(value) {
+      return String(value || "")
+        .toLowerCase()
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function buildStoryIdentityKey(story) {
+      return [
+        normalizeStoryKeyPart(story && (story.title || story.headline || "")),
+        normalizeStoryKeyPart(story && story.category),
+        normalizeStoryKeyPart(story && story.brand)
+      ].join("|");
+    }
+
+    function sanitizeStoryHydrationEntry(story) {
+      const title = String(story && (story.title || story.headline || "") || "");
+      return {
+        id: story && story.id ? String(story.id) : "",
+        created_at: story && story.created_at ? String(story.created_at) : "",
+        title,
+        excerpt: String(story && story.excerpt || ""),
+        body: String(story && story.body || ""),
+        category: String(story && story.category || ""),
+        brand: String(story && story.brand || ""),
+        image_url: String(story && story.image_url || ""),
+        slug: String(story && story.slug || createSlug(title)),
+        content_type: String(story && story.content_type || "article"),
+        video_url: story && story.video_url ? String(story.video_url) : null,
+        video_duration: story && story.video_duration == null ? null : Number(story.video_duration) || null,
+        story_key: buildStoryIdentityKey(story || {})
+      };
+    }
+
+    function readStoryHydrationCache() {
+      try {
+        const raw = window.localStorage.getItem(STORY_HYDRATION_STORAGE);
+        if (!raw) return [];
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed)) return [];
+        return parsed
+          .map((entry) => sanitizeStoryHydrationEntry(entry))
+          .filter((entry) => entry.id || entry.story_key.replace(/\|/g, ""));
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function writeStoryHydrationCache(entries) {
+      try {
+        window.localStorage.setItem(
+          STORY_HYDRATION_STORAGE,
+          JSON.stringify((entries || []).slice(0, 80))
+        );
+      } catch (error) {
+        // Ignore hydration cache write failures.
+      }
+    }
+
+    function upsertStoryHydrationEntry(story) {
+      const entry = sanitizeStoryHydrationEntry(story);
+      if (!(entry.id || entry.story_key.replace(/\|/g, ""))) return;
+      const existing = readStoryHydrationCache().filter((item) => {
+        const idMatch = entry.id && String(item.id) === String(entry.id);
+        const keyMatch = entry.story_key && item.story_key === entry.story_key;
+        return !(idMatch || keyMatch);
+      });
+      existing.unshift(entry);
+      writeStoryHydrationCache(existing);
+    }
+
+    function removeStoryHydrationEntry(target) {
+      const story = typeof target === "string" ? { id: target } : (target || {});
+      const storyId = story.id ? String(story.id) : "";
+      const storyKey = buildStoryIdentityKey(story);
+      const nextEntries = readStoryHydrationCache().filter((item) => {
+        const idMatch = storyId && String(item.id) === storyId;
+        const keyMatch = storyKey && item.story_key === storyKey;
+        return !(idMatch || keyMatch);
+      });
+      writeStoryHydrationCache(nextEntries);
+    }
+
+    function findStoryHydrationEntry(story, entries) {
+      const storyId = story && story.id ? String(story.id) : "";
+      const storyKey = buildStoryIdentityKey(story || {});
+      return (entries || []).find((entry) => {
+        if (storyId && String(entry.id) === storyId) return true;
+        if (storyKey && entry.story_key === storyKey) return true;
+        return false;
+      }) || null;
+    }
+
+    function mergeHydratedStory(story, hydratedStory) {
+      if (!hydratedStory) return story;
+      const baseTitle = story && story.title ? story.title : "";
+      const nextTitle = hydratedStory.title || baseTitle;
+      return Object.assign({}, story, {
+        title: nextTitle,
+        excerpt: hydratedStory.excerpt || story.excerpt || "",
+        body: hydratedStory.body || story.body || "",
+        category: hydratedStory.category || story.category || "",
+        brand: hydratedStory.brand || story.brand || "",
+        image_url: hydratedStory.image_url || story.image_url || "",
+        slug: hydratedStory.slug || story.slug || createSlug(nextTitle),
+        content_type: hydratedStory.content_type || story.content_type || "article",
+        video_url: hydratedStory.video_url || story.video_url || null,
+        video_duration: hydratedStory.video_duration == null
+          ? (story.video_duration == null ? null : story.video_duration)
+          : hydratedStory.video_duration,
+        created_at: story.created_at || hydratedStory.created_at || new Date().toISOString(),
+        local_only: Boolean(story.local_only)
+      });
+    }
+
+    function buildStoryViewModel(existingStory, payload, id, isLocalOnly) {
+      const source = existingStory || {};
+      const nextTitle = payload.title || source.title || "";
+      return {
+        id: id || source.id || ("local-story-" + Date.now()),
+        created_at: source.created_at || new Date().toISOString(),
+        title: nextTitle,
+        excerpt: payload.excerpt || "",
+        body: payload.body || "",
+        category: payload.category || source.category || "",
+        brand: payload.brand || source.brand || "",
+        image_url: payload.image_url || source.image_url || "",
+        slug: payload.slug || source.slug || createSlug(nextTitle),
+        content_type: payload.content_type || source.content_type || "article",
+        video_url: payload.video_url == null ? null : payload.video_url,
+        video_duration: payload.video_duration == null ? null : payload.video_duration,
+        local_only: Boolean(isLocalOnly)
+      };
+    }
+
+    function queuePendingStoryHydration(story) {
+      if (!story) return;
+      pendingStoryHydration = sanitizeStoryHydrationEntry(story);
+      upsertStoryHydrationEntry(pendingStoryHydration);
+    }
+
+    function applyPendingStoryHydration() {
+      if (!pendingStoryHydration || !Array.isArray(stories) || !stories.length) return;
+      const pendingId = String(pendingStoryHydration.id || "");
+      const pendingKey = buildStoryIdentityKey(pendingStoryHydration);
+      const hasMatch = stories.some((story) => {
+        if (pendingId && String(story.id) === pendingId) return true;
+        if (pendingKey && buildStoryIdentityKey(story) === pendingKey) return true;
+        return false;
+      });
+      if (!hasMatch) return;
+      stories = stories.map((story) => {
+        const matchesId = pendingId && String(story.id) === pendingId;
+        const matchesKey = pendingKey && buildStoryIdentityKey(story) === pendingKey;
+        return (matchesId || matchesKey)
+          ? mergeHydratedStory(story, pendingStoryHydration)
+          : story;
+      });
+      pendingStoryHydration = null;
+    }
+
+    function getCurrentStories() {
+      const sortedStories = stories
+        .filter((story) => story && story.title)
+        .slice()
+        .sort((a, b) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime());
+      const seen = new Set();
+      const currentStories = [];
+      sortedStories.forEach((story) => {
+        if (currentStories.length >= MAX_PUBLIC_STORIES) return;
+        const storyKey = [
+          normalizeStoryKeyPart(story.title),
+          normalizeStoryKeyPart(story.category),
+          normalizeStoryKeyPart(story.brand)
+        ].join("|");
+        if (!storyKey.replace(/\|/g, "")) return;
+        if (seen.has(storyKey)) return;
+        seen.add(storyKey);
+        currentStories.push(story);
+      });
+      return currentStories;
+    }
+
+    function readAdminLockState() {
+      try {
+        const raw = window.localStorage.getItem(ADMIN_LOCK_STORAGE);
+        if (!raw) return { attempts: 0, expiresAt: 0 };
+        const parsed = JSON.parse(raw);
+        return {
+          attempts: Number(parsed.attempts) || 0,
+          expiresAt: Number(parsed.expiresAt) || 0
+        };
+      } catch (error) {
+        return { attempts: 0, expiresAt: 0 };
+      }
+    }
+
+    function writeAdminLockState(state) {
+      try {
+        window.localStorage.setItem(ADMIN_LOCK_STORAGE, JSON.stringify(state));
+      } catch (error) {
+        // Ignore storage failures.
+      }
+    }
+
+    function clearAdminLockState() {
+      writeAdminLockState({ attempts: 0, expiresAt: 0 });
+    }
+
+    function getAdminLockRemainingMs() {
+      const state = readAdminLockState();
+      const remaining = state.expiresAt - Date.now();
+      if (remaining <= 0) {
+        if (state.expiresAt) clearAdminLockState();
+        return 0;
+      }
+      return remaining;
+    }
+
+    function registerAdminFailure() {
+      const state = readAdminLockState();
+      const attempts = state.expiresAt > Date.now() ? state.attempts : state.attempts + 1;
+      const nextState = attempts >= ADMIN_MAX_ATTEMPTS
+        ? { attempts, expiresAt: Date.now() + ADMIN_LOCK_MS }
+        : { attempts, expiresAt: 0 };
+      writeAdminLockState(nextState);
+      return nextState;
+    }
+
+    function formatAdminLockMessage(ms) {
+      const minutes = Math.max(1, Math.ceil(ms / 60000));
+      return "Too many attempts. Try again in " + minutes + " minute" + (minutes === 1 ? "" : "s") + ".";
+    }
+
+    async function hashString(value) {
+      const buffer = new TextEncoder().encode(value);
+      const digest = await window.crypto.subtle.digest("SHA-256", buffer);
+      return Array.from(new Uint8Array(digest)).map((byte) => byte.toString(16).padStart(2, "0")).join("");
+    }
+
+    async function verifyAdminPassword(value) {
+      if (!window.crypto || !window.crypto.subtle) return false;
+      const normalized = String(value || "").trim();
+      if (!normalized) return false;
+      const hash = await hashString(normalized);
+      return hash === ADMIN_PASSWORD_HASH;
+    }
+
+    function revealAdminEntry() {
+      document.body.classList.add("admin-revealed");
+      try {
+        window.sessionStorage.setItem(ADMIN_REVEAL_STORAGE, "1");
+      } catch (error) {
+        // Ignore private browsing storage failures.
+      }
+    }
+
+    function hideAdminEntry() {
+      document.body.classList.remove("admin-revealed");
+      try {
+        window.sessionStorage.removeItem(ADMIN_REVEAL_STORAGE);
+      } catch (error) {
+        // Ignore private browsing storage failures.
+      }
+    }
+
+    function maybeRevealAdminEntry() {
+      const params = new URLSearchParams(window.location.search);
+      const hash = window.location.hash.toLowerCase();
+      const shouldReveal = params.get("admin") === "1" || hash === "#skr-admin";
+      const persistedReveal = window.sessionStorage.getItem(ADMIN_REVEAL_STORAGE) === "1";
+      if (shouldReveal || persistedReveal) {
+        revealAdminEntry();
+      } else {
+        hideAdminEntry();
+      }
+      if (shouldReveal) {
+        window.setTimeout(() => openOverlay(loginOverlay), 60);
+        window.setTimeout(() => pwInput.focus(), 120);
+      }
+    }
+
+    function setConnectionStatus() {
+      connectionStatus.classList.remove("success", "error");
+      if (supabaseReady) {
+        connectionStatus.textContent = "Connected to Supabase";
+        connectionStatus.classList.add("success");
+      } else {
+        connectionStatus.textContent = "Supabase not connected — add your anon public key in index.html";
+        connectionStatus.classList.add("error");
+      }
+    }
+
+    function setMessage(type, text) {
+      formSuccess.hidden = true;
+      formError.hidden = true;
+      if (type === "success") {
+        formSuccess.textContent = text;
+        formSuccess.hidden = false;
+      }
+      if (type === "error") {
+        formError.textContent = text;
+        formError.hidden = false;
+      }
+      formStatus.textContent = text;
+    }
+
+    function clearStoryMessages() {
+      formSuccess.hidden = true;
+      formError.hidden = true;
+      formStatus.textContent = "Ready";
+    }
+
+    function setProgress(value) {
+      progressBar.style.width = value + "%";
+    }
+
+    function setPodcastProgress(value) {
+      podcastProgressBar.style.width = value + "%";
+    }
+
+    function closeNavMenu() {
+      if (!navMenu || !navMenuTrigger) return;
+      navMenu.classList.remove("open");
+      navMenuTrigger.setAttribute("aria-expanded", "false");
+    }
+
+    function toggleNavMenu() {
+      if (!navMenu || !navMenuTrigger) return;
+      const isOpen = navMenu.classList.toggle("open");
+      navMenuTrigger.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    }
+
+    function describeSupabaseError(error) {
+      const raw = String(error && error.message ? error.message : error || "");
+      const normalized = raw.toLowerCase();
+      if (normalized.includes("public.podcasts") || normalized.includes("podcasts") && normalized.includes("schema cache")) {
+        return "Supabase table not set up — create public.podcasts in the Supabase SQL editor";
+      }
+      if (normalized.includes("public.stories") || normalized.includes("schema cache")) {
+        return "Supabase table not set up — create public.stories in the Supabase SQL editor";
+      }
+      if (normalized.includes("bucket") && normalized.includes("not found")) {
+        return "Supabase bucket not set up — create the public skr-images bucket in Supabase storage";
+      }
+      return raw || "Supabase request failed";
+    }
+
+    function isMissingBucketError(error) {
+      const raw = String(error && error.message ? error.message : error || "").toLowerCase();
+      return raw.includes("bucket") && raw.includes("not found");
+    }
+
+    function isRecoverableStorageError(error) {
+      const raw = String(error && error.message ? error.message : error || "").toLowerCase();
+      return isMissingBucketError(error)
+        || raw.includes("quota")
+        || raw.includes("exceeded")
+        || raw.includes("out of space")
+        || raw.includes("storage limit")
+        || raw.includes("resource exhausted")
+        || raw.includes("disk full");
+    }
+
+    function bucketSetupMessage(bucketName) {
+      return "Supabase bucket not set up — create the public " + bucketName + " bucket in Supabase storage";
+    }
+
+    function stringifySupabaseError(error) {
+      if (!error) return "";
+      if (typeof error === "string") return error;
+      if (error.message) return String(error.message);
+      try {
+        return JSON.stringify(error);
+      } catch (stringifyError) {
+        return String(error);
+      }
+    }
+
+    function isRecoverableStoryInsertError(error) {
+      const raw = stringifySupabaseError(error).toLowerCase();
+      return raw.includes("public.stories")
+        || raw.includes("schema cache")
+        || raw.includes("quota")
+        || raw.includes("exceeded")
+        || raw.includes("out of space")
+        || raw.includes("resource exhausted")
+        || raw.includes("disk full")
+        || raw.includes("relation")
+        || raw.includes("stories")
+        || raw.includes("column")
+        || raw.includes("slug")
+        || raw.includes("content_type")
+        || raw.includes("video_url")
+        || raw.includes("video_duration");
+    }
+
+    function sleep(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    }
+
+    async function dismissRefreshScreen() {
+      if (!refreshScreen || refreshScreen.classList.contains("hidden") || refreshDismissScheduled) return;
+      refreshDismissScheduled = true;
+      if (refreshFailSafeTimer) {
+        window.clearTimeout(refreshFailSafeTimer);
+        refreshFailSafeTimer = null;
+      }
+      const elapsed = Date.now() - refreshScreenStartedAt;
+      const remaining = Math.max(0, REFRESH_SCREEN_MIN_MS - elapsed);
+      if (remaining) {
+        await sleep(remaining);
+      }
+      refreshScreen.classList.add("hidden");
+      window.setTimeout(() => {
+        if (refreshScreen && refreshScreen.parentNode) {
+          refreshScreen.parentNode.removeChild(refreshScreen);
+        }
+      }, 520);
+      document.body.classList.remove("refresh-pending");
+    }
+
+    function maybeDismissRefreshScreen() {
+      if (!refreshScreen || refreshScreen.classList.contains("hidden") || refreshDismissScheduled) return;
+      if (!(refreshWindowReady && refreshStoryLoadComplete && refreshHeroReady)) return;
+      void dismissRefreshScreen();
+    }
+
+    function markRefreshWindowReady() {
+      refreshWindowReady = true;
+      maybeDismissRefreshScreen();
+    }
+
+    function markRefreshStoryLoadComplete() {
+      refreshStoryLoadComplete = true;
+      maybeDismissRefreshScreen();
+    }
+
+    function markRefreshHeroReady() {
+      refreshHeroReady = true;
+      maybeDismissRefreshScreen();
+    }
+
+    function trackInitialHeroVisual(story) {
+      if (refreshHeroReady || refreshHeroWatchStarted) return;
+      refreshHeroWatchStarted = true;
+      const finish = () => {
+        window.requestAnimationFrame(() => {
+          window.requestAnimationFrame(() => {
+            markRefreshHeroReady();
+          });
+        });
+      };
+      if (!story || !story.image_url) {
+        finish();
+        return;
+      }
+      const probe = new Image();
+      let settled = false;
+      const settle = () => {
+        if (settled) return;
+        settled = true;
+        finish();
+      };
+      probe.onload = settle;
+      probe.onerror = settle;
+      probe.src = story.image_url;
+      if (probe.complete) {
+        settle();
+        return;
+      }
+      window.setTimeout(settle, 1800);
+    }
+
+    refreshFailSafeTimer = window.setTimeout(() => {
+      refreshWindowReady = true;
+      refreshStoryLoadComplete = true;
+      refreshHeroReady = true;
+      maybeDismissRefreshScreen();
+    }, REFRESH_SCREEN_MAX_MS);
+
+    function openMediaLibrary() {
+      return new Promise((resolve, reject) => {
+        if (!window.indexedDB) {
+          reject(new Error("IndexedDB unavailable"));
+          return;
+        }
+        const request = window.indexedDB.open(MEDIA_LIBRARY_DB, 1);
+        request.onupgradeneeded = () => {
+          const db = request.result;
+          if (!db.objectStoreNames.contains(MEDIA_LIBRARY_STORE)) {
+            db.createObjectStore(MEDIA_LIBRARY_STORE);
+          }
+        };
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error || new Error("Could not open media library"));
+      });
+    }
+
+    async function saveAssetToIndexedDb(key, value) {
+      const db = await openMediaLibrary();
+      await new Promise((resolve, reject) => {
+        const transaction = db.transaction(MEDIA_LIBRARY_STORE, "readwrite");
+        transaction.objectStore(MEDIA_LIBRARY_STORE).put(value, key);
+        transaction.oncomplete = () => resolve();
+        transaction.onerror = () => reject(transaction.error || new Error("Could not save asset"));
+      });
+      db.close();
+    }
+
+    async function readAssetFromIndexedDb(key) {
+      const db = await openMediaLibrary();
+      const value = await new Promise((resolve, reject) => {
+        const transaction = db.transaction(MEDIA_LIBRARY_STORE, "readonly");
+        const request = transaction.objectStore(MEDIA_LIBRARY_STORE).get(key);
+        request.onsuccess = () => resolve(request.result || "");
+        request.onerror = () => reject(request.error || new Error("Could not read asset"));
+      });
+      db.close();
+      return typeof value === "string" ? value : "";
+    }
+
+    async function moveDataUrlToIndexedDb(value, keyPrefix) {
+      if (!value || typeof value !== "string" || !value.startsWith("data:")) return value;
+      const key = keyPrefix + "-" + Date.now() + "-" + Math.random().toString(36).slice(2, 8);
+      await saveAssetToIndexedDb(key, value);
+      return "idb://" + key;
+    }
+
+    async function resolveIndexedDbAsset(value) {
+      if (!value || typeof value !== "string" || !value.startsWith("idb://")) return value;
+      const key = value.slice("idb://".length);
+      if (!key) return "";
+      try {
+        return await readAssetFromIndexedDb(key);
+      } catch (error) {
+        return "";
+      }
+    }
+
+    async function compactPodcastEntry(entry) {
+      const compact = Object.assign({}, entry);
+      compact.thumbnail_url = await moveDataUrlToIndexedDb(compact.thumbnail_url, "podcast-thumb");
+      compact.audio_url = await moveDataUrlToIndexedDb(compact.audio_url, "podcast-audio");
+      compact.video_url = await moveDataUrlToIndexedDb(compact.video_url, "podcast-video");
+      return compact;
+    }
+
+    async function compactStoryEntry(entry) {
+      return Object.assign({}, entry);
+    }
+
+    async function savePodcastLocally(payload) {
+      const entry = await compactPodcastEntry(Object.assign({
+        id: "local-" + Date.now(),
+        created_at: new Date().toISOString(),
+        published_at: new Date().toISOString()
+      }, payload));
+      localPodcastEpisodes = [entry].concat(localPodcastEpisodes);
+      try {
+        window.localStorage.setItem(PODCAST_CACHE_STORAGE, JSON.stringify(localPodcastEpisodes));
+      } catch (error) {
+        // Ignore browser storage failures for local podcast fallback.
+      }
+      return entry;
+    }
+
+    async function saveStoryLocally(payload) {
+      if (!Array.isArray(localStories) || !localStories.length) {
+        await loadLocalStories();
+      }
+      const baseEntry = Object.assign({
+        id: "local-story-" + Date.now(),
+        created_at: new Date().toISOString(),
+        local_only: true
+      }, payload);
+      localStories = [baseEntry].concat(localStories);
+      let persistedEntry = baseEntry;
+      try {
+        persistedEntry = await compactStoryEntry(baseEntry);
+        localStories = [persistedEntry].concat(localStories.filter((item) => item.id !== baseEntry.id));
+      } catch (error) {
+        // Keep the in-memory fallback even if IndexedDB compaction fails on file://.
+        persistedEntry = baseEntry;
+      }
+      try {
+        window.localStorage.setItem(STORY_CACHE_STORAGE, JSON.stringify(localStories));
+      } catch (error) {
+        // Ignore browser storage failures for local story fallback.
+      }
+      upsertStoryHydrationEntry(persistedEntry);
+      return persistedEntry;
+    }
+
+    async function updateStoryLocally(id, payload) {
+      if (!Array.isArray(localStories) || !localStories.length) {
+        await loadLocalStories();
+      }
+      const existing = localStories.find((item) => String(item.id) === String(id))
+        || stories.find((item) => String(item.id) === String(id));
+      const baseEntry = Object.assign({}, existing || {}, payload, {
+        id: String(id),
+        created_at: existing && existing.created_at ? existing.created_at : new Date().toISOString(),
+        local_only: true
+      });
+      localStories = [baseEntry].concat(localStories.filter((item) => String(item.id) !== String(id)));
+      let persistedEntry = baseEntry;
+      try {
+        persistedEntry = await compactStoryEntry(baseEntry);
+        localStories = [persistedEntry].concat(localStories.filter((item) => String(item.id) !== String(id)));
+      } catch (error) {
+        persistedEntry = baseEntry;
+      }
+      try {
+        window.localStorage.setItem(STORY_CACHE_STORAGE, JSON.stringify(localStories));
+      } catch (error) {
+        // Ignore browser storage failures for local story updates.
+      }
+      upsertStoryHydrationEntry(persistedEntry);
+      return persistedEntry;
+    }
+
+    async function deleteStoryLocally(id) {
+      if (!Array.isArray(localStories) || !localStories.length) {
+        await loadLocalStories();
+      }
+      const normalizedId = String(id);
+      localStories = localStories.filter((item) => String(item.id) !== normalizedId);
+      try {
+        window.localStorage.setItem(STORY_CACHE_STORAGE, JSON.stringify(localStories));
+      } catch (error) {
+        // Ignore browser storage failures for local story deletes.
+      }
+      removeStoryHydrationEntry(id);
+      return loadLocalStories();
+    }
+
+    async function hydrateLocalStories(entries) {
+      return Promise.all((entries || []).map(async (item) => {
+        const copy = Object.assign({}, item);
+        copy.image_url = await resolveIndexedDbAsset(copy.image_url);
+        return copy;
+      }));
+    }
+
+    async function hydrateLocalPodcastEpisodes(entries) {
+      return Promise.all((entries || []).map(async (item) => {
+        const copy = Object.assign({}, item);
+        copy.thumbnail_url = await resolveIndexedDbAsset(copy.thumbnail_url);
+        return copy;
+      }));
+    }
+
+    async function loadLocalStories() {
+      if (Array.isArray(localStories) && localStories.length) {
+        localStories = await hydrateLocalStories(localStories.slice());
+        return localStories.slice();
+      }
+      try {
+        const raw = window.localStorage.getItem(STORY_CACHE_STORAGE);
+        if (!raw) return [];
+        const parsed = JSON.parse(raw);
+        const hydrated = Array.isArray(parsed) ? await hydrateLocalStories(parsed) : [];
+        localStories = hydrated.slice();
+        return hydrated;
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function isLocalOnlyStory(story) {
+      return Boolean(
+        story
+        && (
+          story.local_only
+          || String(story.id || "").startsWith("local-story-")
+        )
+      );
+    }
+
+    async function pruneLocalStoryCacheAgainstRemote(remoteStories) {
+      const cachedStories = await loadLocalStories();
+      if (!cachedStories.length) return;
+      const remoteIds = new Set((remoteStories || []).map((story) => String(story.id)));
+      const remoteKeys = new Set(
+        (remoteStories || []).map((story) => buildStoryIdentityKey(story)).filter((key) => key.replace(/\|/g, ""))
+      );
+      const nextLocalStories = cachedStories.filter((story) => {
+        if (!isLocalOnlyStory(story)) return true;
+        const localId = String(story.id);
+        const localKey = buildStoryIdentityKey(story);
+        return !remoteIds.has(localId) && (!localKey || !remoteKeys.has(localKey));
+      });
+      if (nextLocalStories.length === cachedStories.length) return;
+      localStories = nextLocalStories.slice();
+      try {
+        window.localStorage.setItem(STORY_CACHE_STORAGE, JSON.stringify(localStories));
+      } catch (error) {
+        // Ignore cache pruning failures.
+      }
+    }
+
+    async function mergeVisibleStoriesWithLocalCache(sourceStories) {
+      const cachedStories = await loadLocalStories();
+      const hydrationEntries = readStoryHydrationCache();
+      const currentStories = Array.isArray(sourceStories)
+        ? sourceStories.slice()
+        : (Array.isArray(stories) ? stories.slice() : []);
+      const hydratedStories = currentStories.map((story) => (
+        mergeHydratedStory(story, findStoryHydrationEntry(story, hydrationEntries))
+      ));
+      const currentIds = new Set(hydratedStories.map((story) => String(story.id)));
+      const merged = hydratedStories.concat(
+        cachedStories
+          .filter((story) => isLocalOnlyStory(story) && !currentIds.has(String(story.id)))
+          .map((story) => mergeHydratedStory(story, findStoryHydrationEntry(story, hydrationEntries)))
+      );
+      return merged.sort((left, right) => new Date(right.created_at || 0) - new Date(left.created_at || 0));
+    }
+
+    async function loadLocalPodcastEpisodes() {
+      if (Array.isArray(localPodcastEpisodes) && localPodcastEpisodes.length) {
+        localPodcastEpisodes = await hydrateLocalPodcastEpisodes(localPodcastEpisodes.slice());
+        return localPodcastEpisodes.slice();
+      }
+      try {
+        const raw = window.localStorage.getItem(PODCAST_CACHE_STORAGE);
+        if (!raw) return [];
+        const parsed = JSON.parse(raw);
+        const hydrated = Array.isArray(parsed) ? await hydrateLocalPodcastEpisodes(parsed) : [];
+        localPodcastEpisodes = hydrated.slice();
+        return hydrated;
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function extractFirstJsonObject(text) {
+      const start = text.indexOf("{");
+      if (start === -1) return "";
+      let depth = 0;
+      let inString = false;
+      let escaped = false;
+      for (let index = start; index < text.length; index += 1) {
+        const char = text[index];
+        if (inString) {
+          if (escaped) {
+            escaped = false;
+          } else if (char === "\\") {
+            escaped = true;
+          } else if (char === "\"") {
+            inString = false;
+          }
+          continue;
+        }
+        if (char === "\"") {
+          inString = true;
+          continue;
+        }
+        if (char === "{") depth += 1;
+        if (char === "}") {
+          depth -= 1;
+          if (depth === 0) {
+            return text.slice(start, index + 1);
+          }
+        }
+      }
+      return "";
+    }
+
+    function parseNewsResponseText(text) {
+      const trimmed = String(text || "").trim();
+      if (!trimmed) {
+        throw new Error("News feed response was unreadable");
+      }
+      if (trimmed.startsWith("{")) {
+        return JSON.parse(trimmed);
+      }
+      const marker = "Markdown Content:";
+      const markerIndex = trimmed.indexOf(marker);
+      if (markerIndex !== -1) {
+        const afterMarker = trimmed.slice(markerIndex + marker.length).trim();
+        if (afterMarker.startsWith("{")) {
+          return JSON.parse(afterMarker);
+        }
+      }
+      const extracted = extractFirstJsonObject(trimmed);
+      if (!extracted) {
+        throw new Error("News feed response was unreadable");
+      }
+      return JSON.parse(extracted);
+    }
+
+    function formatDate(value) {
+      return new Date(value).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+    }
+
+    function formatTimeAgo(value) {
+      const diff = Math.max(0, Date.now() - new Date(value).getTime());
+      const minutes = Math.floor(diff / 60000);
+      if (minutes < 1) return "Just now";
+      if (minutes < 60) return minutes + "m ago";
+      const hours = Math.floor(minutes / 60);
+      if (hours < 24) return hours + "h ago";
+      return Math.floor(hours / 24) + "d ago";
+    }
+
+    function setUploadMode(mode) {
+      uploadMode = mode;
+      uploadModeButtons.forEach((button) => button.classList.toggle("active", button.dataset.uploadMode === mode));
+      videoUploadGroup.style.display = mode === "video" ? "flex" : "none";
+      coverAssetLabel.textContent = mode === "video" ? "Thumbnail image" : "Story image";
+      submitBtn.textContent = editingStoryId
+        ? (mode === "video" ? "Update Video" : "Update Story")
+        : (mode === "video" ? "Publish Video" : "Publish Story");
+      if (mode !== "video") {
+        selectedVideoFile = null;
+        videoInput.value = "";
+        videoDurationSeconds = 0;
+        videoDurationStatus.textContent = "Select an MP4, MOV, or WEBM under 60 seconds.";
+        videoDurationStatus.className = "media-helper";
+      }
+    }
+
+    function setVideoDurationState(type, text) {
+      videoDurationStatus.textContent = text;
+      videoDurationStatus.className = "media-helper" + (type ? " " + type : "");
+    }
+
+    function setPodcastDurationState(type, text) {
+      podcastDurationStatus.textContent = text;
+      podcastDurationStatus.className = "media-helper" + (type ? " " + type : "");
+    }
+
+    function syncSubmitLabel() {
+      submitBtn.textContent = editingStoryId
+        ? (uploadMode === "video" ? "Update Video" : "Update Story")
+        : (uploadMode === "video" ? "Publish Video" : "Publish Story");
+    }
+
+    function formatDuration(seconds) {
+      const total = Math.max(0, Math.floor(seconds || 0));
+      const minutes = Math.floor(total / 60);
+      const remainder = total % 60;
+      return minutes + ":" + String(remainder).padStart(2, "0");
+    }
+
+    function cloneStandbyArticles(topicName) {
+      return (STANDBY_NEWS[topicName] || []).map((article) => ({
+        ...article,
+        source: { ...(article.source || { name: "SKR Standby" }) }
+      }));
+    }
+
+    function normalizeHostname(url) {
+      try {
+        return new URL(url).hostname.replace(/^www\./, "").toLowerCase();
+      } catch (error) {
+        return "";
+      }
+    }
+
+    function articleMatchesTopic(article, topic) {
+      const hostname = normalizeHostname(article && article.url);
+      const domainMatch = topic.domains.some((domain) => hostname === domain || hostname.endsWith("." + domain));
+      const haystack = [
+        article && article.title,
+        article && article.description,
+        article && article.content,
+        article && article.source && article.source.name,
+        hostname
+      ].filter(Boolean).join(" ").toLowerCase();
+      const keywordHits = (topic.keywords || []).filter((keyword) => haystack.includes(keyword.toLowerCase())).length;
+      const broadOutlet = BROAD_NEWS_DOMAINS.some((domain) => hostname === domain || hostname.endsWith("." + domain));
+      if (!domainMatch) return false;
+      if (broadOutlet) return keywordHits >= 1;
+      return true;
+    }
+
+    function createLuxuryExcerpt(text, fallbackTitle) {
+      const source = String(text || fallbackTitle || "")
+        .replace(/\s+/g, " ")
+        .replace(/^[A-Z\s.-]+—\s*/i, "")
+        .replace(/^[A-Z][A-Z\s.,'-]{6,}\s+\([A-Z0-9: .,-]+\)\s*[-—]\s*/i, "")
+        .replace(/^[A-Z][A-Z\s.,'-]{6,}\s*[-—]\s*/i, "")
+        .trim();
+      if (!source) return "";
+      const sentences = source.match(/[^.!?]+[.!?]?/g) || [source];
+      let excerpt = "";
+      for (const sentence of sentences) {
+        const candidate = (excerpt ? excerpt + " " : "") + sentence.trim();
+        if (candidate.length > 130) break;
+        excerpt = candidate;
+        if (excerpt.length >= 88) break;
+      }
+      const cleaned = (excerpt || source.slice(0, 120)).trim();
+      return cleaned.length > 130 ? cleaned.slice(0, 127).trimEnd() + "..." : cleaned;
+    }
+
+    function createSlug(text) {
+      return String(text || "")
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9\s-]/g, "")
+        .replace(/\s+/g, "-")
+        .replace(/(^-|-$)/g, "");
+    }
+
+    function isHttpLikeProtocol() {
+      return window.location.protocol === "http:" || window.location.protocol === "https:";
+    }
+
+    function getSiteBaseUrl() {
+      return isHttpLikeProtocol() ? window.location.origin : STATIC_SITE_ORIGIN;
+    }
+
+    function getBaseLocationPath() {
+      return isHttpLikeProtocol() ? "/" : window.location.pathname;
+    }
+
+    function normalizeLocationPath(path) {
+      const normalized = String(path || "/")
+        .split("#")[0]
+        .split("?")[0]
+        .replace(/\/{2,}/g, "/");
+      if (!normalized || normalized === "/") return "/";
+      return normalized.replace(/\/+$/, "") || "/";
+    }
+
+    function getStoryCategoryToken(story) {
+      return createSlug(story && story.category ? story.category : "stories") || "stories";
+    }
+
+    function getStoryDisplayTitle(story, fallback = "SKR Story") {
+      return story && (story.title || story.headline || fallback) || fallback;
+    }
+
+    function formatHeroDate(value) {
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return "";
+      return String(date.getFullYear());
+    }
+
+    function estimateReadTime(text) {
+      const words = String(text || "").trim().split(/\s+/).filter(Boolean).length;
+      return Math.max(1, Math.ceil(words / 200));
+    }
+
+    function findStoryByShareToken(token) {
+      if (!token) return null;
+      const normalized = String(token).trim().toLowerCase();
+      return stories.find((story) => {
+        const storySlug = String(getStoryShareToken(story)).toLowerCase();
+        return storySlug === normalized || String(story.id || "").toLowerCase() === normalized;
+      }) || null;
+    }
+
+    function getGeneratedStorySlug(story) {
+      const baseSlug = createSlug(story && (story.title || story.headline || "")) || "";
+      if (!baseSlug) return story && story.id ? "story-" + story.id : "";
+      const baseSlugNormalized = baseSlug.toLowerCase();
+      const collisionCount = Array.isArray(stories)
+        ? stories.filter((item) => {
+            if (!item || item.slug) return false;
+            return (createSlug(item.title || item.headline || "") || "").toLowerCase() === baseSlugNormalized;
+          }).length
+        : 0;
+      if (collisionCount > 1 && story && story.id) {
+        return baseSlug + "-" + story.id;
+      }
+      return baseSlug;
+    }
+
+    function getStoryShareToken(story) {
+      if (!story) return "";
+      const explicitSlug = String(story.slug || "").trim();
+      if (explicitSlug) return explicitSlug;
+      return getGeneratedStorySlug(story);
+    }
+
+    function getStoryCanonicalPath(story) {
+      const token = getStoryShareToken(story);
+      if (!token) return getBaseLocationPath();
+      if (!isHttpLikeProtocol()) {
+        return "#story=" + encodeURIComponent(token);
+      }
+      return "/" + getStoryCategoryToken(story) + "/" + encodeURIComponent(token);
+    }
+
+    function getStoryShareUrl(story) {
+      const canonicalPath = getStoryCanonicalPath(story);
+      if (!isHttpLikeProtocol()) {
+        return window.location.href.split("#")[0].split("?")[0] + canonicalPath;
+      }
+      return getSiteBaseUrl() + canonicalPath;
+    }
+
+    function syncDocumentMetadata(story) {
+      if (story) {
+        const storyTitle = getStoryDisplayTitle(story);
+        document.title = storyTitle + " — SKR Magazine";
+        if (descriptionMeta) {
+          descriptionMeta.setAttribute("content", story.excerpt || story.body || DEFAULT_PAGE_DESCRIPTION);
+        }
+        const storyUrl = getStoryShareUrl(story);
+        if (canonicalLink) canonicalLink.setAttribute("href", storyUrl);
+        if (ogUrlMeta) ogUrlMeta.setAttribute("content", storyUrl);
+        if (twitterUrlMeta) twitterUrlMeta.setAttribute("content", storyUrl);
+        return;
+      }
+      document.title = DEFAULT_PAGE_TITLE;
+      if (descriptionMeta) {
+        descriptionMeta.setAttribute("content", DEFAULT_PAGE_DESCRIPTION);
+      }
+      const homeUrl = getSiteBaseUrl() + "/";
+      if (canonicalLink) canonicalLink.setAttribute("href", homeUrl);
+      if (ogUrlMeta) ogUrlMeta.setAttribute("content", homeUrl);
+      if (twitterUrlMeta) twitterUrlMeta.setAttribute("content", homeUrl);
+    }
+
+    function syncArticleLocation(story, historyMode = "replace") {
+      const nextLocation = story ? getStoryCanonicalPath(story) : getBaseLocationPath();
+      if (window.history && historyMode === "push" && window.history.pushState) {
+        window.history.pushState(null, "", nextLocation);
+      } else if (window.history && window.history.replaceState) {
+        window.history.replaceState(null, "", nextLocation);
+      } else if (story) {
+        window.location.hash = "story=" + encodeURIComponent(getStoryShareToken(story));
+      } else {
+        window.location.hash = "";
+      }
+      syncDocumentMetadata(story);
+    }
+
+    function findStoryByCanonicalPath(pathname) {
+      const normalizedPath = normalizeLocationPath(pathname);
+      const segments = normalizedPath.split("/").filter(Boolean);
+      if (segments.length < 2) return null;
+      const categoryToken = decodeURIComponent(segments[0]).toLowerCase();
+      const storyToken = decodeURIComponent(segments.slice(1).join("/")).toLowerCase();
+      return stories.find((story) => {
+        const storySlug = String(getStoryShareToken(story)).toLowerCase();
+        const storyCategory = getStoryCategoryToken(story);
+        return storySlug === storyToken && storyCategory === categoryToken;
+      }) || null;
+    }
+
+    function readArticleLocatorFromLocation() {
+      if (isHttpLikeProtocol()) {
+        const directStory = findStoryByCanonicalPath(window.location.pathname);
+        if (directStory) return { type: "story", story: directStory };
+        const pathSegments = normalizeLocationPath(window.location.pathname).split("/").filter(Boolean);
+        if (pathSegments.length >= 2) {
+          return {
+            type: "path",
+            category: decodeURIComponent(pathSegments[0]).toLowerCase(),
+            token: decodeURIComponent(pathSegments.slice(1).join("/")).toLowerCase()
+          };
+        }
+      }
+      const rawHash = window.location.hash.replace(/^#/, "");
+      if (!rawHash) return null;
+      const params = new URLSearchParams(rawHash);
+      const token = params.get("story");
+      if (!token) return null;
+      const story = findStoryByShareToken(token);
+      if (story) return { type: "story", story };
+      return { type: "token", token: String(token).trim().toLowerCase() };
+    }
+
+    function findStoryByPendingLocator(locator) {
+      if (!locator) return null;
+      if (locator.type === "story" && locator.story) return locator.story;
+      if (locator.type === "path") {
+        return stories.find((story) => {
+          const storySlug = String(getStoryShareToken(story)).toLowerCase();
+          const storyCategory = getStoryCategoryToken(story);
+          return storySlug === locator.token && storyCategory === locator.category;
+        }) || null;
+      }
+      if (locator.type === "token") return findStoryByShareToken(locator.token);
+      return null;
+    }
+
+    function resolvePendingArticleLocation() {
+      if (!pendingArticleLocator) return;
+      const story = findStoryByPendingLocator(pendingArticleLocator);
+      if (!story) {
+        if (Array.isArray(stories) && stories.length) {
+          pendingArticleLocator = null;
+          activeArticleStoryId = "";
+          closeOverlay(articleOverlay);
+          syncDocumentMetadata(null);
+        }
+        return;
+      }
+      pendingArticleLocator = null;
+      if (String(activeArticleStoryId) !== String(story.id) || !articleOverlay.classList.contains("open")) {
+        openArticleReader(story, { historyMode: "replace" });
+      }
+    }
+
+    function openArticleReader(story, options = {}) {
+      if (!story) return;
+      const historyMode = options.historyMode || "replace";
+      activeArticleStoryId = story.id || "";
+      const renderableImageUrl = getRenderableImageUrl(story);
+      if (renderableImageUrl) {
+        articleImage.src = renderableImageUrl;
+        articleImage.alt = getStoryDisplayTitle(story, "SKR article image");
+        articleImage.onerror = () => {
+          articleImage.removeAttribute("src");
+          articleImage.style.display = "none";
+        };
+        articleImage.style.display = "block";
+      } else {
+        articleImage.removeAttribute("src");
+        articleImage.alt = "SKR article image";
+        articleImage.style.display = "none";
+      }
+      articleCategory.textContent = story.category || "SKR";
+      articleTitle.textContent = getStoryDisplayTitle(story);
+      articleExcerpt.textContent = story.excerpt || "";
+      const metaParts = [
+        story.brand,
+        story.created_at ? formatDate(story.created_at) : "",
+        estimateReadTime(story.body || story.excerpt || "") + " min read"
+      ].filter(Boolean);
+      articleMeta.textContent = metaParts.join(" · ");
+      if (story.body && story.body.trim()) {
+        articleBody.textContent = story.body.trim();
+        articleEmptyNote.hidden = true;
+      } else {
+        articleBody.textContent = story.excerpt || "";
+        articleEmptyNote.hidden = false;
+      }
+      syncArticleLocation(story, historyMode);
+      openOverlay(articleOverlay);
+    }
+
+    async function shareActiveArticle() {
+      const story = stories.find((item) => String(item.id) === String(activeArticleStoryId));
+      if (!story) return;
+      const storyTitle = getStoryDisplayTitle(story);
+      const shareText = [storyTitle, story.excerpt || story.body || ""].filter(Boolean).join("\n\n");
+      const shareUrl = getStoryShareUrl(story);
+      try {
+        if (navigator.share) {
+          await navigator.share({
+            title: storyTitle,
+            text: shareText,
+            url: shareUrl
+          });
+          return;
+        }
+      } catch (error) {
+        // Fall through to clipboard fallback.
+      }
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        setMessage("success", "Story link copied for sharing");
+      } catch (error) {
+        setMessage("error", "Could not share story");
+      }
+    }
+
+    function updateNewsUpdatedLabel() {
+      if (!newsLastUpdatedAt) {
+        newsUpdatedLabel.textContent = "Last updated just now";
+        return;
+      }
+      const minutes = Math.max(0, Math.floor((Date.now() - newsLastUpdatedAt) / 60000));
+      newsUpdatedLabel.textContent = "Last updated " + (minutes === 0 ? "just now" : minutes + " min ago");
+    }
+
+    function saveNewsCache() {
+      try {
+        window.localStorage.setItem(NEWS_CACHE_STORAGE, JSON.stringify({
+          updatedAt: newsLastUpdatedAt,
+          state: newsState
+        }));
+      } catch (error) {
+        console.warn("SKR news cache save failed", error);
+      }
+    }
+
+    function ensureTopicMapHasContent(topicMap) {
+      const nextMap = Object.assign({}, topicMap || {});
+      TOPICS.forEach((topic) => {
+        if (Array.isArray(nextMap[topic.name]) && nextMap[topic.name].length) return;
+        nextMap[topic.name] = cloneStandbyArticles(topic.name).slice(0, 4);
+      });
+      return nextMap;
+    }
+
+    function loadNewsCache() {
+      try {
+        const raw = window.localStorage.getItem(NEWS_CACHE_STORAGE);
+        if (!raw) return false;
+        const parsed = JSON.parse(raw);
+        if (!parsed || !parsed.state || typeof parsed.state !== "object") return false;
+        newsState = ensureTopicMapHasContent(parsed.state);
+        newsLastUpdatedAt = parsed.updatedAt || Date.now();
+        renderNewsFeed();
+        updateNewsUpdatedLabel();
+        return true;
+      } catch (error) {
+        console.warn("SKR news cache restore failed", error);
+        return false;
+      }
+    }
+
+    function newsCacheIsFresh() {
+      return Boolean(newsLastUpdatedAt) && (Date.now() - newsLastUpdatedAt) < NEWS_CACHE_MAX_AGE_MS;
+    }
+
+    function startOfLookbackIso() {
+      return new Date(Date.now() - NEWS_LOOKBACK_HOURS * 60 * 60 * 1000).toISOString();
+    }
+
+    function describeNewsError(error) {
+      const message = String(error && error.message ? error.message : error || "");
+      const normalized = message.toLowerCase();
+      if (normalized.includes("too many requests") || normalized.includes("100 requests") || normalized.includes("50 requests available")) {
+        return "Live news is temporarily rate-limited. Showing the latest saved feed while NewsAPI resets.";
+      }
+      return (message || "Unable to load live news") + ". Try Refresh Feed in a moment.";
+    }
+
+    function syncNewsKeyVisibility() {
+      const hasKey = Boolean(newsApiKey);
+      document.querySelector(".news-key-shell").classList.toggle("hidden", hasKey);
+      newsKeyStatus.classList.toggle("visible", hasKey);
+      newsKeyStatus.parentElement.classList.toggle("visible", hasKey);
+    }
+
+    function disconnectNewsKey() {
+      newsApiKey = "";
+      window.sessionStorage.removeItem(NEWS_KEY_STORAGE);
+      newsApiKeyInput.value = "";
+      newsState = {};
+      newsLastUpdatedAt = 0;
+      try {
+        window.localStorage.removeItem(NEWS_CACHE_STORAGE);
+      } catch (error) {
+        console.warn("SKR news cache clear failed", error);
+      }
+      newsGrid.innerHTML = "";
+      newsWarning.hidden = false;
+      newsWarning.textContent = "Enter your NewsAPI key — get one free at newsapi.org";
+      syncNewsKeyVisibility();
+      updateNewsUpdatedLabel();
+    }
+
+    function createStoragePath(file) {
+      return "stories/" + Date.now() + "-" + file.name.replace(/[^a-zA-Z0-9.-]/g, "-").toLowerCase();
+    }
+
+    function extractStoragePath(url) {
+      const marker = "/object/public/" + BUCKET_NAME + "/";
+      const index = url.indexOf(marker);
+      return index === -1 ? "" : decodeURIComponent(url.slice(index + marker.length));
+    }
+
+    async function removeStoredStoryImageIfReplaced(previousUrl, nextUrl) {
+      if (!supabaseClient || !previousUrl || !nextUrl || previousUrl === nextUrl) return;
+      const previousPath = extractStoragePath(previousUrl);
+      const nextPath = extractStoragePath(nextUrl);
+      if (!previousPath || previousPath === nextPath) return;
+      const removeImage = await supabaseClient.storage.from(BUCKET_NAME).remove([previousPath]);
+      if (removeImage.error) {
+        console.warn("SKR could not remove replaced story image", removeImage.error);
+      }
+    }
+
+    function updateCategoryCounts() {
+      const currentStories = getCurrentStories();
+      categoryCards.forEach((card) => {
+        const category = card.dataset.category || "";
+        const count = currentStories.filter((story) => story.category === category).length;
+        const countId = "cnt-" + category.toLowerCase().replace(/\s+/g, "-");
+        const countNode = document.getElementById(countId);
+        if (countNode) {
+          countNode.textContent = count + (count === 1 ? " story" : " stories");
+        }
+      });
+    }
+
+    function renderCategoryArchive() {
+      if (!selectedArchiveCategory) {
+        archiveShell.classList.remove("visible");
+        archiveGrid.innerHTML = "";
+        return;
+      }
+      categoryCards.forEach((card) => card.classList.toggle("active", card.dataset.category === selectedArchiveCategory));
+      const filtered = getCurrentStories().filter((story) => story.category === selectedArchiveCategory);
+      archiveTitle.innerHTML = escapeHtml(selectedArchiveCategory) + " <em>Archive</em>";
+      archiveSummary.textContent = filtered.length + (filtered.length === 1 ? " story" : " stories");
+      archiveShell.classList.add("visible");
+      archiveGrid.innerHTML = filtered.length
+        ? filtered.map(renderStoryCard).join("")
+        : '<p class="archive-empty">No ' + escapeHtml(selectedArchiveCategory) + ' stories published yet.</p>';
+    }
+
+    function renderFeatureCard(story, index) {
+      const title = getStoryDisplayTitle(story, placeholderFeatures[index].title);
+      const category = story.category || placeholderFeatures[index].category;
+      const renderableImageUrl = getRenderableImageUrl(story);
+      const imageStyle = renderableImageUrl
+        ? `background:${placeholderFeatures[index].image};background-image:url("${cssImageUrl(renderableImageUrl)}");`
+        : `background:${placeholderFeatures[index].image};`;
+      const readTarget = story && story.id ? ' data-read-id="' + escapeHtml(story.id) + '"' : "";
+      const readHref = story && story.id ? escapeHtml(getStoryCanonicalPath(story)) : "#";
+      return '<article class="feature-card">' +
+        '<div class="fc-inner">' +
+          `<div class="fc-img" style="${imageStyle}"></div>` +
+          '<div class="fc-overlay"></div>' +
+          '<div class="fc-content">' +
+            '<div class="fc-tag"><span>' + escapeHtml(category) + '</span></div>' +
+            '<h3 class="fc-title">' + title + '</h3>' +
+            '<a class="fc-cta" href="' + readHref + '"' + readTarget + '>Read article</a>' +
+          '</div>' +
+        '</div>' +
+      '</article>';
+    }
+
+    function renderStoryCard(story) {
+      const tag = story.brand ? story.category + " · " + story.brand : story.category;
+      const readHref = escapeHtml(getStoryCanonicalPath(story));
+      const renderableImageUrl = getRenderableImageUrl(story);
+      return '<article class="story-card">' +
+        '<div class="story-card-img">' +
+          (renderableImageUrl
+            ? '<img src="' + escapeHtml(renderableImageUrl) + '" alt="' + escapeHtml(getStoryDisplayTitle(story)) + '" loading="lazy" decoding="async" onerror="this.style.display=&quot;none&quot;">'
+            : '<div class="story-card-img-placeholder" aria-hidden="true"></div>') +
+          '<div class="story-img-overlay"></div>' +
+        '</div>' +
+        '<p class="story-tag">' + escapeHtml(tag) + '</p>' +
+        '<h3 class="story-title">' + escapeHtml(getStoryDisplayTitle(story)) + '</h3>' +
+        (story.excerpt ? '<p class="story-excerpt">' + escapeHtml(story.excerpt) + '</p>' : "") +
+        '<a class="story-read-link" href="' + readHref + '" data-read-id="' + escapeHtml(story.id) + '">Read story →</a>' +
+      '</article>';
+    }
+
+    function renderPublicStories() {
+      const currentStories = getCurrentStories();
+      const featured = currentStories.slice(0, 3);
+      featureGrid.innerHTML = (featured.length
+        ? featured.map((story, index) => renderFeatureCard(story, index))
+        : placeholderFeatures.map((fallback, index) => renderFeatureCard(fallback, index))
+      ).join("");
+
+      const remainder = currentStories.slice(3);
+      newStoriesHeader.style.display = remainder.length ? "flex" : "none";
+      storiesGrid.innerHTML = remainder.length
+        ? remainder.map(renderStoryCard).join("")
+        : "";
+      heroStoryIndex = 0;
+      updateCategoryCounts();
+      renderCategoryArchive();
+      syncHeroCoverStory();
+    }
+
+    function renderHeroStory(story) {
+      if (!story) {
+        heroBg.classList.remove("has-cover");
+        heroBg.style.removeProperty("--hero-cover-image");
+        heroTagText.textContent = "Cover Story · Sport";
+        heroTitle.innerHTML = "The <em>Hardest Seat</em><br>in Formula One";
+        heroMetaText.textContent = "Yuki Tsunoda · Red Bull Racing · 2025";
+        heroReadLink.setAttribute("href", "#featuredStories");
+        heroReadLink.removeAttribute("data-read-id");
+        trackInitialHeroVisual(null);
+        return;
+      }
+      const displayTitle = getStoryDisplayTitle(story, "SKR Cover Story");
+      const renderableImageUrl = getRenderableImageUrl(story);
+      if (renderableImageUrl) {
+        heroBg.style.setProperty("--hero-cover-image", `url("${cssImageUrl(renderableImageUrl)}")`);
+        heroBg.classList.add("has-cover");
+      } else {
+        heroBg.classList.remove("has-cover");
+        heroBg.style.removeProperty("--hero-cover-image");
+      }
+      heroTagText.textContent = "Cover Story · " + (story.category || "SKR");
+      heroTitle.textContent = displayTitle;
+      heroTitle.setAttribute("data-cover-story", escapeHtml(displayTitle));
+      const metaParts = [story.brand, formatHeroDate(story.created_at)].filter(Boolean);
+      heroMetaText.textContent = metaParts.length ? metaParts.join(" · ") : (story.category || "SKR Magazine");
+      heroReadLink.setAttribute("href", getStoryCanonicalPath(story));
+      heroReadLink.setAttribute("data-read-id", story.id || "");
+      trackInitialHeroVisual(story);
+    }
+
+    function syncHeroCoverStory() {
+      const coverCandidates = getCurrentStories()
+        .filter((story) => story && story.title)
+        .slice()
+        .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+      const coverStories = (coverCandidates.filter((story) => getRenderableImageUrl(story)).slice(0, 5).length
+        ? coverCandidates.filter((story) => getRenderableImageUrl(story)).slice(0, 5)
+        : coverCandidates.slice(0, 5));
+      if (!coverStories.length) {
+        if (heroRotationTimer) {
+          window.clearInterval(heroRotationTimer);
+          heroRotationTimer = null;
+        }
+        heroStoryIndex = 0;
+        renderHeroStory(null);
+        return;
+      }
+      if (heroStoryIndex >= coverStories.length) {
+        heroStoryIndex = 0;
+      }
+      renderHeroStory(coverStories[heroStoryIndex]);
+      if (heroRotationTimer) {
+        window.clearInterval(heroRotationTimer);
+      }
+      if (coverStories.length > 1) {
+        heroRotationTimer = window.setInterval(() => {
+          const latestCandidates = getCurrentStories()
+            .filter((story) => story && story.title)
+            .slice()
+            .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+          const latestCoverStories = (latestCandidates.filter((story) => getRenderableImageUrl(story)).slice(0, 5).length
+            ? latestCandidates.filter((story) => getRenderableImageUrl(story)).slice(0, 5)
+            : latestCandidates.slice(0, 5));
+          if (!latestCoverStories.length) return;
+          heroStoryIndex = (heroStoryIndex + 1) % latestCoverStories.length;
+          renderHeroStory(latestCoverStories[heroStoryIndex]);
+        }, 7000);
+      } else {
+        heroRotationTimer = null;
+      }
+    }
+
+    function renderAdminList() {
+      if (!stories.length) {
+        adminStoriesList.innerHTML = '<p class="no-admin-stories">No stories published yet — upload your first story above.</p>';
+        return;
+      }
+      adminStoriesList.innerHTML = stories.map((story) => (
+        '<div class="admin-story-row">' +
+          (getRenderableImageUrl(story)
+            ? '<img class="admin-story-thumb" src="' + escapeHtml(getRenderableImageUrl(story)) + '" alt="' + escapeHtml(story.title) + '">'
+            : '<div class="admin-story-thumb story-card-img-placeholder" aria-hidden="true"></div>') +
+          '<div class="admin-story-info">' +
+            '<h4>' + escapeHtml(story.title) + '</h4>' +
+            '<p>' + escapeHtml(formatDate(story.created_at)) + '</p>' +
+          '</div>' +
+          '<div class="admin-story-actions">' +
+            '<span class="admin-story-badge">' + escapeHtml(story.category) + '</span>' +
+            (pendingDeleteStoryId === String(story.id)
+              ? '<div class="admin-story-confirm">' +
+                  '<span class="admin-story-confirm-text">Delete this story?</span>' +
+                  '<button class="delete-btn" type="button" data-confirm-delete-id="' + story.id + '">Confirm Delete</button>' +
+                  '<button class="admin-btn" type="button" data-cancel-delete-id="' + story.id + '">Cancel</button>' +
+                '</div>'
+              : '<div class="admin-story-action-buttons">' +
+                  '<button class="admin-btn" type="button" data-edit-id="' + story.id + '">Edit</button>' +
+                  '<button class="delete-btn" type="button" data-delete-id="' + story.id + '">Delete</button>' +
+                '</div>') +
+          '</div>' +
+        '</div>'
+      )).join("");
+    }
+
+    function renderNewsSkeleton() {
+      newsGrid.innerHTML = TOPICS.map((topic) => (
+        '<section class="news-topic">' +
+          '<div class="news-topic-header"><span class="news-topic-bar" style="background:' + topic.accent + '"></span><p class="news-topic-label">' + escapeHtml(topic.name) + '</p></div>' +
+          '<div class="news-list">' +
+            '<div class="news-skeleton"><div class="news-skeleton-thumb"></div><div><div class="news-skeleton-line"></div><div class="news-skeleton-line short"></div></div><div class="news-skeleton-action"></div></div>' +
+            '<div class="news-skeleton"><div class="news-skeleton-thumb"></div><div><div class="news-skeleton-line"></div><div class="news-skeleton-line short"></div></div><div class="news-skeleton-action"></div></div>' +
+            '<div class="news-skeleton"><div class="news-skeleton-thumb"></div><div><div class="news-skeleton-line"></div><div class="news-skeleton-line short"></div></div><div class="news-skeleton-action"></div></div>' +
+          '</div>' +
+        '</section>'
+      )).join("");
+    }
+
+    function renderNewsFeed() {
+      newsGrid.innerHTML = TOPICS.map((topic) => {
+        const items = (Array.isArray(newsState[topic.name]) && newsState[topic.name].length
+          ? newsState[topic.name]
+          : cloneStandbyArticles(topic.name).slice(0, 4)).map((article, index) => ({
+            article,
+            originalIndex: index
+          }));
+        const filteredItems = newsSearchQuery
+          ? items.filter(({ article }) => {
+              const haystack = [
+                article.title,
+                article.description,
+                article.content,
+                article.source && article.source.name
+              ].filter(Boolean).join(" ").toLowerCase();
+              return haystack.includes(newsSearchQuery.toLowerCase());
+            })
+          : items;
+        return '<section class="news-topic">' +
+          '<div class="news-topic-header"><span class="news-topic-bar" style="background:' + topic.accent + '"></span><p class="news-topic-label">' + escapeHtml(topic.name) + '</p></div>' +
+          '<div class="news-list">' +
+            (filteredItems.length ? filteredItems : items).map(({ article, originalIndex }) => (
+              '<article class="news-card">' +
+                (article.urlToImage
+                  ? '<img class="news-thumb" src="' + escapeHtml(article.urlToImage) + '" alt="' + escapeHtml(article.title) + '">'
+                  : '<div class="news-thumb-placeholder"></div>') +
+                '<div class="news-card-copy">' +
+                  '<h4 class="news-headline">' + escapeHtml(article.title) + '</h4>' +
+                  '<p class="news-meta">' + escapeHtml(article.source.name) + ' · ' + escapeHtml(formatTimeAgo(article.publishedAt)) + '</p>' +
+                '</div>' +
+                '<button class="news-use" type="button" data-topic="' + escapeHtml(topic.name) + '" data-index="' + originalIndex + '">Use This Story ↗</button>' +
+              '</article>'
+            )).join("") +
+            (!filteredItems.length && newsSearchQuery ? '<p class="news-empty">No results for "' + escapeHtml(newsSearchQuery) + '"</p>' : '') +
+          '</div>' +
+        '</section>';
+      }).join("");
+    }
+
+    function switchTab(name) {
+      tabButtons.forEach((button) => button.classList.toggle("active", button.dataset.tab === name));
+      document.getElementById("tab-upload").style.display = name === "upload" ? "block" : "none";
+      document.getElementById("tab-manage").style.display = name === "manage" ? "block" : "none";
+      document.getElementById("tab-news").style.display = name === "news" ? "block" : "none";
+      document.getElementById("tab-podcast").style.display = name === "podcast" ? "block" : "none";
+      if (name === "manage") renderAdminList();
+      if (name === "news") ensureNewsFeed();
+    }
+
+    function openOverlay(overlay) {
+      overlay.classList.add("open");
+      document.body.classList.add("modal-open");
+    }
+
+    function closeOverlay(overlay) {
+      overlay.classList.remove("open");
+      if (!loginOverlay.classList.contains("open") && !adminOverlay.classList.contains("open") && !articleOverlay.classList.contains("open")) {
+        document.body.classList.remove("modal-open");
+      }
+    }
+
+    function resetForm() {
+      editingStoryId = "";
+      pendingDeleteStoryId = "";
+      formCategory.value = "Lifestyle";
+      formBrand.value = "";
+      formTitle.value = "";
+      formExcerpt.value = "";
+      formBody.value = "";
+      imageInput.value = "";
+      videoInput.value = "";
+      selectedFile = null;
+      selectedVideoFile = null;
+      videoDurationSeconds = 0;
+      setUploadMode("article");
+      newsPrefillNotice.classList.remove("visible");
+      setDropPreviewState("");
+      setImageEditNotice("");
+      setProgress(0);
+      syncSubmitLabel();
+    }
+
+    function beginEditStory(id) {
+      const story = stories.find((item) => String(item.id) === String(id));
+      if (!story) return;
+      editingStoryId = String(story.id);
+      pendingDeleteStoryId = "";
+      formCategory.value = story.category || "Lifestyle";
+      formBrand.value = story.brand || "";
+      formTitle.value = story.title || "";
+      formExcerpt.value = story.excerpt || "";
+      formBody.value = story.body || "";
+      imageInput.value = "";
+      videoInput.value = "";
+      selectedFile = null;
+      selectedVideoFile = null;
+      videoDurationSeconds = Number(story.video_duration || 0);
+      setUploadMode(story.content_type === "video" ? "video" : "article");
+      syncSubmitLabel();
+      if (story.image_url) {
+        setDropPreviewState(story.image_url);
+        setImageEditNotice("Current image loaded — click or drop a new image to replace it.");
+      } else {
+        setDropPreviewState("");
+        setImageEditNotice("No image attached yet — add one before saving.", "error");
+      }
+      if (story.content_type === "video") {
+        setVideoDurationState("ok", formatDuration(story.video_duration || 0) + " detected — ready to update");
+      } else {
+        setVideoDurationState("", "Select an MP4, MOV, or WEBM under 60 seconds.");
+      }
+      clearStoryMessages();
+      setMessage("status", "Editing story — update the fields and save");
+      switchTab("upload");
+      formTitle.scrollIntoView({ behavior: "smooth", block: "center" });
+      renderAdminList();
+    }
+
+    function resetPodcastForm() {
+      podcastTitleInput.value = "";
+      podcastDescriptionInput.value = "";
+      podcastSeasonInput.value = "1";
+      podcastEpisodeInput.value = "";
+      podcastContentTypeInput.value = "audio";
+      podcastThumbInput.value = "";
+      podcastMediaInput.value = "";
+      selectedPodcastThumbFile = null;
+      selectedPodcastMediaFile = null;
+      podcastDurationSeconds = 0;
+      setPodcastProgress(0);
+      setPodcastDurationState("", "Select audio or video media for this episode.");
+      podcastSuccess.hidden = true;
+      podcastError.hidden = true;
+      podcastStatus.textContent = "Ready";
+      syncPodcastAccept();
+    }
+
+    async function loadStories(suppressErrorMessage) {
+      if (!supabaseClient) {
+        stories = await loadLocalStories();
+        stories = await removeBrokenStoryImages(stories);
+        renderPublicStories();
+        renderAdminList();
+        window.requestAnimationFrame(() => {
+          window.requestAnimationFrame(() => {
+            markRefreshStoryLoadComplete();
+          });
+        });
+        return;
+      }
+      let data = null;
+      let error = null;
+      const primaryLoad = await supabaseClient
+        .from(TABLE_NAME)
+        .select("id, created_at, title, excerpt, body, category, brand, image_url, slug, content_type, video_url, video_duration")
+        .order("created_at", { ascending: false });
+      data = primaryLoad.data;
+      error = primaryLoad.error;
+      if (error && referencesLegacyStoryColumns(error)) {
+        let fallbackLoad = await supabaseClient
+          .from(TABLE_NAME)
+          .select("id, created_at, headline, excerpt, category, brand, image_url")
+          .order("created_at", { ascending: false });
+        if (fallbackLoad.error && String(stringifySupabaseError(fallbackLoad.error)).toLowerCase().includes("headline")) {
+          fallbackLoad = await supabaseClient
+            .from(TABLE_NAME)
+            .select("id, created_at, title, excerpt, category, brand, image_url")
+            .order("created_at", { ascending: false });
+        }
+        data = (fallbackLoad.data || []).map((story) => ({
+          id: story.id,
+          created_at: story.created_at,
+          title: story.headline || story.title || "",
+          excerpt: story.excerpt || "",
+          body: "",
+          category: story.category || "",
+          brand: story.brand || "",
+          image_url: story.image_url || "",
+          slug: createSlug(story.headline || story.title || ""),
+          content_type: "article",
+          video_url: null,
+          video_duration: null
+        }));
+        error = fallbackLoad.error;
+      }
+      console.log("SKR stories response", { data, error });
+      if (error) {
+        if (!suppressErrorMessage && !suppressRemoteStoryErrors) {
+          setMessage("error", describeSupabaseError(error));
+        }
+        stories = await loadLocalStories();
+        stories = await removeBrokenStoryImages(stories);
+      } else {
+        const remoteStories = data || [];
+        await pruneLocalStoryCacheAgainstRemote(remoteStories);
+        stories = await mergeVisibleStoriesWithLocalCache(remoteStories);
+        stories = await removeBrokenStoryImages(stories);
+        applyPendingStoryHydration();
+        suppressRemoteStoryErrors = false;
+      }
+      renderPublicStories();
+      window.requestAnimationFrame(() => syncHeroCoverStory());
+      window.setTimeout(() => syncHeroCoverStory(), 250);
+      renderAdminList();
+      resolvePendingArticleLocation();
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => {
+          markRefreshStoryLoadComplete();
+        });
+      });
+    }
+
+    function setDropPreviewState(src) {
+      if (src) {
+        dropPreview.src = src;
+        dropPreview.style.display = "block";
+        dropZone.querySelector(".drop-icon").style.display = "none";
+        dropZone.querySelectorAll("p, span").forEach((node) => { node.style.opacity = "0.3"; });
+        return;
+      }
+      dropPreview.removeAttribute("src");
+      dropPreview.style.display = "none";
+      dropZone.querySelector(".drop-icon").style.display = "block";
+      dropZone.querySelectorAll("p, span").forEach((node) => { node.style.opacity = "1"; });
+    }
+
+    function setImageEditNotice(text, type = "") {
+      imageEditNotice.textContent = text;
+      imageEditNotice.hidden = !text;
+      imageEditNotice.className = "media-helper" + (text && type ? " " + type : "");
+    }
+
+    function previewFile(file) {
+      if (!file) return;
+      selectedFile = file;
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setDropPreviewState(event.target.result);
+        setImageEditNotice(
+          editingStoryId
+            ? "New image selected — it will replace the current image when you save."
+            : "Image selected — ready to publish.",
+          "success"
+        );
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function syncPodcastAccept() {
+      podcastMediaInput.accept = podcastContentTypeInput.value === "video"
+        ? "video/mp4,video/quicktime,video/webm"
+        : "audio/mpeg,audio/wav,audio/aac,audio/mp4";
+    }
+
+    function readMediaDuration(file, mediaType) {
+      return new Promise((resolve, reject) => {
+        const element = document.createElement(mediaType === "video" ? "video" : "audio");
+        element.preload = "metadata";
+        element.onloadedmetadata = () => {
+          const duration = element.duration;
+          URL.revokeObjectURL(element.src);
+          resolve(duration);
+        };
+        element.onerror = () => {
+          URL.revokeObjectURL(element.src);
+          reject(new Error("Could not read media duration"));
+        };
+        element.src = URL.createObjectURL(file);
+      });
+    }
+
+    function fileToDataUrl(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (event) => resolve(event.target.result);
+        reader.onerror = () => reject(new Error("Could not read selected image"));
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function fileToPortableImageDataUrl(file) {
+      if (!file || !String(file.type || "").startsWith("image/")) {
+        return fileToDataUrl(file);
+      }
+      try {
+        const objectUrl = URL.createObjectURL(file);
+        const image = await new Promise((resolve, reject) => {
+          const img = new Image();
+          img.onload = () => resolve(img);
+          img.onerror = () => reject(new Error("Could not prepare selected image"));
+          img.src = objectUrl;
+        });
+        const maxSide = 1600;
+        const scale = Math.min(1, maxSide / Math.max(image.naturalWidth || image.width, image.naturalHeight || image.height));
+        const width = Math.max(1, Math.round((image.naturalWidth || image.width) * scale));
+        const height = Math.max(1, Math.round((image.naturalHeight || image.height) * scale));
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        const context = canvas.getContext("2d");
+        context.drawImage(image, 0, 0, width, height);
+        URL.revokeObjectURL(objectUrl);
+        return canvas.toDataURL("image/jpeg", 0.82);
+      } catch (error) {
+        return fileToDataUrl(file);
+      }
+    }
+
+    function fileToObjectUrl(file) {
+      return URL.createObjectURL(file);
+    }
+
+    function isSessionOnlyImageUrl(value) {
+      const src = String(value || "").trim().toLowerCase();
+      return src.startsWith("blob:") || src.startsWith("idb:") || src.startsWith("file:");
+    }
+
+    function getRenderableImageUrl(story) {
+      const src = String(story && story.image_url || "").trim();
+      return src && !isSessionOnlyImageUrl(src) ? src : "";
+    }
+
+    function cssImageUrl(value) {
+      return String(value || "").replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+    }
+
+    function canLoadPublicImage(src, timeoutMs = 2600) {
+      return new Promise((resolve) => {
+        if (!src) {
+          resolve(false);
+          return;
+        }
+        if (String(src).startsWith("data:image/")) {
+          resolve(true);
+          return;
+        }
+        const img = new Image();
+        let settled = false;
+        const done = (ok) => {
+          if (settled) return;
+          settled = true;
+          resolve(ok);
+        };
+        img.onload = () => done(true);
+        img.onerror = () => done(false);
+        img.src = src;
+        if (img.complete && img.naturalWidth > 0) done(true);
+        window.setTimeout(() => done(false), timeoutMs);
+      });
+    }
+
+    async function removeBrokenStoryImages(sourceStories) {
+      const list = Array.isArray(sourceStories) ? sourceStories : [];
+      const checked = await Promise.all(list.map(async (story) => {
+        const renderableImageUrl = getRenderableImageUrl(story);
+        if (!renderableImageUrl) {
+          return Object.assign({}, story, { image_url: "" });
+        }
+        const ok = await canLoadPublicImage(renderableImageUrl);
+        return ok ? story : Object.assign({}, story, { image_url: "" });
+      }));
+      return checked;
+    }
+
+    function buildMinimalStoryPayload(payload) {
+      return {
+        title: payload.title,
+        excerpt: payload.excerpt,
+        category: payload.category,
+        brand: payload.brand,
+        image_url: payload.image_url
+      };
+    }
+
+    function referencesLegacyStoryColumns(error) {
+      const raw = stringifySupabaseError(error).toLowerCase();
+      return raw.includes("body")
+        || raw.includes("column stories.body does not exist")
+        || raw.includes("column body does not exist")
+        || raw.includes("slug")
+        || raw.includes("column stories.slug does not exist")
+        || raw.includes("column slug does not exist")
+        || raw.includes("video_url")
+        || raw.includes("video_duration")
+        || raw.includes("content_type")
+        || raw.includes("column stories.video_url does not exist")
+        || raw.includes("column stories.video_duration does not exist")
+        || raw.includes("column stories.content_type does not exist")
+        || raw.includes("column stories.title does not exist")
+        || raw.includes("column stories.slug does not exist")
+        || raw.includes("headline");
+    }
+
+    function buildLegacyStoryPayload(payload) {
+      return {
+        headline: payload.title,
+        excerpt: payload.excerpt,
+        category: payload.category,
+        brand: payload.brand,
+        image_url: payload.image_url
+      };
+    }
+
+    async function publishStory() {
+      const localOnlyMode = !supabaseClient;
+      if (localOnlyMode) {
+        console.warn("SKR stories are saving locally because Supabase is unavailable in this session.");
+      }
+      const title = formTitle.value.trim();
+      const excerpt = formExcerpt.value.trim();
+      const body = formBody.value.trim();
+      const category = formCategory.value;
+      const brand = formBrand.value.trim();
+      const isEditing = Boolean(editingStoryId);
+      const existingStory = isEditing
+        ? stories.find((item) => String(item.id) === String(editingStoryId))
+        : null;
+      if (uploadMode === "article" && !selectedFile) {
+        if (isEditing && existingStory && existingStory.image_url) {
+          // Keep the existing image when editing an article without selecting a new file.
+        } else {
+          setMessage("error", "Please select an image first");
+          return;
+        }
+      }
+      if (uploadMode === "video" && !selectedVideoFile) {
+        if (isEditing && existingStory && existingStory.video_url) {
+          // Keep the existing video when editing without selecting a new file.
+        } else {
+          setMessage("error", "Please select a video file first");
+          return;
+        }
+      }
+      if (uploadMode === "video" && !videoDurationSeconds) {
+        if (!(isEditing && existingStory && Number(existingStory.video_duration || 0) > 0)) {
+          setMessage("error", "Confirm a video under 60 seconds before publishing");
+          return;
+        }
+      }
+      if (!title) {
+        setMessage("error", "Please add a headline");
+        return;
+      }
+
+      formSuccess.hidden = true;
+        formError.hidden = true;
+        submitBtn.disabled = true;
+        try {
+        if (localOnlyMode) {
+          setMessage("status", isEditing
+            ? (uploadMode === "video" ? "Updating video on this device only" : "Updating story on this device only")
+            : (uploadMode === "video" ? "Saving video on this device only" : "Saving story on this device only"));
+          setProgress(50);
+          let publicUrl = existingStory && existingStory.image_url ? existingStory.image_url : "";
+          let videoUrl = existingStory && existingStory.video_url ? existingStory.video_url : null;
+          if (selectedFile) {
+            publicUrl = await fileToPortableImageDataUrl(selectedFile);
+          }
+          if (uploadMode === "video" && selectedVideoFile) {
+            videoUrl = fileToObjectUrl(selectedVideoFile);
+          }
+          const localPayload = {
+            title,
+            excerpt,
+            body,
+            category,
+            brand,
+            image_url: publicUrl,
+            content_type: uploadMode === "video" ? "video" : "article",
+            video_url: uploadMode === "video" ? videoUrl : null,
+            video_duration: uploadMode === "video"
+              ? (videoDurationSeconds || Number(existingStory && existingStory.video_duration || 0) || null)
+              : null,
+            slug: createSlug(title)
+          };
+          if (isEditing) {
+            await updateStoryLocally(editingStoryId, localPayload);
+          } else {
+            await saveStoryLocally(localPayload);
+          }
+          stories = await loadLocalStories();
+          renderPublicStories();
+          renderAdminList();
+          setProgress(100);
+          resetForm();
+          setMessage("success", isEditing
+            ? (uploadMode === "video" ? "Video updated on this device only" : "Story updated on this device only")
+            : (uploadMode === "video" ? "Video saved on this device only" : "Story saved on this device only"));
+          return;
+        }
+        setMessage("status", uploadMode === "video" ? "Uploading media" : "Uploading image");
+        setProgress(30);
+        await sleep(150);
+        let publicUrl = existingStory && existingStory.image_url ? existingStory.image_url : "";
+        let storagePath = "";
+        let videoUrl = existingStory && existingStory.video_url ? existingStory.video_url : null;
+        let videoStoragePath = "";
+        let usedLocalFallback = false;
+        if (selectedFile) {
+          storagePath = createStoragePath(selectedFile);
+          const upload = await supabaseClient.storage.from(BUCKET_NAME).upload(storagePath, selectedFile, {
+            upsert: false,
+            cacheControl: "3600",
+            contentType: selectedFile.type || "image/jpeg"
+          });
+          if (upload.error) {
+            if (isRecoverableStorageError(upload.error)) {
+              setMessage("status", uploadMode === "video" ? "Image bucket missing — saving thumbnail directly" : "Bucket missing — saving image directly");
+              publicUrl = await fileToPortableImageDataUrl(selectedFile);
+            } else {
+              throw upload.error;
+            }
+          } else {
+            publicUrl = supabaseClient.storage.from(BUCKET_NAME).getPublicUrl(storagePath).data.publicUrl;
+          }
+        }
+        if (uploadMode === "video" && selectedVideoFile) {
+          videoStoragePath = "videos/" + Date.now() + "-" + selectedVideoFile.name.replace(/[^a-zA-Z0-9.-]/g, "-").toLowerCase();
+          const videoUpload = await supabaseClient.storage.from(VIDEO_BUCKET_NAME).upload(videoStoragePath, selectedVideoFile, {
+            upsert: false,
+            cacheControl: "3600",
+            contentType: selectedVideoFile.type || "video/mp4"
+          });
+          if (videoUpload.error) {
+            if (isRecoverableStorageError(videoUpload.error)) {
+              setMessage("status", "Video bucket missing — saving media directly");
+              videoUrl = fileToObjectUrl(selectedVideoFile);
+            } else {
+              throw videoUpload.error;
+            }
+          } else {
+            videoUrl = supabaseClient.storage.from(VIDEO_BUCKET_NAME).getPublicUrl(videoStoragePath).data.publicUrl;
+          }
+        }
+
+        setMessage("status", "Saving story");
+        setProgress(70);
+        const payload = {
+          title,
+          excerpt,
+          body,
+          category,
+          brand,
+          image_url: publicUrl,
+          content_type: uploadMode === "video" ? "video" : "article",
+          video_url: uploadMode === "video" ? videoUrl : null,
+          video_duration: uploadMode === "video"
+            ? (videoDurationSeconds || Number(existingStory && existingStory.video_duration || 0) || null)
+            : null,
+          slug: createSlug(title)
+        };
+        const persistLocally = async () => {
+          if (isEditing) {
+            await updateStoryLocally(editingStoryId, payload);
+          } else {
+            await saveStoryLocally(payload);
+          }
+          usedLocalFallback = true;
+          suppressRemoteStoryErrors = true;
+        };
+        const insert = isEditing
+          ? await supabaseClient.from(TABLE_NAME).update(payload).eq("id", editingStoryId)
+          : await supabaseClient.from(TABLE_NAME).insert(payload);
+        if (insert.error) {
+          let minimalInsert = isEditing
+            ? await supabaseClient.from(TABLE_NAME).update(buildMinimalStoryPayload(payload)).eq("id", editingStoryId)
+            : await supabaseClient.from(TABLE_NAME).insert(buildMinimalStoryPayload(payload));
+          if (minimalInsert.error && referencesLegacyStoryColumns(minimalInsert.error)) {
+            minimalInsert = isEditing
+              ? await supabaseClient.from(TABLE_NAME).update(buildLegacyStoryPayload(payload)).eq("id", editingStoryId)
+              : await supabaseClient.from(TABLE_NAME).insert(buildLegacyStoryPayload(payload));
+          }
+          if (minimalInsert.error) {
+            await persistLocally();
+          }
+        }
+        setProgress(100);
+        await sleep(800);
+        if (usedLocalFallback) {
+          try {
+            stories = await mergeVisibleStoriesWithLocalCache();
+            renderPublicStories();
+            renderAdminList();
+          } catch (renderError) {
+            console.warn("SKR local story render fallback failed", renderError);
+          }
+          resetForm();
+          clearStoryMessages();
+          setMessage("success", isEditing
+            ? (uploadMode === "video"
+                ? "Video updated on this device only — shared storage unavailable"
+                : "Story updated on this device only — shared storage unavailable")
+            : (uploadMode === "video"
+                ? "Video saved on this device only — shared storage unavailable"
+                : "Story saved on this device only — shared storage unavailable"));
+          return;
+        }
+        if (isEditing && selectedFile && existingStory && existingStory.image_url && publicUrl) {
+          await removeStoredStoryImageIfReplaced(existingStory.image_url, publicUrl);
+        }
+        queuePendingStoryHydration(
+          isEditing && existingStory
+            ? buildStoryViewModel(existingStory, payload, editingStoryId, false)
+            : Object.assign({ created_at: new Date().toISOString() }, payload)
+        );
+        await loadStories(false);
+        resetForm();
+        setMessage("success", isEditing
+          ? (uploadMode === "video" ? "Video updated successfully" : "Story updated successfully")
+          : (uploadMode === "video" ? "Video published successfully" : "Story published successfully"));
+      } catch (error) {
+        setProgress(0);
+        setMessage("error", describeSupabaseError(error));
+      } finally {
+        submitBtn.disabled = false;
+      }
+    }
+
+    async function publishPodcast() {
+      if (!supabaseClient) {
+        podcastError.hidden = false;
+        podcastError.textContent = "Supabase not connected — add your anon public key in index.html";
+        return;
+      }
+      const title = podcastTitleInput.value.trim();
+      const description = podcastDescriptionInput.value.trim();
+      const season = Number(podcastSeasonInput.value || 1);
+      const episode = Number(podcastEpisodeInput.value || 0);
+      const contentType = podcastContentTypeInput.value;
+      podcastSuccess.hidden = true;
+      podcastError.hidden = true;
+      if (!title) {
+        podcastError.textContent = "Please add an episode title";
+        podcastError.hidden = false;
+        return;
+      }
+      if (!episode) {
+        podcastError.textContent = "Please add an episode number";
+        podcastError.hidden = false;
+        return;
+      }
+      if (!selectedPodcastThumbFile) {
+        podcastError.textContent = "Please add a thumbnail image";
+        podcastError.hidden = false;
+        return;
+      }
+      if (!selectedPodcastMediaFile) {
+        podcastError.textContent = "Please select audio or video media";
+        podcastError.hidden = false;
+        return;
+      }
+      if (!podcastDurationSeconds) {
+        podcastError.textContent = "Wait for duration confirmation before publishing";
+        podcastError.hidden = false;
+        return;
+      }
+      publishPodcastBtn.disabled = true;
+      try {
+        podcastStatus.textContent = "Uploading episode";
+        setPodcastProgress(30);
+        const thumbPath = "podcasts/" + Date.now() + "-" + selectedPodcastThumbFile.name.replace(/[^a-zA-Z0-9.-]/g, "-").toLowerCase();
+        const thumbUpload = await supabaseClient.storage.from(PODCAST_IMAGE_BUCKET).upload(thumbPath, selectedPodcastThumbFile, {
+          upsert: false,
+          cacheControl: "3600",
+          contentType: selectedPodcastThumbFile.type || "image/jpeg"
+        });
+        let thumbnailUrl = "";
+        if (thumbUpload.error) {
+          if (isRecoverableStorageError(thumbUpload.error)) {
+            podcastStatus.textContent = "Thumbnail storage unavailable — saving image directly";
+            thumbnailUrl = fileToObjectUrl(selectedPodcastThumbFile);
+          } else {
+            throw thumbUpload.error;
+          }
+        } else {
+          thumbnailUrl = supabaseClient.storage.from(PODCAST_IMAGE_BUCKET).getPublicUrl(thumbPath).data.publicUrl;
+        }
+
+        const mediaBucket = contentType === "video" ? PODCAST_VIDEO_BUCKET : PODCAST_AUDIO_BUCKET;
+        const mediaPath = contentType + "/" + Date.now() + "-" + selectedPodcastMediaFile.name.replace(/[^a-zA-Z0-9.-]/g, "-").toLowerCase();
+        const mediaUpload = await supabaseClient.storage.from(mediaBucket).upload(mediaPath, selectedPodcastMediaFile, {
+          upsert: false,
+          cacheControl: "3600",
+          contentType: selectedPodcastMediaFile.type || (contentType === "video" ? "video/mp4" : "audio/mpeg")
+        });
+        let mediaUrl = "";
+        if (mediaUpload.error) {
+          if (isRecoverableStorageError(mediaUpload.error)) {
+            podcastStatus.textContent = (contentType === "video" ? "Video" : "Audio") + " storage unavailable — saving media directly";
+            mediaUrl = fileToObjectUrl(selectedPodcastMediaFile);
+          } else {
+            throw mediaUpload.error;
+          }
+        } else {
+          mediaUrl = supabaseClient.storage.from(mediaBucket).getPublicUrl(mediaPath).data.publicUrl;
+        }
+
+        podcastStatus.textContent = "Saving episode";
+        setPodcastProgress(70);
+        const payload = {
+          title,
+          description,
+          season_number: season,
+          episode_number: episode,
+          thumbnail_url: thumbnailUrl,
+          duration_seconds: podcastDurationSeconds,
+          content_type: contentType,
+          audio_url: contentType === "audio" ? mediaUrl : null,
+          video_url: contentType === "video" ? mediaUrl : null
+        };
+        const insert = await supabaseClient.from(PODCASTS_TABLE).insert(payload);
+        if (insert.error) {
+          const insertMessage = String(insert.error.message || "").toLowerCase();
+          if (
+            insertMessage.includes("public.podcasts")
+            || insertMessage.includes("schema cache")
+            || insertMessage.includes("quota")
+            || insertMessage.includes("exceeded")
+            || insertMessage.includes("out of space")
+          ) {
+            await savePodcastLocally(payload);
+          } else {
+            throw insert.error;
+          }
+        }
+        setPodcastProgress(100);
+        podcastStatus.textContent = "Episode published successfully";
+        podcastSuccess.hidden = false;
+        resetPodcastForm();
+      } catch (error) {
+        podcastError.textContent = describeSupabaseError(error);
+        podcastError.hidden = false;
+        podcastStatus.textContent = "Publish failed";
+        setPodcastProgress(0);
+      } finally {
+        publishPodcastBtn.disabled = false;
+      }
+    }
+
+    async function deleteStory(id) {
+      const story = stories.find((item) => String(item.id) === String(id));
+      if (!story) return;
+      try {
+        if (String(story.id).startsWith("local-story-") || !supabaseClient) {
+          stories = await deleteStoryLocally(id);
+          pendingDeleteStoryId = "";
+          if (editingStoryId === String(id)) {
+            resetForm();
+          }
+          renderPublicStories();
+          renderAdminList();
+          setMessage("success", "Story deleted");
+          return;
+        }
+        const removeDb = await supabaseClient.from(TABLE_NAME).delete().eq("id", id);
+        if (removeDb.error) throw removeDb.error;
+        const storagePath = extractStoragePath(story.image_url);
+        if (storagePath) {
+          const removeImage = await supabaseClient.storage.from(BUCKET_NAME).remove([storagePath]);
+          if (removeImage.error) throw removeImage.error;
+        }
+        removeStoryHydrationEntry(story);
+        await loadStories();
+        pendingDeleteStoryId = "";
+        if (editingStoryId === String(id)) {
+          resetForm();
+        }
+        setMessage("success", "Story deleted");
+      } catch (error) {
+        setMessage("error", describeSupabaseError(error));
+      }
+    }
+
+    async function fetchTopicSpecificNews(topic, options = {}) {
+      const endpoint = "https://newsapi.org/v2/everything?q=" + encodeURIComponent(topic.query) +
+        "&sortBy=publishedAt&pageSize=12&from=" + encodeURIComponent(startOfLookbackIso()) +
+        (options.useDomains === false ? "" : "&domains=" + encodeURIComponent(topic.domains.join(","))) +
+        "&apiKey=" + encodeURIComponent(newsApiKey);
+      const response = await fetch("https://r.jina.ai/http://" + endpoint.replace(/^https?:\/\//, ""), {
+        headers: { Accept: "text/plain" }
+      });
+      const text = await response.text();
+      const payload = parseNewsResponseText(text);
+      if (payload.status === "error") {
+        throw new Error(payload.message || "News feed request failed");
+      }
+      return (payload.articles || []).filter((article) => {
+        if (!article || !article.title || !article.url) return false;
+        if (options.useDomains === false) {
+          const haystack = [
+            article.title,
+            article.description,
+            article.content,
+            article.source && article.source.name
+          ].filter(Boolean).join(" ").toLowerCase();
+          return topic.keywords.some((keyword) => haystack.includes(keyword.toLowerCase()));
+        }
+        return articleMatchesTopic(article, topic);
+      });
+    }
+
+    async function buildTopicNewsMap(previousState) {
+      const topicMap = {};
+      const topicResults = await Promise.all(TOPICS.map(async (topic) => {
+        try {
+          let articles = await fetchTopicSpecificNews(topic);
+          if (!articles.length) {
+            articles = await fetchTopicSpecificNews(topic, { useDomains: false });
+          }
+          return { topic: topic.name, articles: articles.slice(0, 4) };
+        } catch (error) {
+          console.warn("SKR topic fallback failed", topic.name, error);
+          return {
+            topic: topic.name,
+            articles: (previousState && previousState[topic.name]) ? previousState[topic.name].slice(0, 4) : cloneStandbyArticles(topic.name).slice(0, 4)
+          };
+        }
+      }));
+
+      topicResults.forEach((result) => {
+        if (result.articles.length) {
+          topicMap[result.topic] = result.articles;
+          return;
+        }
+        if (previousState && Array.isArray(previousState[result.topic]) && previousState[result.topic].length) {
+          topicMap[result.topic] = previousState[result.topic].slice(0, 4);
+          return;
+        }
+        topicMap[result.topic] = cloneStandbyArticles(result.topic).slice(0, 4);
+      });
+
+      return topicMap;
+    }
+
+    async function loadNewsFeed(options = {}) {
+      if (!newsApiKey) {
+        newsWarning.hidden = false;
+        newsWarning.textContent = "Enter your NewsAPI key — get one free at newsapi.org";
+        newsGrid.innerHTML = "";
+        return;
+      }
+      if (!options.force && Object.keys(newsState).length && newsCacheIsFresh()) {
+        renderNewsFeed();
+        updateNewsUpdatedLabel();
+        newsWarning.hidden = true;
+        return;
+      }
+      newsWarning.hidden = true;
+      newsRefreshBtn.disabled = true;
+      if (!options.silent) renderNewsSkeleton();
+      try {
+        const previousState = newsState;
+        newsState = ensureTopicMapHasContent(await buildTopicNewsMap(previousState));
+        newsLastUpdatedAt = Date.now();
+        renderNewsFeed();
+        updateNewsUpdatedLabel();
+        saveNewsCache();
+        newsWarning.hidden = true;
+      } catch (error) {
+        const hasCache = loadNewsCache();
+        newsWarning.hidden = false;
+        newsWarning.textContent = describeNewsError(error);
+        if (!hasCache) {
+          newsGrid.innerHTML = "";
+        }
+      } finally {
+        newsRefreshBtn.disabled = false;
+      }
+    }
+
+    function ensureNewsFeed() {
+      if (Object.keys(newsState).length) {
+        renderNewsFeed();
+        updateNewsUpdatedLabel();
+        return;
+      }
+      loadNewsFeed();
+    }
+
+    function loadStoredNewsKey() {
+      newsApiKey = window.sessionStorage.getItem(NEWS_KEY_STORAGE) || "";
+      newsApiKeyInput.value = newsApiKey;
+      syncNewsKeyVisibility();
+    }
+
+    function saveNewsKey() {
+      newsApiKey = newsApiKeyInput.value.trim();
+      if (!newsApiKey) {
+        window.sessionStorage.removeItem(NEWS_KEY_STORAGE);
+        newsWarning.hidden = false;
+        newsWarning.textContent = "Enter your NewsAPI key — get one free at newsapi.org";
+        newsGrid.innerHTML = "";
+        syncNewsKeyVisibility();
+        return;
+      }
+      window.sessionStorage.setItem(NEWS_KEY_STORAGE, newsApiKey);
+      newsWarning.hidden = true;
+      syncNewsKeyVisibility();
+      loadNewsFeed({ force: true });
+    }
+
+    function prefillFromNews(topicName, index) {
+      const topic = TOPICS.find((item) => item.name === topicName);
+      const article = newsState[topicName] && newsState[topicName][Number(index)];
+      if (!topic || !article) return;
+      document.getElementById("fTitle").value = article.title || "";
+      document.getElementById("fExcerpt").value = createLuxuryExcerpt(article.description || article.content || "", article.title || "");
+      document.getElementById("fCategory").value = topic.category;
+      document.getElementById("fBrand").value = (article.source && article.source.name) || "";
+      newsPrefillNotice.classList.add("visible");
+      switchTab("upload");
+    }
+
+    setConnectionStatus();
+    maybeRevealAdminEntry();
+    loadStoredNewsKey();
+    loadNewsCache();
+    loadStories(true);
+    if (newsApiKey && !newsCacheIsFresh()) loadNewsFeed({ silent: true });
+    updateNewsUpdatedLabel();
+    window.setInterval(() => {
+      updateNewsUpdatedLabel();
+      if (Object.keys(newsState).length) renderNewsFeed();
+    }, 60000);
+    window.setInterval(() => loadNewsFeed({ silent: true }), NEWS_REFRESH_MS);
+
+    addStoryBtn.addEventListener("click", () => {
+      closeNavMenu();
+      if (isLoggedIn) {
+        switchTab("upload");
+        openOverlay(adminOverlay);
+      } else {
+        openOverlay(loginOverlay);
+        window.setTimeout(() => pwInput.focus(), 100);
+      }
+    });
+    if (navMenuTrigger) {
+      navMenuTrigger.addEventListener("click", (event) => {
+        event.stopPropagation();
+        toggleNavMenu();
+      });
+    }
+    if (navMenuPanel) {
+      navMenuPanel.addEventListener("click", () => {
+        closeNavMenu();
+      });
+    }
+    closeLoginOverlay.addEventListener("click", () => closeOverlay(loginOverlay));
+    closeAdminOverlay.addEventListener("click", () => closeOverlay(adminOverlay));
+    logoutBtn.addEventListener("click", () => {
+      isLoggedIn = false;
+      hideAdminEntry();
+      closeOverlay(adminOverlay);
+    });
+    loginBtn.addEventListener("click", async () => {
+      const lockRemaining = getAdminLockRemainingMs();
+      if (lockRemaining > 0) {
+        loginError.textContent = formatAdminLockMessage(lockRemaining);
+        loginError.hidden = false;
+        return;
+      }
+      const isValid = await verifyAdminPassword(pwInput.value);
+      if (isValid) {
+        isLoggedIn = true;
+        clearAdminLockState();
+        revealAdminEntry();
+        loginError.textContent = "Incorrect password";
+        loginError.hidden = true;
+        pwInput.value = "";
+        closeOverlay(loginOverlay);
+        switchTab("upload");
+        openOverlay(adminOverlay);
+      } else {
+        const nextState = registerAdminFailure();
+        loginError.textContent = nextState.expiresAt > Date.now()
+          ? formatAdminLockMessage(nextState.expiresAt - Date.now())
+          : "Incorrect password";
+        loginError.hidden = false;
+        pwInput.select();
+      }
+    });
+    pwInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") loginBtn.click();
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.shiftKey && (event.altKey || event.metaKey) && event.key.toLowerCase() === "a") {
+        event.preventDefault();
+        revealAdminEntry();
+        openOverlay(loginOverlay);
+        window.setTimeout(() => pwInput.focus(), 100);
+      }
+    });
+    tabButtons.forEach((button) => button.addEventListener("click", () => switchTab(button.dataset.tab)));
+    uploadModeButtons.forEach((button) => button.addEventListener("click", () => setUploadMode(button.dataset.uploadMode)));
+    imageInput.addEventListener("change", (event) => previewFile(event.target.files[0]));
+    videoInput.addEventListener("change", async (event) => {
+      const file = event.target.files[0];
+      selectedVideoFile = file || null;
+      videoDurationSeconds = 0;
+      if (!file) {
+        setVideoDurationState("", "Select an MP4, MOV, or WEBM under 60 seconds.");
+        return;
+      }
+      try {
+        const duration = await readMediaDuration(file, "video");
+        const rounded = Math.floor(duration);
+        if (rounded > 60) {
+          setVideoDurationState("error", "Video is " + formatDuration(rounded) + " — maximum is 1:00. Please trim.");
+          selectedVideoFile = null;
+          videoInput.value = "";
+          return;
+        }
+        videoDurationSeconds = rounded;
+        setVideoDurationState("success", formatDuration(rounded) + " detected — within limit");
+      } catch (error) {
+        setVideoDurationState("error", "Could not read video duration");
+      }
+    });
+    dropZone.addEventListener("dragover", (event) => {
+      event.preventDefault();
+      dropZone.classList.add("dragover");
+    });
+    dropZone.addEventListener("dragleave", () => dropZone.classList.remove("dragover"));
+    dropZone.addEventListener("drop", (event) => {
+      event.preventDefault();
+      dropZone.classList.remove("dragover");
+      const file = event.dataTransfer.files[0];
+      if (file && file.type.startsWith("image/")) previewFile(file);
+    });
+    submitBtn.addEventListener("click", publishStory);
+    newsRefreshBtn.addEventListener("click", () => loadNewsFeed({ force: true }));
+    saveNewsKeyBtn.addEventListener("click", saveNewsKey);
+    disconnectNewsKeyBtn.addEventListener("click", disconnectNewsKey);
+    newsSearchInput.addEventListener("input", (event) => {
+      newsSearchQuery = event.target.value.trim();
+      renderNewsFeed();
+    });
+    runNewsSearchBtn.addEventListener("click", () => {
+      newsSearchQuery = newsSearchInput.value.trim();
+      renderNewsFeed();
+    });
+    newsSearchInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        newsSearchQuery = newsSearchInput.value.trim();
+        renderNewsFeed();
+      }
+    });
+    clearNewsSearchBtn.addEventListener("click", () => {
+      newsSearchQuery = "";
+      newsSearchInput.value = "";
+      renderNewsFeed();
+    });
+    podcastContentTypeInput.addEventListener("change", syncPodcastAccept);
+    podcastThumbInput.addEventListener("change", (event) => {
+      selectedPodcastThumbFile = event.target.files[0] || null;
+    });
+    podcastMediaInput.addEventListener("change", async (event) => {
+      const file = event.target.files[0];
+      selectedPodcastMediaFile = file || null;
+      podcastDurationSeconds = 0;
+      if (!file) {
+        setPodcastDurationState("", "Select audio or video media for this episode.");
+        return;
+      }
+      try {
+        const duration = await readMediaDuration(file, podcastContentTypeInput.value === "video" ? "video" : "audio");
+        const rounded = Math.floor(duration);
+        podcastDurationSeconds = rounded;
+        setPodcastDurationState("success", formatDuration(rounded) + " detected — ready to publish");
+      } catch (error) {
+        setPodcastDurationState("error", "Could not read media duration");
+      }
+    });
+    publishPodcastBtn.addEventListener("click", publishPodcast);
+    categoryCards.forEach((card) => card.addEventListener("click", () => {
+      selectedArchiveCategory = card.dataset.category;
+      renderCategoryArchive();
+      archiveShell.scrollIntoView({ behavior: "smooth", block: "start" });
+    }));
+    newsApiKeyInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        saveNewsKey();
+      }
+    });
+    adminStoriesList.addEventListener("click", async (event) => {
+      const editButton = event.target.closest("[data-edit-id]");
+      if (editButton) {
+        beginEditStory(editButton.dataset.editId);
+        return;
+      }
+      const deleteButton = event.target.closest("[data-delete-id]");
+      if (deleteButton) {
+        pendingDeleteStoryId = deleteButton.dataset.deleteId;
+        renderAdminList();
+        return;
+      }
+      const cancelDeleteButton = event.target.closest("[data-cancel-delete-id]");
+      if (cancelDeleteButton) {
+        pendingDeleteStoryId = "";
+        renderAdminList();
+        return;
+      }
+      const confirmDeleteButton = event.target.closest("[data-confirm-delete-id]");
+      if (confirmDeleteButton) {
+        confirmDeleteButton.disabled = true;
+        try {
+          await deleteStory(confirmDeleteButton.dataset.confirmDeleteId);
+        } finally {
+          confirmDeleteButton.disabled = false;
+        }
+      }
+    });
+    newsGrid.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-topic][data-index]");
+      if (button) prefillFromNews(button.dataset.topic, button.dataset.index);
+    });
+    storiesGrid.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-read-id]");
+      if (!button) return;
+      if (button.tagName === "A" && (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0)) return;
+      event.preventDefault();
+      openArticleReader(stories.find((item) => String(item.id) === String(button.getAttribute("data-read-id"))), { historyMode: "push" });
+    });
+    featureGrid.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-read-id]");
+      if (!button) return;
+      if (button.tagName === "A" && (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0)) return;
+      event.preventDefault();
+      openArticleReader(stories.find((item) => String(item.id) === String(button.getAttribute("data-read-id"))), { historyMode: "push" });
+    });
+    archiveGrid.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-read-id]");
+      if (!button) return;
+      if (button.tagName === "A" && (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0)) return;
+      event.preventDefault();
+      openArticleReader(stories.find((item) => String(item.id) === String(button.getAttribute("data-read-id"))), { historyMode: "push" });
+    });
+    heroReadLink.addEventListener("click", (event) => {
+      const storyId = heroReadLink.getAttribute("data-read-id");
+      if (!storyId) return;
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
+      event.preventDefault();
+      openArticleReader(stories.find((item) => String(item.id) === String(storyId)), { historyMode: "push" });
+    });
+    closeArticleOverlay.addEventListener("click", () => {
+      closeOverlay(articleOverlay);
+      activeArticleStoryId = "";
+      syncArticleLocation(null);
+    });
+    articleBackBtn.addEventListener("click", () => {
+      closeOverlay(articleOverlay);
+      activeArticleStoryId = "";
+      syncArticleLocation(null);
+    });
+    shareArticleBtn.addEventListener("click", shareActiveArticle);
+    [loginOverlay, adminOverlay, articleOverlay].forEach((overlay) => {
+      overlay.addEventListener("click", (event) => {
+        if (event.target === overlay) {
+          closeOverlay(overlay);
+          if (overlay === articleOverlay) {
+            activeArticleStoryId = "";
+            syncArticleLocation(null);
+          }
+        }
+      });
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        closeNavMenu();
+        closeOverlay(loginOverlay);
+        closeOverlay(adminOverlay);
+        closeOverlay(articleOverlay);
+        activeArticleStoryId = "";
+        syncArticleLocation(null);
+      }
+    });
+    document.addEventListener("click", (event) => {
+      if (navMenu && !navMenu.contains(event.target)) {
+        closeNavMenu();
+      }
+    });
+    const handleArticleLocationChange = () => {
+      pendingArticleLocator = readArticleLocatorFromLocation();
+      if (!pendingArticleLocator) {
+        closeOverlay(articleOverlay);
+        activeArticleStoryId = "";
+        syncDocumentMetadata(null);
+        return;
+      }
+      resolvePendingArticleLocation();
+    };
+    if (isHttpLikeProtocol()) {
+      window.addEventListener("popstate", handleArticleLocationChange);
+    } else {
+      window.addEventListener("hashchange", handleArticleLocationChange);
+    }
+    updateEditionLabels();
+    window.setInterval(updateEditionLabels, 60000);
+    syncPodcastAccept();
+    setUploadMode("article");
+    pendingArticleLocator = readArticleLocatorFromLocation();
+    resolvePendingArticleLocation();
+    window.addEventListener("scroll", () => {
+      nav.classList.toggle("scrolled", window.scrollY > 80);
+    });
+    window.addEventListener("load", markRefreshWindowReady);
+    window.addEventListener("pageshow", markRefreshWindowReady);
+  </script>
+</body>
+</html>
