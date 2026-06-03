@@ -414,9 +414,22 @@
       inset: 0;
       background-size: cover;
       background-position: center;
+      overflow: hidden;
       transition: transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94);
     }
-    .feature-card:hover .fc-img, .story-card:hover .story-card-img img { transform: scale(1.04); }
+    .fc-img-el {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      transition: transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+    .feature-card:hover .fc-img,
+    .feature-card:hover .fc-img-el,
+    .story-card:hover .story-card-img img { transform: scale(1.04); }
     .fc-overlay {
       position: absolute;
       inset: 0;
@@ -1408,6 +1421,9 @@
       .fc-img {
         position: relative;
         inset: auto;
+        display: block;
+        width: 100%;
+        min-height: 220px;
         aspect-ratio: 16 / 11;
       }
       .fc-overlay {
@@ -3590,18 +3606,21 @@
       const category = story.category || placeholderFeatures[index].category;
       const renderableImageUrl = getRenderableImageUrl(story);
       const fallbackImageUrl = getFallbackStoryImage(story);
-      const featureImages = [renderableImageUrl, fallbackImageUrl]
-        .filter(Boolean)
-        .filter((value, valueIndex, values) => values.indexOf(value) === valueIndex)
-        .map((value) => `url("${cssImageUrl(value)}")`);
-      const imageStyle = featureImages.length
-        ? `background:${placeholderFeatures[index].image};background-image:${featureImages.join(",")};`
-        : `background:${placeholderFeatures[index].image};`;
+      const imageUrl = renderableImageUrl || fallbackImageUrl;
+      const fallbackAttr = escapeHtml(fallbackImageUrl || "");
+      const imageError = fallbackImageUrl && renderableImageUrl !== fallbackImageUrl
+        ? 'const fallback=this.getAttribute(&quot;data-fallback-src&quot;);if(fallback&&this.src!==fallback){this.src=fallback;this.removeAttribute(&quot;data-fallback-src&quot;);}else{this.style.display=&quot;none&quot;;}'
+        : 'this.style.display=&quot;none&quot;';
+      const imageStyle = `background:${placeholderFeatures[index].image};`;
       const readTarget = story && story.id ? ' data-read-id="' + escapeHtml(story.id) + '"' : "";
       const readHref = story && story.id ? escapeHtml(getStoryCanonicalPath(story)) : "#";
       return '<article class="feature-card">' +
         '<div class="fc-inner">' +
-          `<div class="fc-img" style="${imageStyle}"></div>` +
+          '<div class="fc-img" style="' + imageStyle + '">' +
+            (imageUrl
+              ? '<img class="fc-img-el" src="' + escapeHtml(imageUrl) + '" data-fallback-src="' + fallbackAttr + '" alt="' + escapeHtml(title.replace(/<[^>]*>/g, "")) + '" loading="lazy" decoding="async" onerror="' + imageError + '">'
+              : "") +
+          '</div>' +
           '<div class="fc-overlay"></div>' +
           '<div class="fc-content">' +
             '<div class="fc-tag"><span>' + escapeHtml(category) + '</span></div>' +
