@@ -3928,41 +3928,28 @@
         });
         return;
       }
-      let data = null;
-      let error = null;
       const primaryLoad = await supabaseClient
         .from(TABLE_NAME)
-        .select("id, created_at, title, excerpt, body, category, brand, image_url, slug, content_type, video_url, video_duration")
+        .select("id, created_at, title, excerpt, category, brand, image_url")
         .order("created_at", { ascending: false });
-      data = primaryLoad.data;
-      error = primaryLoad.error;
-      if (error && referencesLegacyStoryColumns(error)) {
-        let fallbackLoad = await supabaseClient
-          .from(TABLE_NAME)
-          .select("id, created_at, headline, excerpt, category, brand, image_url")
-          .order("created_at", { ascending: false });
-        if (fallbackLoad.error && String(stringifySupabaseError(fallbackLoad.error)).toLowerCase().includes("headline")) {
-          fallbackLoad = await supabaseClient
-            .from(TABLE_NAME)
-            .select("id, created_at, title, excerpt, category, brand, image_url")
-            .order("created_at", { ascending: false });
-        }
-        data = (fallbackLoad.data || []).map((story) => ({
+      const data = (primaryLoad.data || []).map((story) => {
+        const title = story.title || "";
+        return {
           id: story.id,
           created_at: story.created_at,
-          title: story.headline || story.title || "",
+          title,
           excerpt: story.excerpt || "",
           body: "",
           category: story.category || "",
           brand: story.brand || "",
           image_url: story.image_url || "",
-          slug: createSlug(story.headline || story.title || ""),
+          slug: createSlug(title),
           content_type: "article",
           video_url: null,
           video_duration: null
-        }));
-        error = fallbackLoad.error;
-      }
+        };
+      });
+      const error = primaryLoad.error;
       console.log("SKR stories response", { data, error });
       if (error) {
         if (!suppressErrorMessage && !suppressRemoteStoryErrors) {
