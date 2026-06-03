@@ -2094,6 +2094,11 @@
       art: "https://cfonxqjjpfjyvperqoee.supabase.co/storage/v1/object/public/skr-images/stories/1779572474719-apxswatch-ecom-2-1920x1283-10.jpeg",
       travel: "https://cfonxqjjpfjyvperqoee.supabase.co/storage/v1/object/public/skr-images/stories/1779790762696-55be71b8-cde9-4aaa-9c97-2fb21077d6d2.jpeg"
     };
+    const knownBrokenStoryImages = new Set([
+      "https://cfonxqjjpfjyvperqoee.supabase.co/storage/v1/object/public/skr-images/stories/1780301122060-hjsaktfwoaikovp.jpeg",
+      "https://cfonxqjjpfjyvperqoee.supabase.co/storage/v1/object/public/skr-images/stories/1780300575250-hd1uunaboaq5z6x.jpeg",
+      "https://cfonxqjjpfjyvperqoee.supabase.co/storage/v1/object/public/skr-images/stories/1779679625402-grqmx2uxwaeupdg.jpeg"
+    ]);
 
     const supabaseReady = Boolean(window.supabase && SUPABASE_URL && SUPABASE_ANON_KEY);
     const supabaseClient = supabaseReady ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
@@ -4092,6 +4097,7 @@
 
     function getRenderableImageUrl(story) {
       const src = String(story && story.image_url || "").trim();
+      if (knownBrokenStoryImages.has(src)) return "";
       return src && !isSessionOnlyImageUrl(src) ? src : "";
     }
 
