@@ -2103,12 +2103,12 @@
       { category: "Automobiles", title: "Airbus ACH H160 — <em>luxury reimagined</em> at altitude", image: "linear-gradient(140deg,#0a0f1a 0%,#121a2a 50%,#0d1520 100%)" }
     ];
     const fallbackStoryImages = {
-      sport: "https://cfonxqjjpfjyvperqoee.supabase.co/storage/v1/object/public/skr-images/stories/1779572609739-hitsd-axqaako97.jpeg",
+      sport: "https://cfonxqjjpfjyvperqoee.supabase.co/storage/v1/object/public/skr-images/stories/1779440470054-26c0129-004.jpg",
       automobiles: "https://cfonxqjjpfjyvperqoee.supabase.co/storage/v1/object/public/skr-images/stories/1779790762696-55be71b8-cde9-4aaa-9c97-2fb21077d6d2.jpeg",
       watches: "https://cfonxqjjpfjyvperqoee.supabase.co/storage/v1/object/public/skr-images/stories/1779572474719-apxswatch-ecom-2-1920x1283-10.jpeg",
-      lifestyle: "https://cfonxqjjpfjyvperqoee.supabase.co/storage/v1/object/public/skr-images/stories/1779572609739-hitsd-axqaako97.jpeg",
-      art: "https://cfonxqjjpfjyvperqoee.supabase.co/storage/v1/object/public/skr-images/stories/1779572474719-apxswatch-ecom-2-1920x1283-10.jpeg",
-      travel: "https://cfonxqjjpfjyvperqoee.supabase.co/storage/v1/object/public/skr-images/stories/1779790762696-55be71b8-cde9-4aaa-9c97-2fb21077d6d2.jpeg"
+      lifestyle: "https://cfonxqjjpfjyvperqoee.supabase.co/storage/v1/object/public/skr-images/stories/1778147689959-alexander-mils-yfeozz1teek-unsplash.jpg",
+      art: "https://cfonxqjjpfjyvperqoee.supabase.co/storage/v1/object/public/skr-images/stories/1778242180874-ashim-d-silva-d51kmfi2wmk-unsplash.jpg",
+      travel: "https://cfonxqjjpfjyvperqoee.supabase.co/storage/v1/object/public/skr-images/stories/1779450316831-26c0129-010.jpg"
     };
     const knownBrokenStoryImages = new Set([
       "https://cfonxqjjpfjyvperqoee.supabase.co/storage/v1/object/public/skr-images/stories/1780301122060-hjsaktfwoaikovp.jpeg",
@@ -2457,11 +2457,15 @@
       const currentStories = [];
       sortedStories.forEach((story) => {
         if (currentStories.length >= MAX_PUBLIC_STORIES) return;
-        const storyKey = [
-          normalizeStoryKeyPart(story.title),
-          normalizeStoryKeyPart(story.category),
-          normalizeStoryKeyPart(story.brand)
-        ].join("|");
+        const durableKey = String(story.id || story.slug || "").trim();
+        const storyKey = durableKey
+          ? "story:" + durableKey
+          : [
+            normalizeStoryKeyPart(story.title),
+            normalizeStoryKeyPart(story.category),
+            normalizeStoryKeyPart(story.brand),
+            normalizeStoryKeyPart(story.excerpt)
+          ].join("|");
         if (!storyKey.replace(/\|/g, "")) return;
         if (seen.has(storyKey)) return;
         seen.add(storyKey);
@@ -3596,19 +3600,20 @@
       archiveTitle.innerHTML = escapeHtml(selectedArchiveCategory) + " <em>Archive</em>";
       archiveSummary.textContent = filtered.length + (filtered.length === 1 ? " story" : " stories");
       archiveShell.classList.add("visible");
+      const archiveImageUrls = new Set();
       archiveGrid.innerHTML = filtered.length
-        ? filtered.map(renderStoryCard).join("")
+        ? filtered.map((story) => renderStoryCard(story, archiveImageUrls)).join("")
         : '<p class="archive-empty">No ' + escapeHtml(selectedArchiveCategory) + ' stories published yet.</p>';
     }
 
     function renderFeatureCard(story, index, usedFeatureImageUrls) {
       const title = getStoryDisplayTitle(story, placeholderFeatures[index].title);
       const category = story.category || placeholderFeatures[index].category;
-      const renderableImageUrl = getRenderableImageUrl(story);
-      const fallbackImageUrl = getFallbackStoryImage(story);
-      const imageUrl = getFeatureImageUrl(story, usedFeatureImageUrls);
+      const imagePair = getPublicStoryImagePair(story, usedFeatureImageUrls);
+      const imageUrl = imagePair.imageUrl;
+      const fallbackImageUrl = imagePair.fallbackImageUrl;
       const fallbackAttr = escapeHtml(fallbackImageUrl || "");
-      const imageError = fallbackImageUrl && renderableImageUrl !== fallbackImageUrl
+      const imageError = fallbackImageUrl && imageUrl !== fallbackImageUrl
         ? 'const fallback=this.getAttribute(&quot;data-fallback-src&quot;);if(fallback&&this.src!==fallback){this.src=fallback;this.removeAttribute(&quot;data-fallback-src&quot;);}else{this.style.display=&quot;none&quot;;}'
         : 'this.style.display=&quot;none&quot;';
       const imageStyle = `background:${placeholderFeatures[index].image};`;
@@ -3631,14 +3636,14 @@
       '</article>';
     }
 
-    function renderStoryCard(story) {
+    function renderStoryCard(story, usedStoryImageUrls) {
       const tag = story.brand ? story.category + " · " + story.brand : story.category;
       const readHref = escapeHtml(getStoryCanonicalPath(story));
-      const renderableImageUrl = getRenderableImageUrl(story);
-      const fallbackImageUrl = getFallbackStoryImage(story);
-      const imageUrl = renderableImageUrl || fallbackImageUrl;
+      const imagePair = getPublicStoryImagePair(story, usedStoryImageUrls);
+      const imageUrl = imagePair.imageUrl;
+      const fallbackImageUrl = imagePair.fallbackImageUrl;
       const fallbackAttr = escapeHtml(fallbackImageUrl || "");
-      const imageError = fallbackImageUrl && renderableImageUrl !== fallbackImageUrl
+      const imageError = fallbackImageUrl && imageUrl !== fallbackImageUrl
         ? 'this.onerror=null;this.src=this.getAttribute(&quot;data-fallback-src&quot;);'
         : 'this.style.display=&quot;none&quot;';
       return '<article class="story-card">' +
@@ -3658,16 +3663,18 @@
     function renderPublicStories() {
       const currentStories = getCurrentStories();
       const featured = currentStories.slice(0, 3);
-      const usedFeatureImageUrls = new Set();
-      featureGrid.innerHTML = (featured.length
-        ? featured.map((story, index) => renderFeatureCard(story, index, usedFeatureImageUrls))
-        : placeholderFeatures.map((fallback, index) => renderFeatureCard(fallback, index, usedFeatureImageUrls))
-      ).join("");
+      const featuredEntries = featured.length
+        ? featured.concat(placeholderFeatures.slice(featured.length, 3))
+        : placeholderFeatures;
+      const usedPublicImageUrls = new Set();
+      featureGrid.innerHTML = featuredEntries
+        .map((story, index) => renderFeatureCard(story, index, usedPublicImageUrls))
+        .join("");
 
       const remainder = currentStories.slice(3);
       newStoriesHeader.style.display = remainder.length ? "flex" : "none";
       storiesGrid.innerHTML = remainder.length
-        ? remainder.map(renderStoryCard).join("")
+        ? remainder.map((story) => renderStoryCard(story, usedPublicImageUrls)).join("")
         : "";
       heroStoryIndex = 0;
       updateCategoryCounts();
@@ -4113,20 +4120,33 @@
       return fallbackStoryImages[category] || fallbackStoryImages.lifestyle;
     }
 
-    function getFeatureImageUrl(story, usedImageUrls) {
-      const candidates = [
+    function getPublicStoryImageCandidates(story) {
+      return [
         getRenderableImageUrl(story),
         getFallbackStoryImage(story),
-        ...Object.values(fallbackStoryImages),
-        ...stories.map((entry) => getRenderableImageUrl(entry))
-      ];
-      const uniqueCandidates = candidates
+        ...Object.values(fallbackStoryImages)
+      ]
         .map((value) => String(value || "").trim())
         .filter(Boolean)
+        .filter((value) => !knownBrokenStoryImages.has(value))
         .filter((value, index, values) => values.indexOf(value) === index);
-      const imageUrl = uniqueCandidates.find((value) => !usedImageUrls || !usedImageUrls.has(value)) || uniqueCandidates[0] || "";
-      if (imageUrl && usedImageUrls) usedImageUrls.add(imageUrl);
-      return imageUrl;
+    }
+
+    function takeUniqueImageUrl(candidates, usedImageUrls, excludedUrls = []) {
+      const excluded = new Set(excludedUrls.filter(Boolean));
+      const chosen = candidates.find((value) => {
+        if (!value || excluded.has(value)) return false;
+        return !usedImageUrls || !usedImageUrls.has(value);
+      }) || "";
+      if (chosen && usedImageUrls) usedImageUrls.add(chosen);
+      return chosen;
+    }
+
+    function getPublicStoryImagePair(story, usedImageUrls) {
+      const candidates = getPublicStoryImageCandidates(story);
+      const imageUrl = takeUniqueImageUrl(candidates, usedImageUrls);
+      const fallbackImageUrl = "";
+      return { imageUrl, fallbackImageUrl };
     }
 
     function cssImageUrl(value) {
