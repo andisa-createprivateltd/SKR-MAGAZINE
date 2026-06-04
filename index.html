@@ -3601,12 +3601,12 @@
         : '<p class="archive-empty">No ' + escapeHtml(selectedArchiveCategory) + ' stories published yet.</p>';
     }
 
-    function renderFeatureCard(story, index) {
+    function renderFeatureCard(story, index, usedFeatureImageUrls) {
       const title = getStoryDisplayTitle(story, placeholderFeatures[index].title);
       const category = story.category || placeholderFeatures[index].category;
       const renderableImageUrl = getRenderableImageUrl(story);
       const fallbackImageUrl = getFallbackStoryImage(story);
-      const imageUrl = renderableImageUrl || fallbackImageUrl;
+      const imageUrl = getFeatureImageUrl(story, usedFeatureImageUrls);
       const fallbackAttr = escapeHtml(fallbackImageUrl || "");
       const imageError = fallbackImageUrl && renderableImageUrl !== fallbackImageUrl
         ? 'const fallback=this.getAttribute(&quot;data-fallback-src&quot;);if(fallback&&this.src!==fallback){this.src=fallback;this.removeAttribute(&quot;data-fallback-src&quot;);}else{this.style.display=&quot;none&quot;;}'
@@ -3658,9 +3658,10 @@
     function renderPublicStories() {
       const currentStories = getCurrentStories();
       const featured = currentStories.slice(0, 3);
+      const usedFeatureImageUrls = new Set();
       featureGrid.innerHTML = (featured.length
-        ? featured.map((story, index) => renderFeatureCard(story, index))
-        : placeholderFeatures.map((fallback, index) => renderFeatureCard(fallback, index))
+        ? featured.map((story, index) => renderFeatureCard(story, index, usedFeatureImageUrls))
+        : placeholderFeatures.map((fallback, index) => renderFeatureCard(fallback, index, usedFeatureImageUrls))
       ).join("");
 
       const remainder = currentStories.slice(3);
@@ -4110,6 +4111,22 @@
     function getFallbackStoryImage(story) {
       const category = String(story && story.category || "").trim().toLowerCase();
       return fallbackStoryImages[category] || fallbackStoryImages.lifestyle;
+    }
+
+    function getFeatureImageUrl(story, usedImageUrls) {
+      const candidates = [
+        getRenderableImageUrl(story),
+        getFallbackStoryImage(story),
+        ...Object.values(fallbackStoryImages),
+        ...stories.map((entry) => getRenderableImageUrl(entry))
+      ];
+      const uniqueCandidates = candidates
+        .map((value) => String(value || "").trim())
+        .filter(Boolean)
+        .filter((value, index, values) => values.indexOf(value) === index);
+      const imageUrl = uniqueCandidates.find((value) => !usedImageUrls || !usedImageUrls.has(value)) || uniqueCandidates[0] || "";
+      if (imageUrl && usedImageUrls) usedImageUrls.add(imageUrl);
+      return imageUrl;
     }
 
     function cssImageUrl(value) {
