@@ -2113,7 +2113,8 @@
     const knownBrokenStoryImages = new Set([
       "https://cfonxqjjpfjyvperqoee.supabase.co/storage/v1/object/public/skr-images/stories/1780301122060-hjsaktfwoaikovp.jpeg",
       "https://cfonxqjjpfjyvperqoee.supabase.co/storage/v1/object/public/skr-images/stories/1780300575250-hd1uunaboaq5z6x.jpeg",
-      "https://cfonxqjjpfjyvperqoee.supabase.co/storage/v1/object/public/skr-images/stories/1779679625402-grqmx2uxwaeupdg.jpeg"
+      "https://cfonxqjjpfjyvperqoee.supabase.co/storage/v1/object/public/skr-images/stories/1779679625402-grqmx2uxwaeupdg.jpeg",
+      "https://cfonxqjjpfjyvperqoee.supabase.co/storage/v1/object/public/skr-images/stories/1779790762696-55be71b8-cde9-4aaa-9c97-2fb21077d6d2.jpeg"
     ]);
 
     const supabaseReady = Boolean(window.supabase && SUPABASE_URL && SUPABASE_ANON_KEY);
@@ -3398,8 +3399,8 @@
       const historyMode = options.historyMode || "replace";
       activeArticleStoryId = story.id || "";
       const renderableImageUrl = getRenderableImageUrl(story);
-      const fallbackImageUrl = getFallbackStoryImage(story);
-      const articleImageUrl = renderableImageUrl || fallbackImageUrl;
+      const fallbackImageUrl = "";
+      const articleImageUrl = renderableImageUrl;
       if (articleImageUrl) {
         articleImage.dataset.fallbackSrc = fallbackImageUrl || "";
         articleImage.src = articleImageUrl;
@@ -3615,17 +3616,17 @@
       const fallbackAttr = escapeHtml(fallbackImageUrl || "");
       const imageError = fallbackImageUrl && imageUrl !== fallbackImageUrl
         ? 'const fallback=this.getAttribute(&quot;data-fallback-src&quot;);if(fallback&&this.src!==fallback){this.src=fallback;this.removeAttribute(&quot;data-fallback-src&quot;);}else{this.style.display=&quot;none&quot;;}'
-        : 'this.style.display=&quot;none&quot;';
-      const imageStyle = `background:${placeholderFeatures[index].image};`;
+        : 'const media=this.closest(&quot;.fc-img&quot;);if(media){media.remove();}else{this.style.display=&quot;none&quot;;}';
+      const imageStyle = imageUrl ? `background:${placeholderFeatures[index].image};` : "";
       const readTarget = story && story.id ? ' data-read-id="' + escapeHtml(story.id) + '"' : "";
       const readHref = story && story.id ? escapeHtml(getStoryCanonicalPath(story)) : "#";
       return '<article class="feature-card">' +
         '<div class="fc-inner">' +
-          '<div class="fc-img" style="' + imageStyle + '">' +
+          (imageUrl ? '<div class="fc-img" style="' + imageStyle + '">' +
             (imageUrl
               ? '<img class="fc-img-el" src="' + escapeHtml(imageUrl) + '" data-fallback-src="' + fallbackAttr + '" alt="' + escapeHtml(title.replace(/<[^>]*>/g, "")) + '" loading="lazy" decoding="async" onerror="' + imageError + '">'
               : "") +
-          '</div>' +
+          '</div>' : "") +
           '<div class="fc-overlay"></div>' +
           '<div class="fc-content">' +
             '<div class="fc-tag"><span>' + escapeHtml(category) + '</span></div>' +
@@ -3645,14 +3646,14 @@
       const fallbackAttr = escapeHtml(fallbackImageUrl || "");
       const imageError = fallbackImageUrl && imageUrl !== fallbackImageUrl
         ? 'this.onerror=null;this.src=this.getAttribute(&quot;data-fallback-src&quot;);'
-        : 'this.style.display=&quot;none&quot;';
-      return '<article class="story-card">' +
-        '<div class="story-card-img">' +
-          (imageUrl
-            ? '<img src="' + escapeHtml(imageUrl) + '" data-fallback-src="' + fallbackAttr + '" alt="' + escapeHtml(getStoryDisplayTitle(story)) + '" loading="lazy" decoding="async" onerror="' + imageError + '">'
-            : '<div class="story-card-img-placeholder" aria-hidden="true"></div>') +
-          '<div class="story-img-overlay"></div>' +
-        '</div>' +
+        : 'const media=this.closest(&quot;.story-card-img&quot;);if(media){media.remove();}else{this.style.display=&quot;none&quot;;}';
+      return '<article class="story-card' + (imageUrl ? "" : " story-card-no-image") + '">' +
+        (imageUrl
+          ? '<div class="story-card-img">' +
+              '<img src="' + escapeHtml(imageUrl) + '" data-fallback-src="' + fallbackAttr + '" alt="' + escapeHtml(getStoryDisplayTitle(story)) + '" loading="lazy" decoding="async" onerror="' + imageError + '">' +
+              '<div class="story-img-overlay"></div>' +
+            '</div>'
+          : "") +
         '<p class="story-tag">' + escapeHtml(tag) + '</p>' +
         '<h3 class="story-title">' + escapeHtml(getStoryDisplayTitle(story)) + '</h3>' +
         (story.excerpt ? '<p class="story-excerpt">' + escapeHtml(story.excerpt) + '</p>' : "") +
@@ -3693,8 +3694,7 @@
       }
       const displayTitle = getStoryDisplayTitle(story, "SKR Cover Story");
       const renderableImageUrl = getRenderableImageUrl(story);
-      const fallbackImageUrl = getFallbackStoryImage(story);
-      const heroImages = [renderableImageUrl, fallbackImageUrl]
+      const heroImages = [renderableImageUrl]
         .filter(Boolean)
         .filter((value, valueIndex, values) => values.indexOf(value) === valueIndex)
         .map((value) => `url("${cssImageUrl(value)}")`);
