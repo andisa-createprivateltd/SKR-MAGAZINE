@@ -3663,11 +3663,8 @@
     function renderPublicStories() {
       const currentStories = getCurrentStories();
       const featured = currentStories.slice(0, 3);
-      const featuredEntries = featured.length
-        ? featured.concat(placeholderFeatures.slice(featured.length, 3))
-        : placeholderFeatures;
       const usedPublicImageUrls = new Set();
-      featureGrid.innerHTML = featuredEntries
+      featureGrid.innerHTML = featured
         .map((story, index) => renderFeatureCard(story, index, usedPublicImageUrls))
         .join("");
 
@@ -3957,23 +3954,23 @@
       }
       const primaryLoad = await supabaseClient
         .from(TABLE_NAME)
-        .select("id, created_at, title, excerpt, category, brand, image_url")
+        .select("*")
         .order("created_at", { ascending: false });
       const data = (primaryLoad.data || []).map((story) => {
-        const title = story.title || "";
+        const title = story.title || story.headline || "";
         return {
           id: story.id,
           created_at: story.created_at,
           title,
           excerpt: story.excerpt || "",
-          body: "",
+          body: story.body || "",
           category: story.category || "",
           brand: story.brand || "",
           image_url: story.image_url || "",
-          slug: createSlug(title),
-          content_type: "article",
-          video_url: null,
-          video_duration: null
+          slug: story.slug || createSlug(title),
+          content_type: story.content_type || "article",
+          video_url: story.video_url || null,
+          video_duration: story.video_duration == null ? null : story.video_duration
         };
       });
       const error = primaryLoad.error;
@@ -3987,7 +3984,7 @@
       } else {
         const remoteStories = data || [];
         await pruneLocalStoryCacheAgainstRemote(remoteStories);
-        stories = await mergeVisibleStoriesWithLocalCache(remoteStories);
+        stories = remoteStories.slice();
         stories = await removeBrokenStoryImages(stories);
         applyPendingStoryHydration();
         suppressRemoteStoryErrors = false;
@@ -4145,7 +4142,7 @@
     function getPublicStoryImagePair(story, usedImageUrls) {
       const candidates = getPublicStoryImageCandidates(story);
       const imageUrl = takeUniqueImageUrl(candidates, usedImageUrls);
-      const fallbackImageUrl = "";
+      const fallbackImageUrl = candidates.find((candidate) => candidate && candidate !== imageUrl) || "";
       return { imageUrl, fallbackImageUrl };
     }
 
