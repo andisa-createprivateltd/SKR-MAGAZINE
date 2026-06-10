@@ -4140,9 +4140,9 @@
     }
 
     function getPublicStoryImagePair(story, usedImageUrls) {
-      const candidates = getPublicStoryImageCandidates(story);
-      const imageUrl = takeUniqueImageUrl(candidates, usedImageUrls);
-      const fallbackImageUrl = candidates.find((candidate) => candidate && candidate !== imageUrl) || "";
+      const imageUrl = getRenderableImageUrl(story);
+      if (imageUrl && usedImageUrls) usedImageUrls.add(imageUrl);
+      const fallbackImageUrl = "";
       return { imageUrl, fallbackImageUrl };
     }
 
