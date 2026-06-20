@@ -99,7 +99,7 @@
       display: none;
       gap: 2.5rem;
     }
-    .nav-links a, .nav-issue, .admin-btn, .hero-read, .section-header a, .story-tag, .cat-label, .cat-count, .sub-eyebrow, .sub-btn, .foot-tag, .foot-col-title, .foot-social a, .foot-bottom p, .login-panel p, .login-btn, .admin-tab, .admin-logout, .form-label, .submit-story-btn, .delete-btn, .admin-story-badge, .issue-band p, .issue-band strong, .marquee-item, .news-updated, .news-refresh, .news-warning, .news-topic-label, .news-meta, .news-use, .form-success, .form-error, .form-status, .connection-pill, .nav-menu-trigger, .nav-menu-panel a {
+    .nav-links a, .nav-issue, .admin-btn, .hero-read, .section-header a, .story-tag, .cat-label, .cat-count, .sub-eyebrow, .sub-btn, .foot-tag, .foot-col-title, .foot-social a, .foot-bottom p, .login-panel p, .login-btn, .admin-tab, .admin-logout, .form-label, .submit-story-btn, .delete-btn, .admin-story-badge, .issue-band p, .issue-band strong, .marquee-item, .news-updated, .news-refresh, .news-warning, .news-topic-label, .news-meta, .news-use, .form-success, .form-error, .form-status, .connection-pill, .nav-menu-trigger, .nav-menu-panel a, .wc-kicker, .wc-stat-label, .wc-match-meta, .wc-filter-btn, .wc-widget-link, .wc-back-link, .wc-news-source {
       font-size: 0.58rem;
       letter-spacing: 0.28em;
       text-transform: uppercase;
@@ -508,6 +508,66 @@
       height: 100%;
       background: linear-gradient(140deg,#0d0d0d 0%,#171717 52%,#0a0a0a 100%);
     }
+    .media-placeholder {
+      width: 100%;
+      height: 100%;
+      min-height: inherit;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-start;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at top right, rgba(201,168,76,0.1), transparent 32%),
+        linear-gradient(160deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.02) 42%, rgba(10,10,10,0.98) 100%);
+      color: var(--white);
+    }
+    .media-placeholder::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(10,10,10,0.9) 0%, rgba(10,10,10,0.24) 54%, transparent 78%);
+      pointer-events: none;
+    }
+    .media-placeholder-inner {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      padding: 1.1rem 1rem;
+      display: grid;
+      gap: 0.55rem;
+      align-content: end;
+    }
+    .media-placeholder-kicker {
+      font-size: 0.52rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--light-mid);
+    }
+    .media-placeholder-title {
+      font-family: var(--serif);
+      font-size: 1rem;
+      line-height: 1.18;
+      font-weight: 300;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .media-placeholder-note {
+      font-size: 0.56rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--mid);
+    }
+    .fc-img.media-placeholder {
+      position: absolute;
+      inset: 0;
+    }
+    .story-card-img.media-placeholder {
+      margin-bottom: 1.4rem;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
     .story-img-overlay {
       position: absolute;
       inset: 0;
@@ -633,6 +693,377 @@
       font-size: 1.2rem;
       color: var(--mid);
       font-style: italic;
+    }
+    .worldcup-widget {
+      padding: 2rem 4rem 5rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      background:
+        radial-gradient(circle at 16% 12%, rgba(255,255,255,0.045), transparent 32rem),
+        radial-gradient(circle at 88% 50%, rgba(201,168,76,0.05), transparent 28rem),
+        #050505;
+    }
+    .wc-widget-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 0.95fr) minmax(28rem, 1.05fr);
+      align-items: center;
+      gap: clamp(2rem, 4vw, 4rem);
+      min-height: 34rem;
+      border: 1px solid rgba(255,255,255,0.12);
+      background:
+        linear-gradient(135deg, rgba(18,18,18,0.86), rgba(5,5,5,0.98)),
+        linear-gradient(90deg, rgba(255,255,255,0.035), transparent 42%);
+      padding: clamp(2.6rem, 4.5vw, 4.8rem);
+      box-shadow: inset 0 0 90px rgba(255,255,255,0.025);
+    }
+    .wc-widget-copy {
+      max-width: 46rem;
+    }
+    .wc-kicker {
+      color: #c9a84c;
+      margin-bottom: 1.15rem;
+    }
+    .wc-title {
+      font-family: var(--serif);
+      font-size: clamp(3.1rem, 6.7vw, 7.15rem);
+      font-weight: 300;
+      line-height: 0.92;
+      letter-spacing: -0.045em;
+      max-width: 13ch;
+    }
+    .wc-copy {
+      color: rgba(222,218,210,0.68);
+      font-size: 0.8rem;
+      line-height: 1.8;
+      max-width: 42rem;
+    }
+    .wc-countdown {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.72rem;
+      margin: 2.55rem 0 3rem;
+      max-width: 43rem;
+    }
+    .wc-count-box {
+      min-height: 7.2rem;
+      border: 1px solid rgba(255,255,255,0.11);
+      padding: 1.25rem 1rem;
+      background: rgba(255,255,255,0.025);
+    }
+    .wc-count-value {
+      display: block;
+      font-family: var(--serif);
+      font-size: clamp(2.35rem, 4vw, 4.25rem);
+      line-height: 0.9;
+      color: var(--white);
+    }
+    .wc-count-label {
+      display: block;
+      margin-top: 0.55rem;
+      font-size: 0.55rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--mid);
+    }
+    .wc-live-dot {
+      display: inline-block;
+      width: 0.55rem;
+      height: 0.55rem;
+      margin-right: 0.5rem;
+      border-radius: 999px;
+      background: #cc3333;
+      box-shadow: 0 0 0 rgba(204,51,51,0.5);
+      animation: wcPulse 1.6s infinite;
+    }
+    @keyframes wcPulse {
+      0% { box-shadow: 0 0 0 0 rgba(204,51,51,0.45); }
+      70% { box-shadow: 0 0 0 0.7rem rgba(204,51,51,0); }
+      100% { box-shadow: 0 0 0 0 rgba(204,51,51,0); }
+    }
+    .wc-mini-list {
+      display: grid;
+      gap: 1rem;
+    }
+    .wc-mini-match,
+    .wc-match-card {
+      border: 1px solid rgba(255,255,255,0.08);
+      background: #101010;
+    }
+    .wc-mini-match {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 8.6rem;
+      padding: 1.35rem 1.55rem;
+      background: rgba(255,255,255,0.025);
+    }
+    .wc-match-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      color: #dedad2;
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      line-height: 1.2;
+    }
+    .wc-mini-teams {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      align-items: center;
+      gap: 1.25rem;
+      width: 100%;
+    }
+    .wc-mini-team {
+      min-width: 0;
+    }
+    .wc-mini-team.away {
+      text-align: right;
+    }
+    .wc-versus {
+      color: var(--light-mid);
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      line-height: 1;
+    }
+    .wc-match-meta {
+      color: var(--mid);
+      margin-top: 0.85rem;
+      line-height: 1.5;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+    }
+    .wc-widget-link,
+    .wc-back-link {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      color: var(--light-mid);
+      border-bottom: 1px solid rgba(255,255,255,0.18);
+      padding-bottom: 0.45rem;
+      margin-top: 1.4rem;
+      transition: color 0.3s ease, border-color 0.3s ease;
+    }
+    .wc-widget-link:hover,
+    .wc-back-link:hover {
+      color: var(--white);
+      border-color: rgba(255,255,255,0.42);
+    }
+    .worldcup-page {
+      display: none;
+      padding: 9rem 4rem 5rem;
+      background: #090909;
+      min-height: 100vh;
+    }
+    body.worldcup-active .worldcup-page {
+      display: block;
+    }
+    body.worldcup-active .hero,
+    body.worldcup-active .issue-band,
+    body.worldcup-active .marquee-wrap,
+    body.worldcup-active #featuredStories,
+    body.worldcup-active #featureGrid,
+    body.worldcup-active #newStoriesHeader,
+    body.worldcup-active #storiesGrid,
+    body.worldcup-active #worldcupWidget,
+    body.worldcup-active #categories,
+    body.worldcup-active #categoryArchive,
+    body.worldcup-active #subscribe,
+    body.worldcup-active footer,
+    body.worldcup-active .foot-bottom {
+      display: none !important;
+    }
+    .wc-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(20rem, 0.78fr);
+      gap: 4rem;
+      align-items: end;
+      padding-bottom: 4rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .wc-hero.has-story-image {
+      position: relative;
+      isolation: isolate;
+      min-height: 34rem;
+      padding: 3rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      overflow: hidden;
+      background: #0d0d0d;
+    }
+    .wc-hero.has-story-image::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(90deg, rgba(9,9,9,0.92) 0%, rgba(9,9,9,0.78) 38%, rgba(9,9,9,0.52) 100%),
+        var(--wc-hero-image);
+      background-size: cover;
+      background-position: center;
+      z-index: -2;
+    }
+    .wc-hero.has-story-image::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(9,9,9,0.04) 0%, rgba(9,9,9,0.5) 100%);
+      z-index: -1;
+    }
+    .wc-hero.has-story-image > * {
+      position: relative;
+      z-index: 1;
+    }
+    .wc-hero-copy {
+      max-width: 44rem;
+    }
+    .wc-heading {
+      font-family: var(--serif);
+      font-size: clamp(3.4rem, 8vw, 8.5rem);
+      font-weight: 300;
+      line-height: 0.86;
+      letter-spacing: -0.06em;
+      max-width: 11ch;
+    }
+    .wc-hero-panel {
+      border: 1px solid rgba(255,255,255,0.08);
+      background:
+        radial-gradient(circle at top right, rgba(201,168,76,0.13), transparent 38%),
+        #101010;
+      padding: 2rem;
+    }
+    .wc-stat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.7rem;
+      margin-top: 2rem;
+    }
+    .wc-stat {
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 0.85rem;
+    }
+    .wc-stat-value {
+      display: block;
+      font-family: var(--serif);
+      font-size: 2rem;
+      line-height: 1;
+    }
+    .wc-stat-label {
+      display: block;
+      color: var(--mid);
+      margin-top: 0.45rem;
+      line-height: 1.45;
+    }
+    .wc-tabs,
+    .wc-filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 2rem 0 1.5rem;
+    }
+    .wc-filter-btn {
+      border: 1px solid rgba(255,255,255,0.1);
+      background: transparent;
+      color: var(--mid);
+      padding: 0.7rem 0.9rem;
+      cursor: pointer;
+      transition: border-color 0.3s ease, color 0.3s ease, background 0.3s ease;
+    }
+    .wc-filter-btn.active,
+    .wc-filter-btn:hover {
+      color: var(--white);
+      border-color: rgba(255,255,255,0.28);
+      background: rgba(255,255,255,0.04);
+    }
+    .wc-carousel-shell {
+      position: relative;
+    }
+    .wc-carousel {
+      display: flex;
+      gap: 0.55rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 0.4rem;
+    }
+    .wc-carousel::-webkit-scrollbar {
+      display: none;
+    }
+    .wc-match-card {
+      flex: 0 0 178px;
+      min-height: 170px;
+      padding: 1rem;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .wc-match-card.final {
+      border-color: rgba(201,168,76,0.42);
+    }
+    .wc-teams {
+      display: grid;
+      gap: 0.45rem;
+      font-family: var(--serif);
+      font-size: 1.08rem;
+      line-height: 1.15;
+      color: #dedad2;
+    }
+    .wc-team {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.8rem;
+    }
+    .wc-score {
+      color: #c9a84c;
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+    }
+    .wc-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    .wc-group-card,
+    .wc-news-card {
+      border: 1px solid rgba(255,255,255,0.08);
+      background: #101010;
+      padding: 1.4rem;
+    }
+    .wc-group-title {
+      font-family: var(--serif);
+      font-size: 1.5rem;
+      font-weight: 300;
+      margin-bottom: 1rem;
+    }
+    .wc-team-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.55rem 0;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      color: rgba(222,218,210,0.8);
+      font-size: 0.78rem;
+    }
+    .wc-advance-dot {
+      width: 0.45rem;
+      height: 0.45rem;
+      border-radius: 999px;
+      background: #c9a84c;
+      opacity: 0.9;
+    }
+    .wc-news-title {
+      font-family: var(--serif);
+      font-size: 1.45rem;
+      font-weight: 300;
+      line-height: 1.18;
+      margin: 0.6rem 0 1.1rem;
+    }
+    .wc-news-source {
+      color: var(--mid);
     }
     .subscribe {
       padding: 8rem 4rem;
@@ -1333,10 +1764,26 @@
       to { transform: rotate(360deg); }
     }
     @media (max-width: 1100px) {
-      nav, .hero-content, .issue-band, .section-header, .feature-grid, .stories-grid, .categories, .subscribe, footer, .foot-bottom { padding-left: 2rem; padding-right: 2rem; }
+      nav, .hero-content, .issue-band, .section-header, .feature-grid, .stories-grid, .categories, .worldcup-widget, .worldcup-page, .subscribe, footer, .foot-bottom { padding-left: 2rem; padding-right: 2rem; }
       .feature-grid, .stories-grid, .cat-grid, .archive-grid, footer { grid-template-columns: 1fr 1fr; }
       .feature-card:first-child { grid-column: span 2; }
       .subscribe { flex-direction: column; align-items: flex-start; }
+      .wc-widget-inner,
+      .wc-hero {
+        grid-template-columns: 1fr;
+      }
+      .wc-widget-inner {
+        min-height: 0;
+      }
+      .wc-widget-copy {
+        max-width: 100%;
+      }
+      .wc-title {
+        max-width: 12ch;
+      }
+      .wc-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
       .nav-links { display: none; }
       .nav-right { gap: 0.9rem; }
       .hero-content { max-width: 760px; }
@@ -1377,6 +1824,9 @@
       .sub-form {
         min-width: 0;
         width: 100%;
+      }
+      .wc-stat-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
     @media (max-width: 720px) {
@@ -1436,8 +1886,8 @@
       }
       .fc-title,
       .feature-card:first-child .fc-title {
-        font-size: clamp(1.8rem, 8vw, 2.5rem);
-        line-height: 1.08;
+        font-size: clamp(1.55rem, 7vw, 2.15rem);
+        line-height: 1.12;
         margin-bottom: 1rem;
       }
       .form-group.full { grid-column: span 1; }
@@ -1500,6 +1950,8 @@
       .feature-grid,
       .stories-grid,
       .categories,
+      .worldcup-widget,
+      .worldcup-page,
       .subscribe,
       footer,
       .foot-bottom {
@@ -1571,6 +2023,13 @@
       .hero-meta {
         gap: 0.85rem;
       }
+      .nav-logo img {
+        max-width: 88px;
+        height: auto;
+      }
+      .nav-issue {
+        gap: 0.4rem;
+      }
       .hero-tag {
         gap: 0.7rem;
         margin-bottom: 1rem;
@@ -1589,6 +2048,65 @@
       }
       .story-card-img {
         aspect-ratio: 4 / 5;
+      }
+      .worldcup-widget {
+        padding-top: 0.85rem;
+        padding-bottom: 2.75rem;
+      }
+      .wc-widget-inner,
+      .wc-hero-panel,
+      .wc-group-card,
+      .wc-news-card {
+        padding: 1.25rem;
+      }
+      .wc-widget-inner {
+        border-left: 0;
+        border-right: 0;
+        gap: 1.65rem;
+      }
+      .wc-title {
+        max-width: 100%;
+        font-size: clamp(2.7rem, 13.4vw, 4.25rem);
+        letter-spacing: -0.04em;
+      }
+      .wc-countdown {
+        margin: 1.6rem 0 2rem;
+      }
+      .wc-count-box {
+        min-height: 5.7rem;
+      }
+      .wc-count-value {
+        font-size: clamp(2.2rem, 11vw, 3.4rem);
+      }
+      .wc-mini-list {
+        gap: 0.8rem;
+      }
+      .wc-mini-match {
+        min-height: 0;
+        padding: 1rem;
+      }
+      .wc-mini-teams {
+        gap: 0.7rem;
+        font-size: 0.95rem;
+      }
+      .wc-match-meta {
+        letter-spacing: 0.22em;
+      }
+      .worldcup-page {
+        padding-top: 8.2rem;
+        padding-bottom: 3rem;
+      }
+      .wc-heading {
+        font-size: clamp(3.2rem, 18vw, 5.4rem);
+      }
+      .wc-countdown {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .wc-grid {
+        grid-template-columns: 1fr;
+      }
+      .wc-match-card {
+        flex-basis: 76vw;
       }
       .fc-content {
         padding: 1rem 0 0.1rem;
@@ -1625,6 +2143,7 @@
       <li><a href="#categories">Sport</a></li>
       <li><a href="#categories">Watches</a></li>
       <li><a href="#subscribe">Travel</a></li>
+      <li><a href="/worldcup" data-worldcup-link>World Cup</a></li>
     </ul>
     <div class="nav-right">
       <span class="nav-issue"><span id="navIssueLabel">MAGAZINE / WINTER 2026 · LIVE · 22 MAY · 16:46</span></span>
@@ -1637,6 +2156,7 @@
           <a href="#categories">Sport</a>
           <a href="#categories">Watches</a>
           <a href="#subscribe">Travel</a>
+          <a href="/worldcup" data-worldcup-link>World Cup 2026</a>
         </div>
       </div>
       <button class="admin-btn" id="addStoryBtn" type="button">+ Add Story</button>
@@ -1701,6 +2221,10 @@
       <a href="#categories">Browse by section →</a>
     </div>
     <div class="stories-grid" id="storiesGrid"></div>
+
+    <section class="worldcup-widget" id="worldcupWidget" aria-label="World Cup 2026 live coverage"></section>
+
+    <section class="worldcup-page" id="worldcupPage" aria-label="World Cup 2026 coverage"></section>
 
     <section class="categories" id="categories">
       <p class="cat-label">Browse by category</p>
@@ -1848,6 +2372,7 @@
               <div class="form-group">
                 <label class="form-label" for="fBrand">Brand / Subject tag</label>
                 <input type="text" id="fBrand" class="form-control" placeholder="e.g. Rolex, Ferrari, Converse">
+                <p class="media-helper">Add "FIFA" or "World Cup 2026" here to control the World Cup hero image.</p>
               </div>
             </div>
             <div class="form-group full">
@@ -1999,6 +2524,7 @@
     const ADMIN_MAX_ATTEMPTS = 5;
     const ADMIN_LOCK_MS = 10 * 60 * 1000;
     const BUCKET_NAME = "skr-images";
+    const STORY_META_PREFIX = "stories/meta";
     const TABLE_NAME = "stories";
     const MAX_PUBLIC_STORIES = 8;
     const PODCASTS_TABLE = "podcasts";
@@ -2010,8 +2536,8 @@
     const NEWS_KEY_STORAGE = "skr-news-api-key";
     const NEWS_CACHE_STORAGE = "skr-news-cache-v2";
     const PODCAST_CACHE_STORAGE = "skr-podcast-cache-v1";
-    const STORY_CACHE_STORAGE = "skr-story-cache-v1";
-    const STORY_HYDRATION_STORAGE = "skr-story-hydration-v1";
+    const STORY_CACHE_STORAGE = "skr-story-cache-v2";
+    const STORY_HYDRATION_STORAGE = "skr-story-hydration-v2";
     const ADMIN_REVEAL_STORAGE = "skr-admin-revealed";
     const MEDIA_LIBRARY_DB = "skr-media-library";
     const MEDIA_LIBRARY_STORE = "assets";
@@ -2097,25 +2623,172 @@
       ]
     };
 
+    function createCategoryFallbackImage(label, accent) {
+      const safeLabel = String(label || "SKR")
+        .trim()
+        .toUpperCase()
+        .replace(/[^A-Z0-9 ]/g, "")
+        .slice(0, 18) || "SKR";
+      const safeAccent = String(accent || "#3a3a3a").trim();
+      const svg = [
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1600" preserveAspectRatio="xMidYMid slice">',
+        '<defs>',
+        '<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">',
+        '<stop offset="0%" stop-color="#090909"/>',
+        '<stop offset="55%" stop-color="#121212"/>',
+        '<stop offset="100%" stop-color="#070707"/>',
+        '</linearGradient>',
+        "</defs>",
+        '<rect width="1200" height="1600" fill="url(#bg)"/>',
+        '<rect x="72" y="72" width="1056" height="1456" rx="0" ry="0" fill="none" stroke="rgba(255,255,255,0.09)"/>',
+        '<line x1="72" y1="152" x2="1128" y2="152" stroke="' + safeAccent + '" stroke-opacity="0.4"/>',
+        '<circle cx="160" cy="152" r="7" fill="' + safeAccent + '" fill-opacity="0.55"/>',
+        '<text x="140" y="210" fill="' + safeAccent + '" fill-opacity="0.88" font-family="Helvetica, Arial, sans-serif" font-size="34" letter-spacing="12">SKR MAGAZINE</text>',
+        '<text x="600" y="760" text-anchor="middle" fill="rgba(248,247,245,0.9)" font-family="Georgia, Times New Roman, serif" font-size="146">' + safeLabel + "</text>",
+        '<text x="600" y="860" text-anchor="middle" fill="rgba(248,247,245,0.48)" font-family="Helvetica, Arial, sans-serif" font-size="34" letter-spacing="12">IMAGE COMING SOON</text>',
+        '<line x1="280" y1="926" x2="920" y2="926" stroke="' + safeAccent + '" stroke-opacity="0.3"/>',
+        "</svg>"
+      ].join("");
+      return "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(svg);
+    }
+
     const placeholderFeatures = [
       { category: "Sport", title: "Yuki Tsunoda steps into what his new boss calls <em>the hardest seat in Formula 1</em>", image: "linear-gradient(135deg,#111 0%,#1e1a14 50%,#111 100%)" },
       { category: "Lifestyle", title: "Mark Webber at the Formula 1 Rolex <em>Australian Grand Prix</em>", image: "linear-gradient(160deg,#0d1a0d 0%,#152515 50%,#1a2a1a 100%)" },
       { category: "Automobiles", title: "Airbus ACH H160 — <em>luxury reimagined</em> at altitude", image: "linear-gradient(140deg,#0a0f1a 0%,#121a2a 50%,#0d1520 100%)" }
     ];
     const fallbackStoryImages = {
-      sport: "https://cfonxqjjpfjyvperqoee.supabase.co/storage/v1/object/public/skr-images/stories/1779440470054-26c0129-004.jpg",
-      automobiles: "https://cfonxqjjpfjyvperqoee.supabase.co/storage/v1/object/public/skr-images/stories/1779440470054-26c0129-004.jpg",
-      watches: "https://cfonxqjjpfjyvperqoee.supabase.co/storage/v1/object/public/skr-images/stories/1779572474719-apxswatch-ecom-2-1920x1283-10.jpeg",
-      lifestyle: "https://cfonxqjjpfjyvperqoee.supabase.co/storage/v1/object/public/skr-images/stories/1778147689959-alexander-mils-yfeozz1teek-unsplash.jpg",
-      art: "https://cfonxqjjpfjyvperqoee.supabase.co/storage/v1/object/public/skr-images/stories/1778242180874-ashim-d-silva-d51kmfi2wmk-unsplash.jpg",
-      travel: "https://cfonxqjjpfjyvperqoee.supabase.co/storage/v1/object/public/skr-images/stories/1779450316831-26c0129-010.jpg"
+      sport: createCategoryFallbackImage("Sport", "#546a57"),
+      automobiles: createCategoryFallbackImage("Automobiles", "#6c6753"),
+      watches: createCategoryFallbackImage("Watches", "#545d6c"),
+      lifestyle: createCategoryFallbackImage("Lifestyle", "#4f6157"),
+      art: createCategoryFallbackImage("Art", "#66555f"),
+      travel: createCategoryFallbackImage("Travel", "#505e69")
     };
-    const knownBrokenStoryImages = new Set([
-      "https://cfonxqjjpfjyvperqoee.supabase.co/storage/v1/object/public/skr-images/stories/1780301122060-hjsaktfwoaikovp.jpeg",
-      "https://cfonxqjjpfjyvperqoee.supabase.co/storage/v1/object/public/skr-images/stories/1780300575250-hd1uunaboaq5z6x.jpeg",
-      "https://cfonxqjjpfjyvperqoee.supabase.co/storage/v1/object/public/skr-images/stories/1779679625402-grqmx2uxwaeupdg.jpeg",
-      "https://cfonxqjjpfjyvperqoee.supabase.co/storage/v1/object/public/skr-images/stories/1779790762696-55be71b8-cde9-4aaa-9c97-2fb21077d6d2.jpeg"
-    ]);
+    const knownBrokenStoryImages = new Set();
+    const WORLD_CUP_TARGET_MS = Date.parse("2026-06-12T03:00:00+02:00");
+    const WORLD_CUP_MATCHES = [
+      { id: 1, group: "Group A", home: "Mexico", away: "South Africa", homeFlag: "MX", awayFlag: "ZA", status: "upcoming", kickoff: "Jun 11 · 20:00 ET", venue: "Estadio Azteca" },
+      { id: 2, group: "Group B", home: "Canada", away: "Bosnia & Herzegovina", homeFlag: "CA", awayFlag: "BA", status: "upcoming", kickoff: "Jun 12 · 15:00 ET", venue: "BMO Field" },
+      { id: 3, group: "Group A", home: "South Korea", away: "Czechia", homeFlag: "KR", awayFlag: "CZ", status: "upcoming", kickoff: "Jun 12 · 22:00 ET", venue: "Estadio Akron" },
+      { id: 4, group: "Group D", home: "USA", away: "Paraguay", homeFlag: "US", awayFlag: "PY", status: "upcoming", kickoff: "Jun 13 · 00:00 ET", venue: "SoFi Stadium" },
+      { id: 5, group: "Group C", home: "Brazil", away: "Morocco", homeFlag: "BR", awayFlag: "MA", status: "upcoming", kickoff: "Jun 13 · 21:00 ET", venue: "AT&T Stadium" },
+      { id: 6, group: "Group C", home: "Haiti", away: "Scotland", homeFlag: "HT", awayFlag: "SC", status: "upcoming", kickoff: "Jun 13 · 15:00 ET", venue: "Levi's Stadium" },
+      { id: 7, group: "Group F", home: "England", away: "Croatia", homeFlag: "GB", awayFlag: "HR", status: "upcoming", kickoff: "Jun 17 · 18:00 ET", venue: "MetLife Stadium" },
+      { id: 8, group: "Group J", home: "Argentina", away: "Algeria", homeFlag: "AR", awayFlag: "DZ", status: "upcoming", kickoff: "Jun 16 · 06:00 ET", venue: "Hard Rock Stadium" },
+      { id: 9, group: "Group E", home: "Germany", away: "Japan", homeFlag: "DE", awayFlag: "JP", status: "upcoming", kickoff: "Jun 14 · 18:00 ET", venue: "Gillette Stadium" },
+      { id: 10, group: "Group I", home: "France", away: "Senegal", homeFlag: "FR", awayFlag: "SN", status: "upcoming", kickoff: "Jun 16 · 15:00 ET", venue: "Mercedes-Benz Stadium" },
+      { id: 11, group: "Group H", home: "Spain", away: "Uruguay", homeFlag: "ES", awayFlag: "UY", status: "upcoming", kickoff: "Jun 15 · 21:00 ET", venue: "NRG Stadium" },
+      { id: 12, group: "Group K", home: "Portugal", away: "Colombia", homeFlag: "PT", awayFlag: "CO", status: "upcoming", kickoff: "Jun 17 · 15:00 ET", venue: "Arrowhead Stadium" },
+      { id: 13, group: "Group L", home: "Netherlands", away: "Poland", homeFlag: "NL", awayFlag: "PL", status: "upcoming", kickoff: "Jun 14 · 15:00 ET", venue: "Lumen Field" },
+      { id: 14, group: "Group G", home: "Belgium", away: "Egypt", homeFlag: "BE", awayFlag: "EG", status: "upcoming", kickoff: "Jun 15 · 12:00 ET", venue: "Mercedes-Benz Stadium" },
+      { id: 15, group: "Final", home: "TBD", away: "TBD", homeFlag: "TBD", awayFlag: "TBD", status: "upcoming", kickoff: "Jul 19 · 15:00 ET", venue: "MetLife Stadium", isFinal: true }
+    ];
+    const WORLD_CUP_GROUPS = [
+      ["A", ["Mexico", "South Africa", "South Korea", "Czechia"]],
+      ["B", ["Canada", "Bosnia", "Honduras", "Tanzania"]],
+      ["C", ["Brazil", "Morocco", "Haiti", "Scotland"]],
+      ["D", ["USA", "Paraguay", "Australia", "Türkiye"]],
+      ["E", ["Germany", "Japan", "Chile", "Ghana"]],
+      ["F", ["England", "Croatia", "Albania", "New Zealand"]],
+      ["G", ["Belgium", "Egypt", "Iran", "New Zealand"]],
+      ["H", ["Spain", "Cape Verde", "Saudi Arabia", "Uruguay"]],
+      ["I", ["France", "Senegal", "Iraq", "Norway"]],
+      ["J", ["Argentina", "Algeria", "Jordan", "Denmark"]],
+      ["K", ["Portugal", "DR Congo", "Uzbekistan", "Colombia"]],
+      ["L", ["Netherlands", "Poland", "Ecuador", "Panama"]]
+    ];
+    const WORLD_CUP_FLAGS = {
+      Albania: "🇦🇱",
+      Algeria: "🇩🇿",
+      Argentina: "🇦🇷",
+      Australia: "🇦🇺",
+      Belgium: "🇧🇪",
+      Bosnia: "🇧🇦",
+      "Bosnia & Herzegovina": "🇧🇦",
+      Brazil: "🇧🇷",
+      Canada: "🇨🇦",
+      "Cape Verde": "🇨🇻",
+      Chile: "🇨🇱",
+      Colombia: "🇨🇴",
+      Croatia: "🇭🇷",
+      Czechia: "🇨🇿",
+      Denmark: "🇩🇰",
+      "DR Congo": "🇨🇩",
+      Ecuador: "🇪🇨",
+      Egypt: "🇪🇬",
+      England: "🏴",
+      France: "🇫🇷",
+      Germany: "🇩🇪",
+      Ghana: "🇬🇭",
+      Haiti: "🇭🇹",
+      Honduras: "🇭🇳",
+      Iran: "🇮🇷",
+      Iraq: "🇮🇶",
+      Japan: "🇯🇵",
+      Jordan: "🇯🇴",
+      Mexico: "🇲🇽",
+      Morocco: "🇲🇦",
+      Netherlands: "🇳🇱",
+      "New Zealand": "🇳🇿",
+      Norway: "🇳🇴",
+      Panama: "🇵🇦",
+      Paraguay: "🇵🇾",
+      Poland: "🇵🇱",
+      Portugal: "🇵🇹",
+      "Saudi Arabia": "🇸🇦",
+      Scotland: "🏴",
+      Senegal: "🇸🇳",
+      "South Africa": "🇿🇦",
+      "South Korea": "🇰🇷",
+      Spain: "🇪🇸",
+      Tanzania: "🇹🇿",
+      TBD: "—",
+      Türkiye: "🇹🇷",
+      Uruguay: "🇺🇾",
+      USA: "🇺🇸",
+      Uzbekistan: "🇺🇿"
+    };
+    const WORLD_CUP_FLAG_CODES = {
+      AR: "🇦🇷",
+      BA: "🇧🇦",
+      BE: "🇧🇪",
+      BR: "🇧🇷",
+      CA: "🇨🇦",
+      CO: "🇨🇴",
+      CZ: "🇨🇿",
+      DE: "🇩🇪",
+      DZ: "🇩🇿",
+      EG: "🇪🇬",
+      ES: "🇪🇸",
+      FR: "🇫🇷",
+      GB: "🏴",
+      HR: "🇭🇷",
+      HT: "🇭🇹",
+      JP: "🇯🇵",
+      KR: "🇰🇷",
+      MA: "🇲🇦",
+      MX: "🇲🇽",
+      NL: "🇳🇱",
+      PL: "🇵🇱",
+      PT: "🇵🇹",
+      PY: "🇵🇾",
+      SC: "🏴",
+      SN: "🇸🇳",
+      TBD: "—",
+      US: "🇺🇸",
+      UY: "🇺🇾",
+      ZA: "🇿🇦"
+    };
+    const WORLD_CUP_NEWS = [
+      { type: "Preview", title: "Mexico host South Africa in historic opener at the Azteca", source: "ESPN", time: "Today" },
+      { type: "Feature", title: "Messi's final frontier — Argentina hunt back-to-back glory in North America", source: "FIFA", time: "Today" },
+      { type: "Preview", title: "Brazil vs Morocco — Group C opens in Dallas with a match of giants", source: "BBC Sport", time: "Today" },
+      { type: "Analysis", title: "48 teams, 104 matches — the tournament that rewrites every record", source: "The Guardian", time: "11 Jun" },
+      { type: "Preview", title: "England meet Croatia again — but the stakes have shifted since 2018", source: "Sky Sports", time: "11 Jun" },
+      { type: "Feature", title: "The Round of 32: how the expanded bracket changes the knockout game", source: "UEFA", time: "10 Jun" }
+    ];
+    const WORLD_CUP_FILTERS = ["All", "Upcoming", "Live", "Group A", "Group B", "Group C", "Group D", "Final"];
 
     const supabaseReady = Boolean(window.supabase && SUPABASE_URL && SUPABASE_ANON_KEY);
     const supabaseClient = supabaseReady ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
@@ -2144,17 +2817,22 @@
     let pendingDeleteStoryId = "";
     let pendingStoryHydration = null;
     let pendingArticleLocator = null;
+    const remoteStoryMetaCache = new Map();
+    const remoteStorySnapshotCache = new Map();
     let refreshWindowReady = document.readyState === "complete";
     let refreshStoryLoadComplete = false;
     let refreshHeroReady = false;
     let refreshDismissScheduled = false;
     let refreshHeroWatchStarted = false;
     let refreshFailSafeTimer = null;
+    let worldCupFilter = "All";
 
     const nav = document.getElementById("nav");
     const featureGrid = document.getElementById("featureGrid");
     const storiesGrid = document.getElementById("storiesGrid");
     const newStoriesHeader = document.getElementById("newStoriesHeader");
+    const worldcupWidget = document.getElementById("worldcupWidget");
+    const worldcupPage = document.getElementById("worldcupPage");
     const adminStoriesList = document.getElementById("adminStoriesList");
     const connectionStatus = document.getElementById("connectionStatus");
     const loginOverlay = document.getElementById("loginOverlay");
@@ -2258,16 +2936,19 @@
       const date = now.toLocaleDateString("en-GB", {
         day: "2-digit",
         month: "short",
-        year: "numeric"
+        year: "numeric",
+        timeZone: "Africa/Johannesburg"
       }).toUpperCase();
       const shortDate = now.toLocaleDateString("en-GB", {
         day: "2-digit",
-        month: "short"
+        month: "short",
+        timeZone: "Africa/Johannesburg"
       }).toUpperCase();
       const time = now.toLocaleTimeString("en-GB", {
         hour: "2-digit",
         minute: "2-digit",
-        hour12: false
+        hour12: false,
+        timeZone: "Africa/Johannesburg"
       });
       return short
         ? `LIVE NOW · ${shortDate} · ${time}`
@@ -2301,6 +2982,15 @@
         normalizeStoryKeyPart(story && story.category),
         normalizeStoryKeyPart(story && story.brand)
       ].join("|");
+    }
+
+    function getStoryStableKey(story) {
+      if (!story) return "";
+      if (story.id) return "id:" + String(story.id);
+      if (story.slug) return "slug:" + String(story.slug);
+      const identityKey = buildStoryIdentityKey(story);
+      if (identityKey.replace(/\|/g, "")) return "key:" + identityKey;
+      return "";
     }
 
     function sanitizeStoryHydrationEntry(story) {
@@ -2384,23 +3074,73 @@
     function mergeHydratedStory(story, hydratedStory) {
       if (!hydratedStory) return story;
       const baseTitle = story && story.title ? story.title : "";
-      const nextTitle = hydratedStory.title || baseTitle;
+      const hydratedTitle = String(hydratedStory.title || "").trim();
+      const storyImageUrl = normalizePublicStoryImageUrl(story && story.image_url || "");
+      const hydratedImageUrl = normalizePublicStoryImageUrl(hydratedStory && hydratedStory.image_url || "");
+      const storyResolvedImageUrl = normalizePublicStoryImageUrl(story && story.resolved_image_url || "");
+      const hydratedResolvedImageUrl = normalizePublicStoryImageUrl(hydratedStory && hydratedStory.resolved_image_url || "");
+      const validStoryImage = Boolean(
+        storyImageUrl
+        && !isSessionOnlyImageUrl(storyImageUrl)
+        && !knownBrokenStoryImages.has(storyImageUrl)
+      );
+      const validHydratedImage = Boolean(
+        hydratedImageUrl
+        && !isSessionOnlyImageUrl(hydratedImageUrl)
+        && !knownBrokenStoryImages.has(hydratedImageUrl)
+      );
+      const mergedImageUrl = validStoryImage
+        ? storyImageUrl
+        : (validHydratedImage ? hydratedImageUrl : "");
+      const resolvedImageUrl = storyResolvedImageUrl
+        || (!validStoryImage && (hydratedResolvedImageUrl || mergedImageUrl))
+        || "";
+      const mergedTitle = baseTitle || hydratedTitle || "";
       return Object.assign({}, story, {
-        title: nextTitle,
-        excerpt: hydratedStory.excerpt || story.excerpt || "",
-        body: hydratedStory.body || story.body || "",
-        category: hydratedStory.category || story.category || "",
-        brand: hydratedStory.brand || story.brand || "",
-        image_url: hydratedStory.image_url || story.image_url || "",
-        slug: hydratedStory.slug || story.slug || createSlug(nextTitle),
-        content_type: hydratedStory.content_type || story.content_type || "article",
-        video_url: hydratedStory.video_url || story.video_url || null,
-        video_duration: hydratedStory.video_duration == null
-          ? (story.video_duration == null ? null : story.video_duration)
-          : hydratedStory.video_duration,
-        created_at: story.created_at || hydratedStory.created_at || new Date().toISOString(),
-        local_only: Boolean(story.local_only)
+        title: mergedTitle,
+        excerpt: String(story && story.excerpt || "").trim() || String(hydratedStory.excerpt || "").trim() || "",
+        body: String(story && story.body || "").trim() || String(hydratedStory.body || "").trim() || "",
+        category: String(story && story.category || "").trim() || String(hydratedStory.category || "").trim() || "",
+        brand: String(story && story.brand || "").trim() || String(hydratedStory.brand || "").trim() || "",
+        image_url: mergedImageUrl,
+        resolved_image_url: resolvedImageUrl,
+        slug: String(story && story.slug || "").trim() || String(hydratedStory.slug || "").trim() || createSlug(mergedTitle),
+        content_type: String(story && story.content_type || "").trim() || String(hydratedStory.content_type || "").trim() || "article",
+        video_url: story && Object.prototype.hasOwnProperty.call(story, "video_url")
+          ? (story.video_url || null)
+          : (hydratedStory.video_url || null),
+        video_duration: story && story.video_duration != null
+          ? story.video_duration
+          : (hydratedStory.video_duration == null ? null : hydratedStory.video_duration),
+        created_at: story && story.created_at ? story.created_at : (hydratedStory.created_at || new Date().toISOString()),
+        local_only: Boolean((story && story.local_only) || hydratedStory.local_only)
       });
+    }
+
+    function getRemoteStorySnapshot(story) {
+      const storyId = story && story.id ? String(story.id) : "";
+      if (!storyId) return null;
+      return remoteStorySnapshotCache.get(storyId) || null;
+    }
+
+    function getSnapshotStoryImageUrl(story) {
+      const snapshot = getRemoteStorySnapshot(story);
+      if (!snapshot) return "";
+      const imageUrl = String(
+        snapshot.image_url
+        || snapshot.image
+        || snapshot.cover_image
+        || snapshot.hero_image
+        || ""
+      ).trim();
+      return imageUrl && !isSessionOnlyImageUrl(imageUrl) ? imageUrl : "";
+    }
+
+    function getHydratedStoryImageUrl(story) {
+      const hydrationEntry = findStoryHydrationEntry(story, readStoryHydrationCache());
+      if (!hydrationEntry) return "";
+      const imageUrl = String(hydrationEntry.image_url || "").trim();
+      return imageUrl && !isSessionOnlyImageUrl(imageUrl) ? imageUrl : "";
     }
 
     function buildStoryViewModel(existingStory, payload, id, isLocalOnly) {
@@ -2415,6 +3155,7 @@
         category: payload.category || source.category || "",
         brand: payload.brand || source.brand || "",
         image_url: payload.image_url || source.image_url || "",
+        resolved_image_url: source.resolved_image_url || "",
         slug: payload.slug || source.slug || createSlug(nextTitle),
         content_type: payload.content_type || source.content_type || "article",
         video_url: payload.video_url == null ? null : payload.video_url,
@@ -2458,15 +3199,18 @@
       const currentStories = [];
       sortedStories.forEach((story) => {
         if (currentStories.length >= MAX_PUBLIC_STORIES) return;
-        const durableKey = String(story.id || story.slug || "").trim();
-        const storyKey = durableKey
-          ? "story:" + durableKey
-          : [
-            normalizeStoryKeyPart(story.title),
-            normalizeStoryKeyPart(story.category),
-            normalizeStoryKeyPart(story.brand),
-            normalizeStoryKeyPart(story.excerpt)
-          ].join("|");
+        const identityKey = buildStoryIdentityKey(story);
+        const slugKey = normalizeStoryKeyPart(story.slug);
+        const storyKey = identityKey.replace(/\|/g, "")
+          ? "story:" + identityKey
+          : (slugKey
+              ? "slug:" + slugKey
+              : [
+                normalizeStoryKeyPart(story.title),
+                normalizeStoryKeyPart(story.category),
+                normalizeStoryKeyPart(story.brand),
+                normalizeStoryKeyPart(story.excerpt)
+              ].join("|"));
         if (!storyKey.replace(/\|/g, "")) return;
         if (seen.has(storyKey)) return;
         seen.add(storyKey);
@@ -2841,7 +3585,9 @@
     }
 
     async function compactStoryEntry(entry) {
-      return Object.assign({}, entry);
+      const compact = Object.assign({}, entry);
+      compact.image_url = await moveDataUrlToIndexedDb(compact.image_url, "story-image");
+      return compact;
     }
 
     async function savePodcastLocally(payload) {
@@ -3003,6 +3749,9 @@
       const hydratedStories = currentStories.map((story) => (
         mergeHydratedStory(story, findStoryHydrationEntry(story, hydrationEntries))
       ));
+      if (supabaseClient) {
+        return hydratedStories.sort((left, right) => new Date(right.created_at || 0) - new Date(left.created_at || 0));
+      }
       const currentIds = new Set(hydratedStories.map((story) => String(story.id)));
       const merged = hydratedStories.concat(
         cachedStories
@@ -3010,6 +3759,45 @@
           .map((story) => mergeHydratedStory(story, findStoryHydrationEntry(story, hydrationEntries)))
       );
       return merged.sort((left, right) => new Date(right.created_at || 0) - new Date(left.created_at || 0));
+    }
+
+    function applyStoryHydrationCache(sourceStories) {
+      const hydrationEntries = readStoryHydrationCache();
+      if (!hydrationEntries.length) return Array.isArray(sourceStories) ? sourceStories.slice() : [];
+      return (Array.isArray(sourceStories) ? sourceStories : []).map((story) => (
+        mergeHydratedStory(story, findStoryHydrationEntry(story, hydrationEntries))
+      ));
+    }
+
+    async function repairRemoteStoryMetadataFromHydration(sourceStories) {
+      if (!supabaseClient) return;
+      const hydrationEntries = readStoryHydrationCache();
+      if (!hydrationEntries.length) return;
+      const repairQueue = (Array.isArray(sourceStories) ? sourceStories : []).map((story) => {
+        const storyId = String(story && story.id || "").trim();
+        if (!storyId || String(storyId).startsWith("local-story-")) return null;
+        const hydratedEntry = findStoryHydrationEntry(story, hydrationEntries);
+        if (!hydratedEntry) return null;
+        const mergedStory = mergeHydratedStory(story, hydratedEntry);
+        const storyImage = getRenderableImageUrl(story, { allowFallback: false });
+        const mergedImage = getRenderableImageUrl(mergedStory, { allowFallback: false });
+        const shouldRepair = (
+          (!String(story.body || "").trim() && String(mergedStory.body || "").trim())
+          || (!String(story.excerpt || "").trim() && String(mergedStory.excerpt || "").trim())
+          || (!storyImage && mergedImage)
+          || (!String(story.slug || "").trim() && String(mergedStory.slug || "").trim())
+        );
+        if (!shouldRepair) return null;
+        return { storyId, mergedStory };
+      }).filter(Boolean);
+      if (!repairQueue.length) return;
+      for (const item of repairQueue) {
+        try {
+          await saveStoryMetaToRemote(item.storyId, item.mergedStory, item.mergedStory);
+        } catch (error) {
+          console.warn("SKR story metadata repair failed", item.storyId, error);
+        }
+      }
     }
 
     async function loadLocalPodcastEpisodes() {
@@ -3229,6 +4017,47 @@
       return story && (story.title || story.headline || fallback) || fallback;
     }
 
+    function getWorldCupHeroPriority(story) {
+      if (!story || !getStoryDisplayTitle(story, "").trim()) return 0;
+      const primary = [
+        String(story.title || story.headline || ""),
+        String(story.brand || "")
+      ].join(" ").toLowerCase();
+      const secondary = [
+        primary,
+        String(story.excerpt || ""),
+        String(story.body || "")
+      ].join(" ").toLowerCase();
+      let score = 0;
+      if (/\bfifa\b/.test(primary)) score += 12;
+      if (/\bworld\s*cup\s*2026\b/.test(primary)) score += 10;
+      if (/\bworld\s*cup\b/.test(primary)) score += 8;
+      if (!score && /\bfifa\b/.test(secondary)) score += 6;
+      if (!score && /\bworld\s*cup\s*2026\b/.test(secondary)) score += 5;
+      if (!score && /\bworld\s*cup\b/.test(secondary) && String(story.category || "").toLowerCase() === "sport") score += 4;
+      if (score && getRenderableImageUrl(story, { allowFallback: false })) score += 1;
+      return score;
+    }
+
+    function getWorldCupHeroStory() {
+      const candidates = getCurrentStories()
+        .filter((story) => getWorldCupHeroPriority(story) > 0)
+        .slice()
+        .sort((left, right) => {
+          const scoreDelta = getWorldCupHeroPriority(right) - getWorldCupHeroPriority(left);
+          if (scoreDelta) return scoreDelta;
+          return new Date(right.created_at || 0).getTime() - new Date(left.created_at || 0).getTime();
+        });
+      return candidates[0] || null;
+    }
+
+    function getWorldCupHeroCopy(story) {
+      if (!story) return "A live SKR desk for fixtures, group shape, opening night and tournament notes as football expands to forty-eight teams.";
+      const excerpt = String(story.excerpt || "").trim();
+      if (excerpt) return excerpt;
+      return createLuxuryExcerpt(story.body || "", getStoryDisplayTitle(story)) || "Follow the latest tournament stories from SKR Magazine.";
+    }
+
     function formatHeroDate(value) {
       const date = new Date(value);
       if (Number.isNaN(date.getTime())) return "";
@@ -3310,6 +4139,17 @@
       if (canonicalLink) canonicalLink.setAttribute("href", homeUrl);
       if (ogUrlMeta) ogUrlMeta.setAttribute("content", homeUrl);
       if (twitterUrlMeta) twitterUrlMeta.setAttribute("content", homeUrl);
+    }
+
+    function syncWorldCupMetadata() {
+      document.title = "World Cup 2026 — SKR Magazine";
+      if (descriptionMeta) {
+        descriptionMeta.setAttribute("content", "Fixtures, groups and live tournament coverage from SKR Magazine.");
+      }
+      const worldCupUrl = getSiteBaseUrl() + "/worldcup";
+      if (canonicalLink) canonicalLink.setAttribute("href", worldCupUrl);
+      if (ogUrlMeta) ogUrlMeta.setAttribute("content", worldCupUrl);
+      if (twitterUrlMeta) twitterUrlMeta.setAttribute("content", worldCupUrl);
     }
 
     function syncArticleLocation(story, historyMode = "replace") {
@@ -3394,17 +4234,40 @@
       }
     }
 
-    function openArticleReader(story, options = {}) {
+    async function hydrateStoryForReader(story) {
+      if (!story) return story;
+      let nextStory = mergeHydratedStory(story, findStoryHydrationEntry(story, readStoryHydrationCache()));
+      const missingBody = !String(nextStory.body || "").trim();
+      const missingPrimaryImage = !String(getRenderableImageUrl(nextStory, { allowFallback: false }) || "").trim();
+      if (missingBody || missingPrimaryImage) {
+        const remoteMeta = await fetchStoryMetaFromRemote(nextStory);
+        nextStory = mergeStoryWithRemoteMeta(nextStory, remoteMeta);
+        nextStory = mergeHydratedStory(nextStory, findStoryHydrationEntry(nextStory, readStoryHydrationCache()));
+      }
+      const resolvedImageUrl = await getFirstLoadablePublicStoryImage(nextStory);
+      if (resolvedImageUrl) {
+        nextStory = Object.assign({}, nextStory, { resolved_image_url: resolvedImageUrl });
+      }
+      return nextStory;
+    }
+
+    async function openArticleReader(story, options = {}) {
       if (!story) return;
       const historyMode = options.historyMode || "replace";
-      activeArticleStoryId = story.id || "";
-      const renderableImageUrl = getRenderableImageUrl(story);
+      const preparedStory = await hydrateStoryForReader(story);
+      if (preparedStory && preparedStory.id) {
+        stories = (stories || []).map((item) => (
+          String(item.id) === String(preparedStory.id) ? preparedStory : item
+        ));
+      }
+      activeArticleStoryId = preparedStory.id || "";
+      const renderableImageUrl = getRenderableImageUrl(preparedStory);
       const fallbackImageUrl = "";
       const articleImageUrl = renderableImageUrl;
       if (articleImageUrl) {
         articleImage.dataset.fallbackSrc = fallbackImageUrl || "";
         articleImage.src = articleImageUrl;
-        articleImage.alt = getStoryDisplayTitle(story, "SKR article image");
+        articleImage.alt = getStoryDisplayTitle(preparedStory, "SKR article image");
         articleImage.onerror = () => {
           const fallbackSrc = articleImage.dataset.fallbackSrc || "";
           if (fallbackSrc && articleImage.getAttribute("src") !== fallbackSrc) {
@@ -3422,23 +4285,23 @@
         articleImage.alt = "SKR article image";
         articleImage.style.display = "none";
       }
-      articleCategory.textContent = story.category || "SKR";
-      articleTitle.textContent = getStoryDisplayTitle(story);
-      articleExcerpt.textContent = story.excerpt || "";
+      articleCategory.textContent = preparedStory.category || "SKR";
+      articleTitle.textContent = getStoryDisplayTitle(preparedStory);
+      articleExcerpt.textContent = preparedStory.excerpt || "";
       const metaParts = [
-        story.brand,
-        story.created_at ? formatDate(story.created_at) : "",
-        estimateReadTime(story.body || story.excerpt || "") + " min read"
+        preparedStory.brand,
+        preparedStory.created_at ? formatDate(preparedStory.created_at) : "",
+        estimateReadTime(preparedStory.body || preparedStory.excerpt || "") + " min read"
       ].filter(Boolean);
       articleMeta.textContent = metaParts.join(" · ");
-      if (story.body && story.body.trim()) {
-        articleBody.textContent = story.body.trim();
+      if (preparedStory.body && preparedStory.body.trim()) {
+        articleBody.textContent = preparedStory.body.trim();
         articleEmptyNote.hidden = true;
       } else {
-        articleBody.textContent = story.excerpt || "";
+        articleBody.textContent = preparedStory.excerpt || "";
         articleEmptyNote.hidden = false;
       }
-      syncArticleLocation(story, historyMode);
+      syncArticleLocation(preparedStory, historyMode);
       openOverlay(articleOverlay);
     }
 
@@ -3607,26 +4470,24 @@
         : '<p class="archive-empty">No ' + escapeHtml(selectedArchiveCategory) + ' stories published yet.</p>';
     }
 
-    function renderFeatureCard(story, index, usedFeatureImageUrls) {
+    function renderFeatureCard(story, index) {
       const title = getStoryDisplayTitle(story, placeholderFeatures[index].title);
       const category = story.category || placeholderFeatures[index].category;
-      const imagePair = getPublicStoryImagePair(story, usedFeatureImageUrls);
+      const imagePair = getPublicStoryImagePair(story);
       const imageUrl = imagePair.imageUrl;
       const fallbackImageUrl = imagePair.fallbackImageUrl;
       const fallbackAttr = escapeHtml(fallbackImageUrl || "");
-      const imageError = fallbackImageUrl && imageUrl !== fallbackImageUrl
-        ? 'const fallback=this.getAttribute(&quot;data-fallback-src&quot;);if(fallback&&this.src!==fallback){this.src=fallback;this.removeAttribute(&quot;data-fallback-src&quot;);}else{this.style.display=&quot;none&quot;;}'
-        : 'const media=this.closest(&quot;.fc-img&quot;);if(media){media.remove();}else{this.style.display=&quot;none&quot;;}';
-      const imageStyle = imageUrl ? `background:${placeholderFeatures[index].image};` : "";
+      const imageStyle = imagePair.usedFallback ? `background:${placeholderFeatures[index].image};` : "";
       const readTarget = story && story.id ? ' data-read-id="' + escapeHtml(story.id) + '"' : "";
       const readHref = story && story.id ? escapeHtml(getStoryCanonicalPath(story)) : "#";
-      return '<article class="feature-card">' +
+      const mediaMarkup = imageUrl
+        ? '<div class="fc-img" style="' + imageStyle + '">' +
+            '<img class="fc-img-el" src="' + escapeHtml(imageUrl) + '" data-fallback-src="' + fallbackAttr + '" alt="' + escapeHtml(title.replace(/<[^>]*>/g, "")) + '" loading="eager" decoding="sync" fetchpriority="' + (index === 0 ? 'high' : 'auto') + '" onerror="handleStoryImageError(this,&quot;feature&quot;)">' +
+          '</div>'
+        : renderStoryMediaPlaceholder("feature", story, title.replace(/<[^>]*>/g, ""));
+      return '<article class="feature-card" data-story-category="' + escapeHtml(category) + '" data-story-title="' + escapeHtml(title.replace(/<[^>]*>/g, "")) + '">' +
         '<div class="fc-inner">' +
-          (imageUrl ? '<div class="fc-img" style="' + imageStyle + '">' +
-            (imageUrl
-              ? '<img class="fc-img-el" src="' + escapeHtml(imageUrl) + '" data-fallback-src="' + fallbackAttr + '" alt="' + escapeHtml(title.replace(/<[^>]*>/g, "")) + '" loading="lazy" decoding="async" onerror="' + imageError + '">'
-              : "") +
-          '</div>' : "") +
+          mediaMarkup +
           '<div class="fc-overlay"></div>' +
           '<div class="fc-content">' +
             '<div class="fc-tag"><span>' + escapeHtml(category) + '</span></div>' +
@@ -3637,47 +4498,337 @@
       '</article>';
     }
 
-    function renderStoryCard(story, usedStoryImageUrls) {
+    function renderStoryCard(story) {
       const tag = story.brand ? story.category + " · " + story.brand : story.category;
       const readHref = escapeHtml(getStoryCanonicalPath(story));
-      const imagePair = getPublicStoryImagePair(story, usedStoryImageUrls);
+      const imagePair = getPublicStoryImagePair(story);
       const imageUrl = imagePair.imageUrl;
       const fallbackImageUrl = imagePair.fallbackImageUrl;
       const fallbackAttr = escapeHtml(fallbackImageUrl || "");
-      const imageError = fallbackImageUrl && imageUrl !== fallbackImageUrl
-        ? 'this.onerror=null;this.src=this.getAttribute(&quot;data-fallback-src&quot;);'
-        : 'const media=this.closest(&quot;.story-card-img&quot;);if(media){media.remove();}else{this.style.display=&quot;none&quot;;}';
-      return '<article class="story-card' + (imageUrl ? "" : " story-card-no-image") + '">' +
-        (imageUrl
-          ? '<div class="story-card-img">' +
-              '<img src="' + escapeHtml(imageUrl) + '" data-fallback-src="' + fallbackAttr + '" alt="' + escapeHtml(getStoryDisplayTitle(story)) + '" loading="lazy" decoding="async" onerror="' + imageError + '">' +
+      const storyTitle = getStoryDisplayTitle(story);
+      const mediaMarkup = imageUrl
+        ? '<div class="story-card-img">' +
+              '<img src="' + escapeHtml(imageUrl) + '" data-fallback-src="' + fallbackAttr + '" alt="' + escapeHtml(storyTitle) + '" loading="eager" decoding="sync" fetchpriority="high" onerror="handleStoryImageError(this,&quot;story&quot;)">' +
               '<div class="story-img-overlay"></div>' +
             '</div>'
-          : "") +
+        : renderStoryMediaPlaceholder("story", story, storyTitle);
+      return '<article class="story-card' + (imageUrl ? "" : " story-card-no-image") + '" data-story-category="' + escapeHtml(story.category || "SKR") + '" data-story-title="' + escapeHtml(storyTitle) + '">' +
+        mediaMarkup +
         '<p class="story-tag">' + escapeHtml(tag) + '</p>' +
-        '<h3 class="story-title">' + escapeHtml(getStoryDisplayTitle(story)) + '</h3>' +
+        '<h3 class="story-title">' + escapeHtml(storyTitle) + '</h3>' +
         (story.excerpt ? '<p class="story-excerpt">' + escapeHtml(story.excerpt) + '</p>' : "") +
         '<a class="story-read-link" href="' + readHref + '" data-read-id="' + escapeHtml(story.id) + '">Read story →</a>' +
       '</article>';
     }
 
+    function getWorldCupCountdownParts() {
+      const remaining = Math.max(0, WORLD_CUP_TARGET_MS - Date.now());
+      const days = Math.floor(remaining / 86400000);
+      const hours = Math.floor((remaining % 86400000) / 3600000);
+      const minutes = Math.floor((remaining % 3600000) / 60000);
+      const seconds = Math.floor((remaining % 60000) / 1000);
+      return { days, hours, minutes, seconds, live: remaining <= 0 };
+    }
+
+    function renderWorldCupCountdown(className) {
+      const parts = getWorldCupCountdownParts();
+      if (parts.live) {
+        return '<div class="' + className + ' wc-live-state"><div class="wc-count-box" style="grid-column:1/-1">' +
+          '<span class="wc-count-value"><span class="wc-live-dot"></span>Tournament Live</span>' +
+          '<span class="wc-count-label">World Cup 2026</span>' +
+        '</div></div>';
+      }
+      const items = [
+        ["Days", parts.days],
+        ["Hours", parts.hours],
+        ["Minutes", parts.minutes],
+        ["Seconds", parts.seconds]
+      ];
+      return '<div class="' + className + '">' + items.map(([label, value]) =>
+        '<div class="wc-count-box"><span class="wc-count-value">' + String(value).padStart(2, "0") + '</span><span class="wc-count-label">' + label + '</span></div>'
+      ).join("") + '</div>';
+    }
+
+    function updateWorldCupCountdowns() {
+      document.querySelectorAll(".wc-countdown").forEach((node) => {
+        node.outerHTML = renderWorldCupCountdown("wc-countdown");
+      });
+    }
+
+    function getWorldCupFlag(team, fallbackCode) {
+      return WORLD_CUP_FLAGS[team] || WORLD_CUP_FLAG_CODES[fallbackCode] || fallbackCode || "";
+    }
+
+    function createStoryMediaPlaceholderMarkup(category, title) {
+      return '<div class="media-placeholder-inner">' +
+        '<span class="media-placeholder-kicker">' + escapeHtml(category || "SKR") + '</span>' +
+        '<span class="media-placeholder-title">' + escapeHtml(title || "Story image coming soon") + '</span>' +
+        '<span class="media-placeholder-note">Image coming soon</span>' +
+      '</div>';
+    }
+
+    function renderStoryMediaPlaceholder(kind, story, title) {
+      const baseClass = kind === "feature" ? "fc-img" : "story-card-img";
+      const category = story && story.category ? story.category : "SKR";
+      return '<div class="' + baseClass + ' media-placeholder">' +
+        createStoryMediaPlaceholderMarkup(category, title) +
+      '</div>';
+    }
+
+    function replaceBrokenStoryMedia(img, kind) {
+      if (!img) return;
+      const selector = kind === "feature" ? ".fc-img" : ".story-card-img";
+      const media = img.closest(selector);
+      const article = img.closest("article");
+      const category = article ? String(article.getAttribute("data-story-category") || "SKR").trim() : "SKR";
+      const title = article ? String(article.getAttribute("data-story-title") || "Story image coming soon").trim() : "Story image coming soon";
+      if (media) {
+        media.classList.add("media-placeholder");
+        media.removeAttribute("style");
+        media.innerHTML = createStoryMediaPlaceholderMarkup(category, title);
+      } else {
+        img.style.display = "none";
+      }
+    }
+
+    function handleStoryImageError(img, kind) {
+      if (!img) return;
+      const fallback = String(img.getAttribute("data-fallback-src") || "").trim();
+      if (fallback && img.src !== fallback) {
+        img.onerror = function() {
+          replaceBrokenStoryMedia(img, kind);
+        };
+        img.src = fallback;
+        img.removeAttribute("data-fallback-src");
+        return;
+      }
+      replaceBrokenStoryMedia(img, kind);
+    }
+
+    function renderWorldCupTeamLabel(team, fallbackCode) {
+      const flag = getWorldCupFlag(team, fallbackCode);
+      return (flag ? '<span aria-hidden="true">' + escapeHtml(flag) + '</span> ' : "") + escapeHtml(team);
+    }
+
+    function renderWorldCupMiniMatch(match) {
+      return '<article class="wc-mini-match">' +
+        '<div class="wc-match-line wc-mini-teams"><span class="wc-mini-team">' + renderWorldCupTeamLabel(match.home, match.homeFlag) + '</span><span class="wc-versus">v</span><span class="wc-mini-team away">' + renderWorldCupTeamLabel(match.away, match.awayFlag) + '</span></div>' +
+        '<p class="wc-match-meta">' + escapeHtml(match.group) + ' · ' + escapeHtml(match.kickoff) + '<br>' + escapeHtml(match.venue) + '</p>' +
+      '</article>';
+    }
+
+    function renderWorldCupMatchCard(match) {
+      const status = match.status === "live" ? '<span class="wc-live-dot"></span>Live' : match.status;
+      return '<article class="wc-match-card' + (match.isFinal ? " final" : "") + '">' +
+        '<p class="wc-match-meta">' + escapeHtml(match.group) + '</p>' +
+        '<div class="wc-teams">' +
+          '<div class="wc-team"><span>' + renderWorldCupTeamLabel(match.home, match.homeFlag) + '</span><span class="wc-score">' + (match.homeScore ?? "—") + '</span></div>' +
+          '<div class="wc-team"><span>' + renderWorldCupTeamLabel(match.away, match.awayFlag) + '</span><span class="wc-score">' + (match.awayScore ?? "—") + '</span></div>' +
+        '</div>' +
+        '<p class="wc-match-meta">' + status + '<br>' + escapeHtml(match.kickoff) + '<br>' + escapeHtml(match.venue) + '</p>' +
+      '</article>';
+    }
+
+    function getFilteredWorldCupMatches() {
+      if (worldCupFilter === "All") return WORLD_CUP_MATCHES;
+      if (worldCupFilter === "Upcoming") return WORLD_CUP_MATCHES.filter((match) => match.status === "upcoming");
+      if (worldCupFilter === "Live") return WORLD_CUP_MATCHES.filter((match) => match.status === "live");
+      if (worldCupFilter === "Final") return WORLD_CUP_MATCHES.filter((match) => match.isFinal);
+      return WORLD_CUP_MATCHES.filter((match) => match.group === worldCupFilter);
+    }
+
+    function renderWorldCupFilters() {
+      return '<div class="wc-filter-row" aria-label="World Cup fixture filters">' + WORLD_CUP_FILTERS.map((filter) =>
+        '<button class="wc-filter-btn' + (filter === worldCupFilter ? " active" : "") + '" type="button" data-wc-filter="' + escapeHtml(filter) + '">' + escapeHtml(filter) + '</button>'
+      ).join("") + '</div>';
+    }
+
+    function renderWorldCupFixtures() {
+      const matches = getFilteredWorldCupMatches();
+      return '<section class="wc-fixtures" id="wcFixtures">' +
+        '<div class="section-header" style="padding-left:0;padding-right:0">' +
+          '<h2>Fixture <em>Desk</em></h2>' +
+          '<a href="#wcGroups">Groups →</a>' +
+        '</div>' +
+        renderWorldCupFilters() +
+        '<div class="wc-carousel-shell">' +
+          '<div class="wc-carousel" id="wcCarousel">' +
+            (matches.length ? matches.map(renderWorldCupMatchCard).join("") : '<p class="archive-empty">No fixtures match this filter yet.</p>') +
+          '</div>' +
+        '</div>' +
+      '</section>';
+    }
+
+    function renderWorldCupGroups() {
+      return '<section id="wcGroups">' +
+        '<div class="section-header" style="padding-left:0;padding-right:0">' +
+          '<h2>Group <em>Standings</em></h2>' +
+          '<a href="#wcNews">News →</a>' +
+        '</div>' +
+        '<div class="wc-grid">' + WORLD_CUP_GROUPS.map(([group, teams]) =>
+          '<article class="wc-group-card">' +
+            '<h3 class="wc-group-title">Group ' + escapeHtml(group) + '</h3>' +
+            teams.map((team, index) =>
+              '<div class="wc-team-row"><span>' + renderWorldCupTeamLabel(team) + '</span>' + (index < 2 ? '<span class="wc-advance-dot" aria-label="Projected to advance"></span>' : '<span></span>') + '</div>'
+            ).join("") +
+          '</article>'
+        ).join("") + '</div>' +
+      '</section>';
+    }
+
+    function renderWorldCupNews() {
+      return '<section id="wcNews">' +
+        '<div class="section-header" style="padding-left:0;padding-right:0">' +
+          '<h2>World Cup <em>Notebook</em></h2>' +
+          '<a href="#top" data-home-link>SKR Home →</a>' +
+        '</div>' +
+        '<div class="wc-grid">' + WORLD_CUP_NEWS.map((item) =>
+          '<article class="wc-news-card">' +
+            '<p class="wc-kicker">' + escapeHtml(item.type) + '</p>' +
+            '<h3 class="wc-news-title">' + escapeHtml(item.title) + '</h3>' +
+            '<p class="wc-news-source">' + escapeHtml(item.source) + ' · ' + escapeHtml(item.time) + '</p>' +
+          '</article>'
+        ).join("") + '</div>' +
+      '</section>';
+    }
+
+    function renderWorldCupWidget() {
+      if (!worldcupWidget) return;
+      const heroStory = getWorldCupHeroStory();
+      const widgetTitle = heroStory
+        ? getStoryDisplayTitle(heroStory, "World Cup 2026")
+        : "The expanded tournament starts here.";
+      const widgetCopy = heroStory
+        ? '<p class="wc-copy">' + escapeHtml(getWorldCupHeroCopy(heroStory)) + '</p>'
+        : "";
+      const widgetLink = heroStory && heroStory.id
+        ? '<a class="wc-widget-link" href="' + escapeHtml(getStoryCanonicalPath(heroStory)) + '" data-read-id="' + escapeHtml(heroStory.id) + '">Read story →</a>'
+        : '<a class="wc-widget-link" href="/worldcup" data-worldcup-link>Full Coverage →</a>';
+      worldcupWidget.innerHTML = '<div class="wc-widget-inner">' +
+        '<div class="wc-widget-copy">' +
+          '<p class="wc-kicker">World Cup 2026</p>' +
+          '<h2 class="wc-title">' + escapeHtml(widgetTitle) + '</h2>' +
+          widgetCopy +
+          renderWorldCupCountdown("wc-countdown") +
+          widgetLink +
+        '</div>' +
+        '<div class="wc-mini-list">' + WORLD_CUP_MATCHES.slice(0, 3).map(renderWorldCupMiniMatch).join("") + '</div>' +
+      '</div>';
+    }
+
+    function renderWorldCupPage() {
+      if (!worldcupPage) return;
+      const heroStory = getWorldCupHeroStory();
+      const heroImageUrl = heroStory ? getRenderableImageUrl(heroStory, { allowFallback: false }) : "";
+      const heroClassName = "wc-hero" + (heroImageUrl ? " has-story-image" : "");
+      const heroStyle = heroImageUrl
+        ? ' style="--wc-hero-image:url(&quot;' + escapeHtml(cssImageUrl(heroImageUrl)) + '&quot;)"'
+        : "";
+      const heroHeading = heroStory
+        ? escapeHtml(getStoryDisplayTitle(heroStory, "World Cup Dispatch"))
+        : 'World Cup <em>Dispatch</em>';
+      const heroCopy = escapeHtml(getWorldCupHeroCopy(heroStory));
+      const heroLink = heroStory && heroStory.id
+        ? '<a class="wc-widget-link" href="' + escapeHtml(getStoryCanonicalPath(heroStory)) + '" data-read-id="' + escapeHtml(heroStory.id) + '">Read story →</a>'
+        : "";
+      const heroKicker = heroStory
+        ? (/\bfifa\b/i.test(String(heroStory.brand || "") + " " + String(heroStory.title || ""))
+            ? "FIFA World Cup 2026 · Featured Story"
+            : "World Cup 2026 · Featured Story")
+        : "FIFA World Cup 2026 · North America";
+      worldcupPage.innerHTML = '<a class="wc-back-link" href="/" data-home-link>← SKR Home</a>' +
+        '<section class="' + heroClassName + '"' + heroStyle + '>' +
+          '<div class="wc-hero-copy">' +
+            '<p class="wc-kicker">' + escapeHtml(heroKicker) + '</p>' +
+            '<h1 class="wc-heading">' + heroHeading + '</h1>' +
+            '<p class="wc-copy">' + heroCopy + '</p>' +
+            heroLink +
+            '<div class="wc-stat-grid">' +
+              '<div class="wc-stat"><span class="wc-stat-value">48</span><span class="wc-stat-label">Teams</span></div>' +
+              '<div class="wc-stat"><span class="wc-stat-value">104</span><span class="wc-stat-label">Matches</span></div>' +
+              '<div class="wc-stat"><span class="wc-stat-value">12</span><span class="wc-stat-label">Groups</span></div>' +
+              '<div class="wc-stat"><span class="wc-stat-value">39</span><span class="wc-stat-label">Days</span></div>' +
+            '</div>' +
+          '</div>' +
+          '<aside class="wc-hero-panel">' +
+            '<p class="wc-kicker">Opening Match</p>' +
+            '<h2 class="wc-title">Mexico v South Africa</h2>' +
+            '<p class="wc-copy">Estadio Azteca · Jun 11 · 20:00 ET</p>' +
+            renderWorldCupCountdown("wc-countdown") +
+          '</aside>' +
+        '</section>' +
+        renderWorldCupFixtures() +
+        renderWorldCupGroups() +
+        renderWorldCupNews();
+    }
+
+    function isWorldCupLocation() {
+      const path = (window.location.pathname || "").replace(/\/+$/, "") || "/";
+      return path === "/worldcup" || window.location.hash === "#worldcup";
+    }
+
+    function openWorldCupPage() {
+      if (isHttpLikeProtocol()) {
+        window.history.pushState(null, "", "/worldcup");
+      } else {
+        window.location.hash = "worldcup";
+      }
+      syncWorldCupRoute();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function openHomePageFromWorldCup() {
+      if (isHttpLikeProtocol()) {
+        window.history.pushState(null, "", "/");
+      } else {
+        window.location.hash = "top";
+      }
+      syncWorldCupRoute();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function syncWorldCupRoute() {
+      const active = isWorldCupLocation();
+      document.body.classList.toggle("worldcup-active", active);
+      if (worldcupPage) worldcupPage.hidden = !active;
+      if (active) {
+        renderWorldCupPage();
+        syncWorldCupMetadata();
+      } else if (!activeArticleStoryId) {
+        syncDocumentMetadata(null);
+      }
+    }
+
     function renderPublicStories() {
       const currentStories = getCurrentStories();
-      const featured = currentStories.slice(0, 3);
-      const usedPublicImageUrls = new Set();
+      const featured = [];
+      const featuredKeys = new Set();
+      currentStories.forEach((story) => {
+        if (featured.length >= 3) return;
+        if (!getRenderableImageUrl(story, { allowFallback: false })) return;
+        const storyKey = getStoryStableKey(story);
+        if (!storyKey || featuredKeys.has(storyKey)) return;
+        featured.push(story);
+        featuredKeys.add(storyKey);
+      });
       featureGrid.innerHTML = featured
-        .map((story, index) => renderFeatureCard(story, index, usedPublicImageUrls))
+        .map((story, index) => renderFeatureCard(story, index))
         .join("");
 
-      const remainder = currentStories.slice(3);
+      const remainder = currentStories.filter((story) => {
+        const storyKey = getStoryStableKey(story);
+        return !(storyKey && featuredKeys.has(storyKey));
+      });
       newStoriesHeader.style.display = remainder.length ? "flex" : "none";
       storiesGrid.innerHTML = remainder.length
-        ? remainder.map((story) => renderStoryCard(story, usedPublicImageUrls)).join("")
+        ? remainder.map((story) => renderStoryCard(story)).join("")
         : "";
       heroStoryIndex = 0;
       updateCategoryCounts();
       renderCategoryArchive();
       syncHeroCoverStory();
+      renderWorldCupWidget();
+      syncWorldCupRoute();
     }
 
     function renderHeroStory(story) {
@@ -3693,7 +4844,7 @@
         return;
       }
       const displayTitle = getStoryDisplayTitle(story, "SKR Cover Story");
-      const renderableImageUrl = getRenderableImageUrl(story);
+      const renderableImageUrl = getRenderableImageUrl(story, { allowFallback: false });
       const heroImages = [renderableImageUrl]
         .filter(Boolean)
         .filter((value, valueIndex, values) => values.indexOf(value) === valueIndex)
@@ -3720,8 +4871,8 @@
         .filter((story) => story && story.title)
         .slice()
         .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-      const coverStories = (coverCandidates.filter((story) => getRenderableImageUrl(story)).slice(0, 5).length
-        ? coverCandidates.filter((story) => getRenderableImageUrl(story)).slice(0, 5)
+      const coverStories = (coverCandidates.filter((story) => getRenderableImageUrl(story, { allowFallback: false })).slice(0, 5).length
+        ? coverCandidates.filter((story) => getRenderableImageUrl(story, { allowFallback: false })).slice(0, 5)
         : coverCandidates.slice(0, 5));
       if (!coverStories.length) {
         if (heroRotationTimer) {
@@ -3745,8 +4896,8 @@
             .filter((story) => story && story.title)
             .slice()
             .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-          const latestCoverStories = (latestCandidates.filter((story) => getRenderableImageUrl(story)).slice(0, 5).length
-            ? latestCandidates.filter((story) => getRenderableImageUrl(story)).slice(0, 5)
+          const latestCoverStories = (latestCandidates.filter((story) => getRenderableImageUrl(story, { allowFallback: false })).slice(0, 5).length
+            ? latestCandidates.filter((story) => getRenderableImageUrl(story, { allowFallback: false })).slice(0, 5)
             : latestCandidates.slice(0, 5));
           if (!latestCoverStories.length) return;
           heroStoryIndex = (heroStoryIndex + 1) % latestCoverStories.length;
@@ -3887,6 +5038,7 @@
     function beginEditStory(id) {
       const story = stories.find((item) => String(item.id) === String(id));
       if (!story) return;
+      const drivesWorldCupHero = getWorldCupHeroPriority(story) > 0;
       editingStoryId = String(story.id);
       pendingDeleteStoryId = "";
       formCategory.value = story.category || "Lifestyle";
@@ -3903,7 +5055,11 @@
       syncSubmitLabel();
       if (story.image_url) {
         setDropPreviewState(story.image_url);
-        setImageEditNotice("Current image loaded — click or drop a new image to replace it.");
+        setImageEditNotice(
+          drivesWorldCupHero
+            ? "Current image loaded — click or drop a new image to replace it. This image also drives the World Cup hero."
+            : "Current image loaded — click or drop a new image to replace it."
+        );
       } else {
         setDropPreviewState("");
         setImageEditNotice("No image attached yet — add one before saving.", "error");
@@ -3914,7 +5070,9 @@
         setVideoDurationState("", "Select an MP4, MOV, or WEBM under 60 seconds.");
       }
       clearStoryMessages();
-      setMessage("status", "Editing story — update the fields and save");
+      setMessage("status", drivesWorldCupHero
+        ? "Editing story — saving here will update the World Cup hero"
+        : "Editing story — update the fields and save");
       switchTab("upload");
       formTitle.scrollIntoView({ behavior: "smooth", block: "center" });
       renderAdminList();
@@ -3940,7 +5098,10 @@
     }
 
     async function loadStories(suppressErrorMessage) {
+      knownBrokenStoryImages.clear();
+      remoteStoryMetaCache.clear();
       if (!supabaseClient) {
+        remoteStorySnapshotCache.clear();
         stories = await loadLocalStories();
         stories = await removeBrokenStoryImages(stories);
         renderPublicStories();
@@ -3956,17 +5117,31 @@
         .from(TABLE_NAME)
         .select("*")
         .order("created_at", { ascending: false });
+      remoteStorySnapshotCache.clear();
+      (primaryLoad.data || []).forEach((story) => {
+        const storyId = String(story && story.id || "").trim();
+        if (storyId) {
+          remoteStorySnapshotCache.set(storyId, Object.assign({}, story));
+        }
+      });
       const data = (primaryLoad.data || []).map((story) => {
         const title = story.title || story.headline || "";
+        const imageUrl = String(
+          story.image_url
+          || story.image
+          || story.cover_image
+          || story.hero_image
+          || ""
+        ).trim();
         return {
           id: story.id,
           created_at: story.created_at,
           title,
           excerpt: story.excerpt || "",
-          body: story.body || "",
+          body: story.body || story.article_body || story.content || "",
           category: story.category || "",
           brand: story.brand || "",
-          image_url: story.image_url || "",
+          image_url: imageUrl,
           slug: story.slug || createSlug(title),
           content_type: story.content_type || "article",
           video_url: story.video_url || null,
@@ -3979,14 +5154,16 @@
         if (!suppressErrorMessage && !suppressRemoteStoryErrors) {
           setMessage("error", describeSupabaseError(error));
         }
+        remoteStorySnapshotCache.clear();
         stories = await loadLocalStories();
         stories = await removeBrokenStoryImages(stories);
       } else {
-        const remoteStories = data || [];
+        const remoteStories = await hydrateRemoteStoryMetadata(data || []);
         await pruneLocalStoryCacheAgainstRemote(remoteStories);
-        stories = remoteStories.slice();
-        stories = await removeBrokenStoryImages(stories);
+        stories = applyStoryHydrationCache(remoteStories);
+        await repairRemoteStoryMetadataFromHydration(stories);
         applyPendingStoryHydration();
+        stories = await removeBrokenStoryImages(stories);
         suppressRemoteStoryErrors = false;
       }
       renderPublicStories();
@@ -4106,10 +5283,199 @@
       return src.startsWith("blob:") || src.startsWith("idb:") || src.startsWith("file:");
     }
 
-    function getRenderableImageUrl(story) {
-      const src = String(story && story.image_url || "").trim();
-      if (knownBrokenStoryImages.has(src)) return "";
-      return src && !isSessionOnlyImageUrl(src) ? src : "";
+    function getStoryMetaPath(storyId) {
+      return STORY_META_PREFIX + "/" + encodeURIComponent(String(storyId || "").trim()) + ".json";
+    }
+
+    function getPublicBucketUrl(path) {
+      const cleanPath = String(path || "").trim().replace(/^\/+/, "");
+      if (!cleanPath) return "";
+      return SUPABASE_URL + "/storage/v1/object/public/" + BUCKET_NAME + "/" + cleanPath;
+    }
+
+    function normalizeStoryMeta(meta, story) {
+      if (!meta || typeof meta !== "object") return null;
+      const title = String(
+        meta.title
+        || meta.headline
+        || (story && (story.title || story.headline))
+        || ""
+      ).trim();
+      if (!title) return null;
+      const excerpt = String(meta.excerpt || meta.summary || "").trim();
+      const body = String(meta.body || meta.article_body || meta.content || "").trim();
+      const category = String(meta.category || "").trim();
+      const brand = String(meta.brand || "").trim();
+      const slug = String(meta.slug || createSlug(title)).trim();
+      const contentType = String(meta.content_type || "article").trim().toLowerCase() === "video" ? "video" : "article";
+      return {
+        title,
+        excerpt,
+        body,
+        category,
+        brand,
+        slug: slug || createSlug(title),
+        content_type: contentType,
+        video_url: meta.video_url || null,
+        video_duration: meta.video_duration == null ? null : Number(meta.video_duration) || null,
+        image_url: String(meta.image_url || "").trim() || ""
+      };
+    }
+
+    function mergeStoryWithRemoteMeta(story, meta) {
+      const normalizedMeta = normalizeStoryMeta(meta, story);
+      if (!story || !normalizedMeta) return story;
+      return Object.assign({}, story, {
+        title: normalizedMeta.title || story.title || "",
+        excerpt: normalizedMeta.excerpt || story.excerpt || "",
+        body: normalizedMeta.body || story.body || "",
+        category: normalizedMeta.category || story.category || "",
+        brand: normalizedMeta.brand || story.brand || "",
+        slug: normalizedMeta.slug || story.slug || createSlug(normalizedMeta.title || story.title || ""),
+        content_type: normalizedMeta.content_type || story.content_type || "article",
+        video_url: normalizedMeta.video_url == null ? (story.video_url || null) : normalizedMeta.video_url,
+        video_duration: normalizedMeta.video_duration == null ? (story.video_duration == null ? null : story.video_duration) : normalizedMeta.video_duration,
+        image_url: normalizedMeta.image_url || story.image_url || "",
+        resolved_image_url: story.resolved_image_url || ""
+      });
+    }
+
+    async function fetchStoryMetaFromRemote(story) {
+      const storyId = String(story && story.id || "").trim();
+      if (!storyId || !window.fetch) return null;
+      if (remoteStoryMetaCache.has(storyId)) {
+        const cachedMeta = remoteStoryMetaCache.get(storyId);
+        if (cachedMeta) return cachedMeta;
+        remoteStoryMetaCache.delete(storyId);
+      }
+      const storyMetaPath = getStoryMetaPath(storyId);
+      try {
+        if (supabaseClient && supabaseClient.storage && supabaseClient.storage.from) {
+          const storageResponse = await supabaseClient.storage.from(BUCKET_NAME).download(storyMetaPath);
+          if (!storageResponse.error && storageResponse.data) {
+            const json = JSON.parse(await storageResponse.data.text());
+            const normalizedMeta = normalizeStoryMeta(json, story);
+            remoteStoryMetaCache.set(storyId, normalizedMeta);
+            return normalizedMeta;
+          }
+        }
+      } catch (error) {
+        // Fall through to the public fetch path below.
+      }
+      try {
+        const publicMetaUrl = getPublicBucketUrl(storyMetaPath);
+        for (let attempt = 0; attempt < 2; attempt += 1) {
+          const response = await window.fetch(publicMetaUrl, { cache: "no-store" });
+          if (response.ok) {
+            const json = await response.json();
+            const normalizedMeta = normalizeStoryMeta(json, story);
+            remoteStoryMetaCache.set(storyId, normalizedMeta);
+            return normalizedMeta;
+          }
+          if (attempt === 0) {
+            await sleep(240);
+          }
+        }
+        return null;
+      } catch (error) {
+        return null;
+      }
+    }
+
+    async function hydrateRemoteStoryMetadata(sourceStories) {
+      const list = Array.isArray(sourceStories) ? sourceStories : [];
+      return Promise.all(list.map(async (story) => mergeStoryWithRemoteMeta(story, await fetchStoryMetaFromRemote(story))));
+    }
+
+    async function saveStoryMetaToRemote(storyId, payload, baseStory) {
+      const normalizedId = String(storyId || "").trim();
+      if (!normalizedId || !supabaseClient) return { ok: false };
+      const title = String(payload && payload.title || baseStory && baseStory.title || "").trim();
+      if (!title) return { ok: false };
+      const meta = {
+        id: normalizedId,
+        title,
+        excerpt: String(payload && payload.excerpt || baseStory && baseStory.excerpt || "").trim(),
+        body: String(payload && payload.body || baseStory && baseStory.body || "").trim(),
+        category: String(payload && payload.category || baseStory && baseStory.category || "").trim(),
+        brand: String(payload && payload.brand || baseStory && baseStory.brand || "").trim(),
+        slug: String(payload && payload.slug || baseStory && baseStory.slug || createSlug(title)).trim() || createSlug(title),
+        content_type: String(payload && payload.content_type || baseStory && baseStory.content_type || "article").trim() || "article",
+        video_url: payload && Object.prototype.hasOwnProperty.call(payload, "video_url")
+          ? (payload.video_url || null)
+          : (baseStory && baseStory.video_url || null),
+        video_duration: payload && Object.prototype.hasOwnProperty.call(payload, "video_duration")
+          ? (payload.video_duration == null ? null : Number(payload.video_duration) || null)
+          : (baseStory && baseStory.video_duration == null ? null : Number(baseStory.video_duration) || null),
+        image_url: String(payload && payload.image_url || baseStory && baseStory.image_url || "").trim(),
+        updated_at: new Date().toISOString()
+      };
+      const metaBlob = new Blob([JSON.stringify(meta)], { type: "application/json" });
+      const response = await supabaseClient.storage.from(BUCKET_NAME).upload(getStoryMetaPath(normalizedId), metaBlob, {
+        upsert: true,
+        cacheControl: "0",
+        contentType: "application/json"
+      });
+      if (response.error) return { ok: false, error: response.error };
+      remoteStoryMetaCache.set(normalizedId, normalizeStoryMeta(meta, baseStory));
+      return { ok: true, meta };
+    }
+
+    async function removeStoryMetaFromRemote(storyId) {
+      const normalizedId = String(storyId || "").trim();
+      if (!normalizedId || !supabaseClient) return;
+      remoteStoryMetaCache.delete(normalizedId);
+      try {
+        await supabaseClient.storage.from(BUCKET_NAME).remove([getStoryMetaPath(normalizedId)]);
+      } catch (error) {
+        console.warn("SKR could not remove story metadata", error);
+      }
+    }
+
+    function normalizePublicStoryImageUrl(value) {
+      const raw = String(value || "").trim();
+      if (!raw) return "";
+      if (
+        raw.startsWith("http://")
+        || raw.startsWith("https://")
+        || raw.startsWith("data:image/")
+        || raw.startsWith("blob:")
+        || raw.startsWith("idb:")
+        || raw.startsWith("file:")
+      ) {
+        return raw;
+      }
+      const normalizedPath = raw.replace(/^\/+/, "");
+      if (!normalizedPath) return "";
+      if (
+        normalizedPath.startsWith("stories/")
+        || normalizedPath.startsWith("story-meta/")
+        || normalizedPath.startsWith("podcasts/")
+        || /\.(png|jpe?g|webp|gif|avif|svg)$/i.test(normalizedPath)
+      ) {
+        return getPublicBucketUrl(normalizedPath);
+      }
+      return raw;
+    }
+
+    function getRenderableImageUrl(story, options = {}) {
+      const candidates = [
+        String(story && story.resolved_image_url || "").trim(),
+        String(story && story.image_url || "").trim(),
+        String(story && story.image || "").trim(),
+        String(story && story.cover_image || "").trim(),
+        String(story && story.hero_image || "").trim(),
+        String(story && story.poster_url || "").trim(),
+        String(story && story.thumbnail_url || "").trim(),
+        getSnapshotStoryImageUrl(story),
+        getHydratedStoryImageUrl(story)
+      ]
+        .map(normalizePublicStoryImageUrl)
+        .filter((value) => value && !knownBrokenStoryImages.has(value));
+      const chosen = candidates.find((value) => value && !isSessionOnlyImageUrl(value)) || "";
+      if (chosen) return chosen;
+      if (options.allowFallback === false) return "";
+      return normalizePublicStoryImageUrl(getFallbackStoryImage(story));
     }
 
     function getFallbackStoryImage(story) {
@@ -4119,107 +5485,165 @@
 
     function getPublicStoryImageCandidates(story) {
       return [
-        getRenderableImageUrl(story),
-        getFallbackStoryImage(story),
-        ...Object.values(fallbackStoryImages)
+        String(story && story.resolved_image_url || "").trim(),
+        String(story && story.image_url || "").trim(),
+        String(story && story.image || "").trim(),
+        String(story && story.cover_image || "").trim(),
+        String(story && story.hero_image || "").trim(),
+        String(story && story.poster_url || "").trim(),
+        String(story && story.thumbnail_url || "").trim(),
+        getSnapshotStoryImageUrl(story),
+        getHydratedStoryImageUrl(story)
       ]
+        .map(normalizePublicStoryImageUrl)
         .map((value) => String(value || "").trim())
         .filter(Boolean)
         .filter((value) => !knownBrokenStoryImages.has(value))
+        .filter((value) => !isSessionOnlyImageUrl(value))
         .filter((value, index, values) => values.indexOf(value) === index);
     }
 
-    function takeUniqueImageUrl(candidates, usedImageUrls, excludedUrls = []) {
-      const excluded = new Set(excludedUrls.filter(Boolean));
-      const chosen = candidates.find((value) => {
-        if (!value || excluded.has(value)) return false;
-        return !usedImageUrls || !usedImageUrls.has(value);
-      }) || "";
-      if (chosen && usedImageUrls) usedImageUrls.add(chosen);
-      return chosen;
-    }
-
-    function getPublicStoryImagePair(story, usedImageUrls) {
-      const imageUrl = getRenderableImageUrl(story);
-      if (imageUrl && usedImageUrls) usedImageUrls.add(imageUrl);
-      const fallbackImageUrl = "";
-      return { imageUrl, fallbackImageUrl };
+    function getPublicStoryImagePair(story, options = {}) {
+      const allowFallback = options.allowFallback !== false;
+      const candidates = getPublicStoryImageCandidates(story);
+      const primaryImageUrl = candidates[0] || "";
+      const categoryFallback = allowFallback
+        ? normalizePublicStoryImageUrl(getFallbackStoryImage(story))
+        : "";
+      const imageUrl = primaryImageUrl || categoryFallback || "";
+      const fallbackImageUrl = primaryImageUrl
+        ? (candidates.find((candidate) => candidate && candidate !== primaryImageUrl) || (allowFallback ? categoryFallback : ""))
+        : "";
+      return {
+        imageUrl,
+        fallbackImageUrl,
+        usedFallback: !primaryImageUrl && Boolean(imageUrl)
+      };
     }
 
     function cssImageUrl(value) {
       return String(value || "").replace(/\\/g, "\\\\").replace(/"/g, '\\"');
     }
 
-    function canLoadPublicImage(src, timeoutMs = 2600) {
+    function canLoadPublicImage(src, timeoutMs = 7000) {
       return new Promise((resolve) => {
         if (!src) {
-          resolve(false);
+          resolve("error");
           return;
         }
         if (String(src).startsWith("data:image/")) {
-          resolve(true);
+          resolve("loaded");
           return;
         }
         const img = new Image();
         let settled = false;
-        const done = (ok) => {
+        const done = (state) => {
           if (settled) return;
           settled = true;
-          resolve(ok);
+          resolve(state);
         };
-        img.onload = () => done(true);
-        img.onerror = () => done(false);
+        img.onload = () => done("loaded");
+        img.onerror = () => done("error");
         img.src = src;
-        if (img.complete && img.naturalWidth > 0) done(true);
-        window.setTimeout(() => done(false), timeoutMs);
+        if (img.complete && img.naturalWidth > 0) done("loaded");
+        window.setTimeout(() => done("timeout"), timeoutMs);
       });
+    }
+
+    async function getFirstLoadablePublicStoryImage(story) {
+      const candidates = getPublicStoryImageCandidates(story);
+      for (const candidate of candidates) {
+        if (!candidate) continue;
+        if (knownBrokenStoryImages.has(candidate)) continue;
+        const loadState = await canLoadPublicImage(candidate);
+        if (loadState === "loaded") return candidate;
+        if (loadState === "error") {
+          knownBrokenStoryImages.add(candidate);
+        }
+      }
+      return "";
     }
 
     async function removeBrokenStoryImages(sourceStories) {
       const list = Array.isArray(sourceStories) ? sourceStories : [];
-      return list.map((story) => {
-        if (!story || !isSessionOnlyImageUrl(story.image_url)) return story;
-        return Object.assign({}, story, { image_url: "" });
-      });
+      return Promise.all(list.map(async (story) => {
+        if (!story) return story;
+        const resolvedImageUrl = await getFirstLoadablePublicStoryImage(story);
+        if (!resolvedImageUrl) {
+          return Object.assign({}, story, {
+            resolved_image_url: ""
+          });
+        }
+        return Object.assign({}, story, { resolved_image_url: resolvedImageUrl });
+      }));
     }
 
-    function buildMinimalStoryPayload(payload) {
-      return {
-        title: payload.title,
-        excerpt: payload.excerpt,
-        category: payload.category,
-        brand: payload.brand,
-        image_url: payload.image_url
-      };
-    }
-
-    function referencesLegacyStoryColumns(error) {
+    function buildCompatibleStoryPayload(payload, error) {
       const raw = stringifySupabaseError(error).toLowerCase();
-      return raw.includes("body")
-        || raw.includes("column stories.body does not exist")
-        || raw.includes("column body does not exist")
-        || raw.includes("slug")
-        || raw.includes("column stories.slug does not exist")
-        || raw.includes("column slug does not exist")
-        || raw.includes("video_url")
-        || raw.includes("video_duration")
-        || raw.includes("content_type")
-        || raw.includes("column stories.video_url does not exist")
-        || raw.includes("column stories.video_duration does not exist")
-        || raw.includes("column stories.content_type does not exist")
-        || raw.includes("column stories.title does not exist")
-        || raw.includes("column stories.slug does not exist")
-        || raw.includes("headline");
+      const nextPayload = Object.assign({}, payload);
+      if (
+        raw.includes("column stories.title does not exist")
+        || raw.includes("column title does not exist")
+        || raw.includes("headline")
+      ) {
+        nextPayload.headline = nextPayload.title;
+        delete nextPayload.title;
+      }
+      if (raw.includes("column stories.body does not exist") || raw.includes("column body does not exist")) {
+        delete nextPayload.body;
+      }
+      if (raw.includes("column stories.headline does not exist") || raw.includes("column headline does not exist")) {
+        delete nextPayload.headline;
+      }
+      if (raw.includes("column stories.article_body does not exist") || raw.includes("column article_body does not exist")) {
+        delete nextPayload.article_body;
+      }
+      if (raw.includes("column stories.content does not exist") || raw.includes("column content does not exist")) {
+        delete nextPayload.content;
+      }
+      if (raw.includes("column stories.image does not exist") || raw.includes("column image does not exist")) {
+        delete nextPayload.image;
+      }
+      if (raw.includes("column stories.cover_image does not exist") || raw.includes("column cover_image does not exist")) {
+        delete nextPayload.cover_image;
+      }
+      if (raw.includes("column stories.hero_image does not exist") || raw.includes("column hero_image does not exist")) {
+        delete nextPayload.hero_image;
+      }
+      if (raw.includes("column stories.slug does not exist") || raw.includes("column slug does not exist")) {
+        delete nextPayload.slug;
+      }
+      if (raw.includes("column stories.video_url does not exist") || raw.includes("column video_url does not exist")) {
+        delete nextPayload.video_url;
+      }
+      if (raw.includes("column stories.video_duration does not exist") || raw.includes("column video_duration does not exist")) {
+        delete nextPayload.video_duration;
+      }
+      if (raw.includes("column stories.content_type does not exist") || raw.includes("column content_type does not exist")) {
+        delete nextPayload.content_type;
+      }
+      return nextPayload;
     }
 
-    function buildLegacyStoryPayload(payload) {
-      return {
-        headline: payload.title,
-        excerpt: payload.excerpt,
-        category: payload.category,
-        brand: payload.brand,
-        image_url: payload.image_url
-      };
+    async function persistStoryToSupabase(payload, storyId) {
+      const isEditing = Boolean(storyId);
+      let attemptPayload = Object.assign({}, payload);
+      let lastError = null;
+      for (let attempt = 0; attempt < 10; attempt += 1) {
+        const response = isEditing
+          ? await supabaseClient.from(TABLE_NAME).update(attemptPayload).eq("id", storyId).select("*").single()
+          : await supabaseClient.from(TABLE_NAME).insert(attemptPayload).select("*").single();
+        if (!response.error) {
+          return { ok: true, payload: attemptPayload, data: response.data || null };
+        }
+        lastError = response.error;
+        const nextPayload = buildCompatibleStoryPayload(attemptPayload, response.error);
+        if (JSON.stringify(nextPayload) === JSON.stringify(attemptPayload)) {
+          break;
+        }
+        attemptPayload = nextPayload;
+      }
+      return { ok: false, error: lastError };
     }
 
     async function publishStory() {
@@ -4358,11 +5782,17 @@
         setProgress(70);
         const payload = {
           title,
+          headline: title,
           excerpt,
           body,
+          article_body: body,
+          content: body,
           category,
           brand,
           image_url: publicUrl,
+          image: publicUrl,
+          cover_image: publicUrl,
+          hero_image: publicUrl,
           content_type: uploadMode === "video" ? "video" : "article",
           video_url: uploadMode === "video" ? videoUrl : null,
           video_duration: uploadMode === "video"
@@ -4379,20 +5809,42 @@
           usedLocalFallback = true;
           suppressRemoteStoryErrors = true;
         };
-        const insert = isEditing
-          ? await supabaseClient.from(TABLE_NAME).update(payload).eq("id", editingStoryId)
-          : await supabaseClient.from(TABLE_NAME).insert(payload);
-        if (insert.error) {
-          let minimalInsert = isEditing
-            ? await supabaseClient.from(TABLE_NAME).update(buildMinimalStoryPayload(payload)).eq("id", editingStoryId)
-            : await supabaseClient.from(TABLE_NAME).insert(buildMinimalStoryPayload(payload));
-          if (minimalInsert.error && referencesLegacyStoryColumns(minimalInsert.error)) {
-            minimalInsert = isEditing
-              ? await supabaseClient.from(TABLE_NAME).update(buildLegacyStoryPayload(payload)).eq("id", editingStoryId)
-              : await supabaseClient.from(TABLE_NAME).insert(buildLegacyStoryPayload(payload));
-          }
-          if (minimalInsert.error) {
+        const remotePersistResult = await persistStoryToSupabase(payload, isEditing ? editingStoryId : "");
+        if (!remotePersistResult.ok) {
+          if (isRecoverableStoryInsertError(remotePersistResult.error)) {
             await persistLocally();
+          } else {
+            throw remotePersistResult.error;
+          }
+        }
+        const persistedRemoteStory = remotePersistResult.data || null;
+        const remoteStoryId = String(
+          (persistedRemoteStory && persistedRemoteStory.id)
+          || (isEditing ? editingStoryId : "")
+          || ""
+        ).trim();
+        if (remoteStoryId) {
+          remoteStorySnapshotCache.set(remoteStoryId, Object.assign({}, persistedRemoteStory || {}, {
+            id: remoteStoryId,
+            title: payload.title,
+            excerpt: payload.excerpt,
+            body: payload.body,
+            category: payload.category,
+            brand: payload.brand,
+            image_url: publicUrl,
+            slug: payload.slug || createSlug(payload.title || ""),
+            content_type: payload.content_type || "article",
+            video_url: payload.video_url || null,
+            video_duration: payload.video_duration == null ? null : payload.video_duration
+          }));
+        }
+        let hydratedSavedStory = isEditing
+          ? buildStoryViewModel(existingStory || persistedRemoteStory || {}, payload, remoteStoryId || editingStoryId, false)
+          : buildStoryViewModel(persistedRemoteStory || {}, payload, remoteStoryId, false);
+        if (remoteStoryId) {
+          const remoteMetaResult = await saveStoryMetaToRemote(remoteStoryId, payload, hydratedSavedStory);
+          if (remoteMetaResult.ok && remoteMetaResult.meta) {
+            hydratedSavedStory = mergeStoryWithRemoteMeta(hydratedSavedStory, remoteMetaResult.meta);
           }
         }
         setProgress(100);
@@ -4419,11 +5871,7 @@
         if (isEditing && selectedFile && existingStory && existingStory.image_url && publicUrl) {
           await removeStoredStoryImageIfReplaced(existingStory.image_url, publicUrl);
         }
-        queuePendingStoryHydration(
-          isEditing && existingStory
-            ? buildStoryViewModel(existingStory, payload, editingStoryId, false)
-            : Object.assign({ created_at: new Date().toISOString() }, payload)
-        );
+        queuePendingStoryHydration(hydratedSavedStory);
         await loadStories(false);
         resetForm();
         setMessage("success", isEditing
@@ -4575,11 +6023,13 @@
         }
         const removeDb = await supabaseClient.from(TABLE_NAME).delete().eq("id", id);
         if (removeDb.error) throw removeDb.error;
+        remoteStorySnapshotCache.delete(String(id));
         const storagePath = extractStoragePath(story.image_url);
         if (storagePath) {
           const removeImage = await supabaseClient.storage.from(BUCKET_NAME).remove([storagePath]);
           if (removeImage.error) throw removeImage.error;
         }
+        await removeStoryMetaFromRemote(id);
         removeStoryHydrationEntry(story);
         await loadStories();
         pendingDeleteStoryId = "";
@@ -4937,6 +6387,28 @@
       const button = event.target.closest("[data-topic][data-index]");
       if (button) prefillFromNews(button.dataset.topic, button.dataset.index);
     });
+    document.addEventListener("click", (event) => {
+      const worldCupLink = event.target.closest("[data-worldcup-link]");
+      if (worldCupLink) {
+        event.preventDefault();
+        closeNavMenu();
+        openWorldCupPage();
+        return;
+      }
+      const homeLink = event.target.closest("[data-home-link]");
+      if (homeLink) {
+        event.preventDefault();
+        closeNavMenu();
+        openHomePageFromWorldCup();
+        return;
+      }
+      const wcFilterButton = event.target.closest("[data-wc-filter]");
+      if (wcFilterButton) {
+        worldCupFilter = wcFilterButton.getAttribute("data-wc-filter") || "All";
+        renderWorldCupPage();
+        return;
+      }
+    });
     storiesGrid.addEventListener("click", (event) => {
       const button = event.target.closest("[data-read-id]");
       if (!button) return;
@@ -5003,6 +6475,8 @@
       }
     });
     const handleArticleLocationChange = () => {
+      syncWorldCupRoute();
+      if (isWorldCupLocation()) return;
       pendingArticleLocator = readArticleLocatorFromLocation();
       if (!pendingArticleLocator) {
         closeOverlay(articleOverlay);
@@ -5019,10 +6493,18 @@
     }
     updateEditionLabels();
     window.setInterval(updateEditionLabels, 60000);
+    renderWorldCupWidget();
+    window.setInterval(() => {
+      if (!worldcupWidget || !worldcupWidget.innerHTML.trim()) {
+        renderWorldCupWidget();
+      }
+      updateWorldCupCountdowns();
+    }, 1000);
     syncPodcastAccept();
     setUploadMode("article");
     pendingArticleLocator = readArticleLocatorFromLocation();
     resolvePendingArticleLocation();
+    syncWorldCupRoute();
     window.addEventListener("scroll", () => {
       nav.classList.toggle("scrolled", window.scrollY > 80);
     });
