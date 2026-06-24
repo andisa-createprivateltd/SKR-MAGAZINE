@@ -873,104 +873,62 @@
       display: none !important;
     }
     .wc-hero {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 3rem;
-      min-height: calc(100vh - 11rem);
-      padding: 2.2rem 2.2rem 3rem;
-      border: 1px solid rgba(255,255,255,0.08);
-      overflow: hidden;
-      background:
-        linear-gradient(180deg, rgba(5,5,5,0.92) 0%, rgba(5,5,5,0.7) 24%, rgba(5,5,5,0.52) 46%, rgba(5,5,5,0.88) 100%),
-        #050505;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(20rem, 0.78fr);
+      gap: 4rem;
+      align-items: end;
+      padding-bottom: 4rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
     }
     .wc-hero.has-story-image {
+      position: relative;
       isolation: isolate;
-      background: #050505;
+      min-height: 34rem;
+      padding: 3rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      overflow: hidden;
+      background: #0d0d0d;
     }
     .wc-hero.has-story-image::before {
       content: "";
       position: absolute;
       inset: 0;
       background-image:
-        linear-gradient(90deg, rgba(5,5,5,0.94) 0%, rgba(5,5,5,0.66) 34%, rgba(5,5,5,0.34) 70%, rgba(5,5,5,0.2) 100%),
+        linear-gradient(90deg, rgba(9,9,9,0.92) 0%, rgba(9,9,9,0.78) 38%, rgba(9,9,9,0.52) 100%),
         var(--wc-hero-image);
       background-size: cover;
-      background-position: center center;
+      background-position: center;
       z-index: -2;
-      transform: scale(1.01);
     }
     .wc-hero.has-story-image::after {
       content: "";
       position: absolute;
       inset: 0;
       background:
-        linear-gradient(180deg, rgba(7,7,7,0.05) 0%, rgba(7,7,7,0.34) 32%, rgba(7,7,7,0.8) 100%);
+        linear-gradient(180deg, rgba(9,9,9,0.04) 0%, rgba(9,9,9,0.5) 100%);
       z-index: -1;
     }
     .wc-hero.has-story-image > * {
       position: relative;
       z-index: 1;
     }
-    .wc-hero-topbar {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 2rem;
-    }
-    .wc-hero-brandmark {
-      display: inline-flex;
-      align-items: center;
-      opacity: 0.9;
-    }
-    .wc-hero-brandmark img {
-      width: 104px;
-      height: auto;
-      display: block;
-    }
-    .wc-hero-meta {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-      color: var(--light-mid);
-      text-align: right;
-    }
-    .wc-meta-sep {
-      color: rgba(248,247,245,0.28);
-    }
     .wc-hero-copy {
-      max-width: 66rem;
-      margin-top: auto;
+      max-width: 44rem;
     }
     .wc-heading {
       font-family: var(--serif);
-      font-size: clamp(4.2rem, 8.5vw, 8.8rem);
+      font-size: clamp(3.4rem, 8vw, 8.5rem);
       font-weight: 300;
-      line-height: 0.92;
-      letter-spacing: -0.05em;
-      max-width: 10.5ch;
-      margin-top: 1.1rem;
-      text-wrap: balance;
-    }
-    .wc-hero-summary {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 2rem;
-      margin-top: 2rem;
-      flex-wrap: wrap;
+      line-height: 0.86;
+      letter-spacing: -0.06em;
+      max-width: 11ch;
     }
     .wc-hero-panel {
-      border: 1px solid rgba(255,255,255,0.1);
-      background: rgba(8,8,8,0.4);
-      backdrop-filter: blur(8px);
-      padding: 1.35rem 1.5rem;
-      min-width: min(100%, 22rem);
-      max-width: 24rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      background:
+        radial-gradient(circle at top right, rgba(201,168,76,0.13), transparent 38%),
+        #101010;
+      padding: 2rem;
     }
     .wc-stat-grid {
       display: grid;
@@ -993,32 +951,6 @@
       color: var(--mid);
       margin-top: 0.45rem;
       line-height: 1.45;
-    }
-    .wc-primary-cta {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 17rem;
-      min-height: 3.3rem;
-      padding: 0.9rem 1.4rem;
-      border: 1px solid rgba(248,247,245,0.28);
-      color: var(--white);
-      transition: border-color 0.3s ease, background 0.3s ease, color 0.3s ease;
-    }
-    .wc-primary-cta:hover {
-      background: var(--white);
-      color: var(--black);
-      border-color: var(--white);
-    }
-    .wc-story-meta {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.9rem;
-      color: var(--mid);
-      flex-wrap: wrap;
-    }
-    .wc-story-meta .wc-meta-sep {
-      color: rgba(248,247,245,0.2);
     }
     .wc-tabs,
     .wc-filter-row {
@@ -1838,35 +1770,12 @@
       .feature-grid, .stories-grid, .cat-grid, .archive-grid, footer { grid-template-columns: 1fr 1fr; }
       .feature-card:first-child { grid-column: span 2; }
       .subscribe { flex-direction: column; align-items: flex-start; }
-      .wc-widget-inner {
+      .wc-widget-inner,
+      .wc-hero {
         grid-template-columns: 1fr;
       }
       .wc-widget-inner {
         min-height: 0;
-      }
-      .wc-hero {
-        min-height: calc(100svh - 9rem);
-        min-height: calc(100dvh - 9rem);
-        padding: 1.9rem 1.9rem 2.35rem;
-      }
-      .wc-hero-topbar,
-      .wc-hero-summary {
-        gap: 1.35rem;
-      }
-      .wc-hero-meta {
-        justify-content: flex-start;
-        text-align: left;
-      }
-      .wc-hero-copy {
-        max-width: 100%;
-      }
-      .wc-heading {
-        font-size: clamp(3.7rem, 11vw, 6.4rem);
-        max-width: 11ch;
-      }
-      .wc-hero-panel {
-        width: min(100%, 27rem);
-        max-width: 27rem;
       }
       .wc-widget-copy {
         max-width: 100%;
@@ -2147,60 +2056,10 @@
         padding-bottom: 2.75rem;
       }
       .wc-widget-inner,
-      .wc-group-card,
-      .wc-news-card {
-        padding: 1.25rem;
-      }
-      .wc-hero {
-        min-height: auto;
-        padding: 1.35rem 1.25rem 1.5rem;
-        gap: 2rem;
-      }
-      .wc-hero.has-story-image::before {
-        background-image:
-          linear-gradient(180deg, rgba(5,5,5,0.88) 0%, rgba(5,5,5,0.52) 42%, rgba(5,5,5,0.9) 100%),
-          var(--wc-hero-image);
-        background-position: 64% center;
-      }
-      .wc-hero-topbar,
-      .wc-hero-summary {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .wc-hero-brandmark img {
-        width: 86px;
-      }
-      .wc-hero-meta {
-        gap: 0.45rem 0.7rem;
-      }
-      .wc-heading {
-        font-size: clamp(3.1rem, 16vw, 5rem);
-        line-height: 0.95;
-        max-width: 100%;
-      }
-      .wc-copy {
-        max-width: 38rem;
-      }
-      .wc-primary-cta {
-        min-width: 0;
-        width: 100%;
-      }
-      .wc-story-meta {
-        width: 100%;
-        gap: 0.55rem 0.8rem;
-      }
       .wc-hero-panel,
       .wc-group-card,
       .wc-news-card {
         padding: 1.25rem;
-      }
-      .wc-hero-panel {
-        width: 100%;
-        max-width: none;
-        background: rgba(8,8,8,0.58);
-      }
-      .wc-stat-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
       .wc-widget-inner {
         border-left: 0;
@@ -5147,17 +5006,13 @@
         : (liveHero && liveHero.title ? escapeHtml(liveHero.title) : 'World Cup <em>Dispatch</em>');
       const heroCopy = escapeHtml(heroStory ? getWorldCupHeroCopy(heroStory) : (liveHero && liveHero.description ? liveHero.description : "A live SKR desk for fixtures, group shape, opening night and tournament notes as football expands to forty-eight teams."));
       const heroLink = heroStory && heroStory.id
-        ? '<a class="wc-primary-cta" href="' + escapeHtml(getStoryCanonicalPath(heroStory)) + '" data-read-id="' + escapeHtml(heroStory.id) + '">Read The Story</a>'
-        : (liveHero && liveHero.url ? '<a class="wc-primary-cta" href="' + escapeHtml(liveHero.url) + '" target="_blank" rel="noreferrer">Official Story</a>' : '<a class="wc-primary-cta" href="#wcFixtures">View Fixtures</a>');
+        ? '<a class="wc-widget-link" href="' + escapeHtml(getStoryCanonicalPath(heroStory)) + '" data-read-id="' + escapeHtml(heroStory.id) + '">Read story →</a>'
+        : (liveHero && liveHero.url ? '<a class="wc-widget-link" href="' + escapeHtml(liveHero.url) + '" target="_blank" rel="noreferrer">Official story →</a>' : "");
       const heroKicker = heroStory
         ? (/\bfifa\b/i.test(String(heroStory.brand || "") + " " + String(heroStory.title || ""))
             ? "FIFA World Cup 2026 · Featured Story"
             : "World Cup 2026 · Featured Story")
         : "FIFA World Cup 2026 · North America";
-      const liveEditionStamp = formatLiveEditionStamp(false).replace(/^LIVE NOW · /, "");
-      const liveEditionParts = liveEditionStamp.split(" · ");
-      const liveEditionDate = liveEditionParts[0] || "24 JUN 2026";
-      const liveEditionTime = liveEditionParts.slice(1).join(" · ") || "22:06 SAST";
       const statsTailLabel = countdownParts.phase === "countdown"
         ? "Days To Go"
         : (countdownParts.phase === "live" ? "Days Left" : "Archive");
@@ -5175,44 +5030,13 @@
       const featuredMatchMeta = featuredMatch
         ? featuredMatch.venue + ' · ' + formatWorldCupKickoff(featuredMatch) + (featuredMatch.homeScore != null && featuredMatch.awayScore != null ? ' · ' + featuredMatch.homeScore + '-' + featuredMatch.awayScore : '')
         : "North America · Summer 2026";
-      const heroMetaLine = heroStory
-        ? [heroStory.brand || "SKR Magazine", formatHeroDate(heroStory.created_at), estimateReadTime(heroStory.content || heroStory.title || "") + " Min Read"].filter(Boolean)
-        : ["World Cup", "2026", "North America"];
-      worldcupPage.innerHTML = '<section class="' + heroClassName + '"' + heroStyle + '>' +
-          '<div class="wc-hero-topbar">' +
-            '<a class="wc-hero-brandmark" href="/" data-home-link aria-label="Back to SKR home"><img src="/skr-logo-site.png" alt="SKR Magazine"></a>' +
-            '<div class="wc-hero-meta">' +
-              '<span>Winter 2026</span>' +
-              '<span class="wc-meta-sep">·</span>' +
-              '<span style="color:var(--success)">Live</span>' +
-              '<span class="wc-meta-sep">·</span>' +
-              '<span>' + escapeHtml(liveEditionDate) + '</span>' +
-              '<span class="wc-meta-sep">·</span>' +
-              '<span>' + escapeHtml(liveEditionTime) + '</span>' +
-            '</div>' +
-          '</div>' +
+      worldcupPage.innerHTML = '<a class="wc-back-link" href="/" data-home-link>← SKR Home</a>' +
+        '<section class="' + heroClassName + '"' + heroStyle + '>' +
           '<div class="wc-hero-copy">' +
             '<p class="wc-kicker">' + escapeHtml(heroKicker) + '</p>' +
             '<h1 class="wc-heading">' + heroHeading + '</h1>' +
             '<p class="wc-copy">' + heroCopy + '</p>' +
-            '<div class="wc-hero-summary">' +
-              '<div>' +
-                heroLink +
-                '<div class="wc-story-meta">' +
-                  '<span>' + escapeHtml(heroMetaLine[0] || "SKR Magazine") + '</span>' +
-                  '<span class="wc-meta-sep">·</span>' +
-                  '<span>' + escapeHtml(heroMetaLine[1] || "2026") + '</span>' +
-                  '<span class="wc-meta-sep">·</span>' +
-                  '<span>' + escapeHtml(heroMetaLine[2] || "Feature") + '</span>' +
-                '</div>' +
-              '</div>' +
-              '<aside class="wc-hero-panel">' +
-                '<p class="wc-kicker">' + escapeHtml(featuredMatchKicker) + '</p>' +
-                '<h2 class="wc-title">' + escapeHtml(featuredMatchTitle) + '</h2>' +
-                '<p class="wc-copy">' + escapeHtml(featuredMatchMeta) + '</p>' +
-                renderWorldCupCountdown("wc-countdown") +
-              '</aside>' +
-            '</div>' +
+            heroLink +
             '<div class="wc-stat-grid">' +
               '<div class="wc-stat"><span class="wc-stat-value">' + escapeHtml(String(worldCupStats.teams || 48)) + '</span><span class="wc-stat-label">Teams</span></div>' +
               '<div class="wc-stat"><span class="wc-stat-value">' + escapeHtml(String(worldCupStats.matches || 104)) + '</span><span class="wc-stat-label">Matches</span></div>' +
@@ -5220,6 +5044,12 @@
               '<div class="wc-stat"><span class="wc-stat-value">' + escapeHtml(statsTailValue) + '</span><span class="wc-stat-label">' + escapeHtml(statsTailLabel) + '</span></div>' +
             '</div>' +
           '</div>' +
+          '<aside class="wc-hero-panel">' +
+            '<p class="wc-kicker">' + escapeHtml(featuredMatchKicker) + '</p>' +
+            '<h2 class="wc-title">' + escapeHtml(featuredMatchTitle) + '</h2>' +
+            '<p class="wc-copy">' + escapeHtml(featuredMatchMeta) + '</p>' +
+            renderWorldCupCountdown("wc-countdown") +
+          '</aside>' +
         '</section>' +
         renderWorldCupFixtures() +
         renderWorldCupGroups() +
