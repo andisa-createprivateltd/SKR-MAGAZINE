@@ -1491,6 +1491,8 @@
     }
     .form-success { color: var(--success); }
     .form-status { color: var(--mid); }
+    .form-status.success { color: var(--success); }
+    .form-status.error { color: var(--error); }
     .admin-stories {
       display: flex;
       flex-direction: column;
@@ -2254,13 +2256,62 @@
         <p class="sub-eyebrow">Never miss an issue</p>
         <h2 class="sub-headline">Receive <em>SKR Magazine</em> before it hits the newsstands</h2>
       </div>
-      <form class="sub-form">
-        <input type="text" class="sub-input" placeholder="First name">
-        <input type="email" class="sub-input" placeholder="Email address">
-        <button class="sub-btn" type="submit">Subscribe to SKR</button>
+      <form class="sub-form" id="subscribeForm">
+        <input type="text" class="sub-input" placeholder="First name" id="subscribe-name" autocomplete="given-name">
+        <input type="email" class="sub-input" placeholder="Email address" id="subscribe-email" autocomplete="email">
+        <button class="sub-btn" type="submit" id="subscribe-btn">Subscribe to SKR</button>
       </form>
+      <p class="form-status" id="subscribeStatus" aria-live="polite">Enter your email to join the list.</p>
     </section>
   </main>
+
+  <section class="archive-shell visible" id="about">
+    <div class="archive-header">
+      <div>
+        <p class="archive-label">About</p>
+        <h2 class="archive-title">About <em>SKR</em></h2>
+      </div>
+      <p class="archive-summary">Editorial mission</p>
+    </div>
+    <div class="archive-grid">
+      <article class="story-card">
+        <h3 class="story-title">Luxury editorial with a sharper global rhythm</h3>
+        <p class="story-excerpt">SKR Magazine covers lifestyle, automobiles, art, watches, travel and elite sport with a premium editorial lens rooted in speed, taste and access.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="archive-shell visible" id="advertise">
+    <div class="archive-header">
+      <div>
+        <p class="archive-label">Advertise</p>
+        <h2 class="archive-title">Partner with <em>SKR</em></h2>
+      </div>
+      <p class="archive-summary">Brand inquiries</p>
+    </div>
+    <div class="archive-grid">
+      <article class="story-card">
+        <h3 class="story-title">Campaigns, features and premium placements</h3>
+        <p class="story-excerpt">For partnerships, branded editorial and luxury audience placements, contact the SKR commercial team directly.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="archive-shell visible" id="contact">
+    <div class="archive-header">
+      <div>
+        <p class="archive-label">Contact</p>
+        <h2 class="archive-title">Contact <em>SKR</em></h2>
+      </div>
+      <p class="archive-summary">Editorial desk</p>
+    </div>
+    <div class="archive-grid">
+      <article class="story-card">
+        <h3 class="story-title">Reach the editorial team</h3>
+        <p class="story-excerpt">For story leads, corrections, features and access requests, email <a href="mailto:editor@skrmagazine.vercel.app">editor@skrmagazine.vercel.app</a>.</p>
+      </article>
+    </div>
+  </section>
 
   <footer>
     <div>
@@ -2283,23 +2334,23 @@
     <div>
       <p class="foot-col-title">Issues</p>
       <ul class="foot-links">
-        <li><a href="#top">Vol. 1 Issue 3 — Summer 2024</a></li>
-        <li><a href="#top">Vol. 1 Issue 2 — Spring 2024</a></li>
-        <li><a href="#top">Vol. 1 Issue 1 — Winter 2024</a></li>
+        <li><a href="#featuredStories">Vol. 1 Issue 3 — Summer 2024</a></li>
+        <li><a href="#storiesGrid">Vol. 1 Issue 2 — Spring 2024</a></li>
+        <li><a href="#categoryArchive">Vol. 1 Issue 1 — Winter 2024</a></li>
       </ul>
     </div>
     <div>
       <p class="foot-col-title">About</p>
       <ul class="foot-links">
-        <li><a href="#top">About SKR</a></li>
-        <li><a href="#top">Advertise</a></li>
-        <li><a href="#top">Contact</a></li>
+        <li><a href="#about">About SKR</a></li>
+        <li><a href="#advertise">Advertise</a></li>
+        <li><a href="#contact">Contact</a></li>
       </ul>
     </div>
   </footer>
   <div class="foot-bottom">
-    <p>© 2024 SKR Magazine. All rights reserved.</p>
-    <p>Privacy Policy · Terms of Use</p>
+    <p>© <span data-copyright-year></span> SKR Magazine. All rights reserved.</p>
+    <p><a href="/privacy">Privacy Policy</a> · <a href="/terms">Terms of Use</a></p>
   </div>
 
   <div class="overlay" id="loginOverlay">
@@ -2850,6 +2901,9 @@
     const archiveGrid = document.getElementById("archiveGrid");
     const archiveTitle = document.getElementById("archiveTitle");
     const archiveSummary = document.getElementById("archiveSummary");
+    const subscribeForm = document.getElementById("subscribeForm");
+    const subscribeEmailInput = document.getElementById("subscribe-email");
+    const subscribeStatus = document.getElementById("subscribeStatus");
     const refreshScreen = document.getElementById("refreshScreen");
     const categoryCards = Array.from(document.querySelectorAll(".cat-card"));
     const heroBg = document.querySelector(".hero-bg");
@@ -2935,10 +2989,19 @@
         navIssueLabel.innerHTML = [
           "WINTER 2026",
           '<span class="nav-issue-sep">·</span>',
-          '<span class="nav-issue-live">LIVE</span>'
+          '<span class="nav-issue-live">LIVE</span>',
+          '<span class="nav-issue-sep">·</span>',
+          escapeHtml(bandStamp.replace(/^LIVE NOW · /, ""))
         ].join(" ");
       }
       if (issueBandLive) issueBandLive.textContent = bandStamp;
+    }
+
+    function syncDynamicMeta() {
+      const copyrightEl = document.querySelector("[data-copyright-year]");
+      if (copyrightEl) {
+        copyrightEl.textContent = String(new Date().getFullYear());
+      }
     }
 
     function normalizeStoryKeyPart(value) {
@@ -2954,6 +3017,44 @@
         normalizeStoryKeyPart(story && story.category),
         normalizeStoryKeyPart(story && story.brand)
       ].join("|");
+    }
+
+    function buildLooseStoryIdentityKey(story) {
+      return [
+        normalizeStoryKeyPart(story && (story.title || story.headline || "")),
+        normalizeStoryKeyPart(story && story.category),
+        normalizeStoryKeyPart(story && story.brand),
+        normalizeStoryKeyPart(story && story.slug)
+      ].join("|");
+    }
+
+    function storiesShareIdentity(left, right) {
+      if (!left || !right) return false;
+      const leftId = String(left.id || "").trim();
+      const rightId = String(right.id || "").trim();
+      if (leftId && rightId) return leftId === rightId;
+      const leftSlug = normalizeStoryKeyPart(left.slug);
+      const rightSlug = normalizeStoryKeyPart(right.slug);
+      if (leftSlug && rightSlug) return leftSlug === rightSlug;
+      const leftKey = buildStoryIdentityKey(left);
+      const rightKey = buildStoryIdentityKey(right);
+      if (leftKey.replace(/\|/g, "") && rightKey.replace(/\|/g, "")) {
+        return leftKey === rightKey;
+      }
+      const leftLooseKey = buildLooseStoryIdentityKey(left);
+      const rightLooseKey = buildLooseStoryIdentityKey(right);
+      return leftLooseKey.replace(/\|/g, "") && leftLooseKey === rightLooseKey;
+    }
+
+    function isPublicStoryImageCandidate(value) {
+      const normalized = normalizePublicStoryImageUrl(value);
+      return Boolean(
+        normalized
+        && (
+          normalized.startsWith("https://")
+          || normalized.startsWith("http://")
+        )
+      );
     }
 
     function getStoryStableKey(story) {
@@ -3037,7 +3138,7 @@
       const storyId = story && story.id ? String(story.id) : "";
       const storyKey = buildStoryIdentityKey(story || {});
       return (entries || []).find((entry) => {
-        if (storyId && String(entry.id) === storyId) return true;
+        if (storyId) return String(entry.id) === storyId;
         if (storyKey && entry.story_key === storyKey) return true;
         return false;
       }) || null;
@@ -3045,6 +3146,7 @@
 
     function mergeHydratedStory(story, hydratedStory) {
       if (!hydratedStory) return story;
+      if (!storiesShareIdentity(story, hydratedStory)) return story;
       const baseTitle = story && story.title ? story.title : "";
       const hydratedTitle = String(hydratedStory.title || "").trim();
       const storyImageUrl = normalizePublicStoryImageUrl(story && story.image_url || "");
@@ -3098,6 +3200,7 @@
     function getSnapshotStoryImageUrl(story) {
       const snapshot = getRemoteStorySnapshot(story);
       if (!snapshot) return "";
+      if (!storiesShareIdentity(story, snapshot)) return "";
       const imageUrl = String(
         snapshot.image_url
         || snapshot.image
@@ -3111,6 +3214,7 @@
     function getHydratedStoryImageUrl(story) {
       const hydrationEntry = findStoryHydrationEntry(story, readStoryHydrationCache());
       if (!hydrationEntry) return "";
+      if (!storiesShareIdentity(story, hydrationEntry)) return "";
       const imageUrl = String(hydrationEntry.image_url || "").trim();
       return imageUrl && !isSessionOnlyImageUrl(imageUrl) ? imageUrl : "";
     }
@@ -4982,9 +5086,9 @@
       document.body.classList.toggle("worldcup-active", active);
       if (worldcupPage) worldcupPage.hidden = !active;
       if (active) {
+        fetchWorldCupLiveData();
         renderWorldCupPage();
         syncWorldCupMetadata();
-        fetchWorldCupLiveData();
       } else if (!activeArticleStoryId) {
         syncDocumentMetadata(null);
       }
@@ -4992,6 +5096,7 @@
 
     function renderPublicStories() {
       const currentStories = getCurrentStories();
+      console.log("SKR renderPublicStories", { totalStories: stories.length, visibleStories: currentStories.length, stories: currentStories });
       const featured = [];
       const featuredKeys = new Set();
       currentStories.forEach((story) => {
@@ -5226,6 +5331,23 @@
       syncSubmitLabel();
     }
 
+    function setSubscribeStatus(message, type) {
+      if (!subscribeStatus) return;
+      subscribeStatus.textContent = message;
+      subscribeStatus.className = "form-status" + (type === "error" ? " error" : type === "success" ? " success" : "");
+    }
+
+    function handleSubscribeSubmit(event) {
+      event.preventDefault();
+      const email = String(subscribeEmailInput && subscribeEmailInput.value || "").trim();
+      if (!email || !email.includes("@")) {
+        setSubscribeStatus("Enter a valid email address.", "error");
+        return;
+      }
+      setSubscribeStatus("You're on the list.", "success");
+      if (subscribeForm) subscribeForm.reset();
+    }
+
     function beginEditStory(id) {
       const story = stories.find((item) => String(item.id) === String(id));
       if (!story) return;
@@ -5291,82 +5413,96 @@
     async function loadStories(suppressErrorMessage) {
       knownBrokenStoryImages.clear();
       remoteStoryMetaCache.clear();
-      if (!supabaseClient) {
+      try {
+        if (!supabaseClient) {
+          console.error("SKR Supabase unavailable", { SUPABASE_URL, hasAnonKey: Boolean(SUPABASE_ANON_KEY), hasWindowSupabase: Boolean(window.supabase) });
+          remoteStorySnapshotCache.clear();
+          stories = await loadLocalStories();
+          stories = await removeBrokenStoryImages(stories);
+          renderPublicStories();
+          renderAdminList();
+          window.requestAnimationFrame(() => {
+            window.requestAnimationFrame(() => {
+              markRefreshStoryLoadComplete();
+            });
+          });
+          return;
+        }
+        const primaryLoad = await supabaseClient
+          .from(TABLE_NAME)
+          .select("*")
+          .order("created_at", { ascending: false });
         remoteStorySnapshotCache.clear();
-        stories = await loadLocalStories();
-        stories = await removeBrokenStoryImages(stories);
+        console.log("SKR Supabase raw rows", primaryLoad.data || []);
+        (primaryLoad.data || []).forEach((story) => {
+          const storyId = String(story && story.id || "").trim();
+          if (storyId) {
+            remoteStorySnapshotCache.set(storyId, Object.assign({}, story));
+          }
+        });
+        const data = (primaryLoad.data || []).map((story) => {
+          const title = story.title || story.headline || "";
+          const imageUrl = String(
+            story.image_url
+            || story.image
+            || story.cover_image
+            || story.hero_image
+            || ""
+          ).trim();
+          return {
+            id: story.id,
+            created_at: story.created_at,
+            title,
+            excerpt: story.excerpt || "",
+            body: story.body || story.article_body || story.content || "",
+            category: story.category || "",
+            brand: story.brand || "",
+            image_url: imageUrl,
+            slug: story.slug || createSlug(title),
+            content_type: story.content_type || "article",
+            video_url: story.video_url || null,
+            video_duration: story.video_duration == null ? null : story.video_duration
+          };
+        });
+        const error = primaryLoad.error;
+        console.log("SKR stories response", { tableName: TABLE_NAME, data, error });
+        if (error) {
+          if (!suppressErrorMessage && !suppressRemoteStoryErrors) {
+            setMessage("error", describeSupabaseError(error));
+          }
+          remoteStorySnapshotCache.clear();
+          stories = await loadLocalStories();
+          stories = await removeBrokenStoryImages(stories);
+        } else {
+          const remoteStories = await hydrateRemoteStoryMetadata(data || []);
+          console.log("SKR stories before render", remoteStories);
+          await pruneLocalStoryCacheAgainstRemote(remoteStories);
+          stories = applyStoryHydrationCache(remoteStories);
+          await repairRemoteStoryMetadataFromHydration(stories);
+          applyPendingStoryHydration();
+          stories = await removeBrokenStoryImages(stories);
+          suppressRemoteStoryErrors = false;
+        }
         renderPublicStories();
+        window.requestAnimationFrame(() => syncHeroCoverStory());
+        window.setTimeout(() => syncHeroCoverStory(), 250);
         renderAdminList();
+        resolvePendingArticleLocation();
         window.requestAnimationFrame(() => {
           window.requestAnimationFrame(() => {
             markRefreshStoryLoadComplete();
           });
         });
-        return;
-      }
-      const primaryLoad = await supabaseClient
-        .from(TABLE_NAME)
-        .select("*")
-        .order("created_at", { ascending: false });
-      remoteStorySnapshotCache.clear();
-      (primaryLoad.data || []).forEach((story) => {
-        const storyId = String(story && story.id || "").trim();
-        if (storyId) {
-          remoteStorySnapshotCache.set(storyId, Object.assign({}, story));
-        }
-      });
-      const data = (primaryLoad.data || []).map((story) => {
-        const title = story.title || story.headline || "";
-        const imageUrl = String(
-          story.image_url
-          || story.image
-          || story.cover_image
-          || story.hero_image
-          || ""
-        ).trim();
-        return {
-          id: story.id,
-          created_at: story.created_at,
-          title,
-          excerpt: story.excerpt || "",
-          body: story.body || story.article_body || story.content || "",
-          category: story.category || "",
-          brand: story.brand || "",
-          image_url: imageUrl,
-          slug: story.slug || createSlug(title),
-          content_type: story.content_type || "article",
-          video_url: story.video_url || null,
-          video_duration: story.video_duration == null ? null : story.video_duration
-        };
-      });
-      const error = primaryLoad.error;
-      console.log("SKR stories response", { data, error });
-      if (error) {
-        if (!suppressErrorMessage && !suppressRemoteStoryErrors) {
+      } catch (error) {
+        console.error("SKR loadStories failed", error);
+        if (!suppressErrorMessage) {
           setMessage("error", describeSupabaseError(error));
         }
-        remoteStorySnapshotCache.clear();
         stories = await loadLocalStories();
-        stories = await removeBrokenStoryImages(stories);
-      } else {
-        const remoteStories = await hydrateRemoteStoryMetadata(data || []);
-        await pruneLocalStoryCacheAgainstRemote(remoteStories);
-        stories = applyStoryHydrationCache(remoteStories);
-        await repairRemoteStoryMetadataFromHydration(stories);
-        applyPendingStoryHydration();
-        stories = await removeBrokenStoryImages(stories);
-        suppressRemoteStoryErrors = false;
+        renderPublicStories();
+        renderAdminList();
+        markRefreshStoryLoadComplete();
       }
-      renderPublicStories();
-      window.requestAnimationFrame(() => syncHeroCoverStory());
-      window.setTimeout(() => syncHeroCoverStory(), 250);
-      renderAdminList();
-      resolvePendingArticleLocation();
-      window.requestAnimationFrame(() => {
-        window.requestAnimationFrame(() => {
-          markRefreshStoryLoadComplete();
-        });
-      });
     }
 
     function setDropPreviewState(src) {
@@ -5500,6 +5636,7 @@
       const slug = String(meta.slug || createSlug(title)).trim();
       const contentType = String(meta.content_type || "article").trim().toLowerCase() === "video" ? "video" : "article";
       return {
+        id: String(meta.id || story && story.id || "").trim(),
         title,
         excerpt,
         body,
@@ -5516,6 +5653,9 @@
     function mergeStoryWithRemoteMeta(story, meta) {
       const normalizedMeta = normalizeStoryMeta(meta, story);
       if (!story || !normalizedMeta) return story;
+      if (!storiesShareIdentity(story, normalizedMeta)) {
+        return story;
+      }
       return Object.assign({}, story, {
         title: normalizedMeta.title || story.title || "",
         excerpt: normalizedMeta.excerpt || story.excerpt || "",
@@ -5689,6 +5829,7 @@
         .map(normalizePublicStoryImageUrl)
         .map((value) => String(value || "").trim())
         .filter(Boolean)
+        .filter(isPublicStoryImageCandidate)
         .filter((value) => !knownBrokenStoryImages.has(value))
         .filter((value) => !isSessionOnlyImageUrl(value))
         .filter((value, index, values) => values.indexOf(value) === index);
@@ -6374,6 +6515,7 @@
     }
 
     setConnectionStatus();
+    syncDynamicMeta();
     maybeRevealAdminEntry();
     loadStoredNewsKey();
     loadNewsCache();
@@ -6639,6 +6781,9 @@
       syncArticleLocation(null);
     });
     shareArticleBtn.addEventListener("click", shareActiveArticle);
+    if (subscribeForm) {
+      subscribeForm.addEventListener("submit", handleSubscribeSubmit);
+    }
     [loginOverlay, adminOverlay, articleOverlay].forEach((overlay) => {
       overlay.addEventListener("click", (event) => {
         if (event.target === overlay) {
@@ -6686,7 +6831,9 @@
     window.setInterval(updateEditionLabels, 60000);
     renderWorldCupWidget();
     fetchWorldCupLiveData();
-    window.setInterval(fetchWorldCupLiveData, 300000);
+    window.setInterval(() => {
+      fetchWorldCupLiveData();
+    }, 300000);
     window.setInterval(() => {
       if (!worldcupWidget || !worldcupWidget.innerHTML.trim()) {
         renderWorldCupWidget();
