@@ -3,6 +3,10 @@
   "cleanUrls": false,
   "rewrites": [
     {
+      "source": "/api/worldcup",
+      "destination": "/api/worldcup-v2"
+    },
+    {
       "source": "/:category/:slug",
       "destination": "/index.html"
     }

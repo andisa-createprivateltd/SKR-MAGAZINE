@@ -2956,44 +2956,6 @@
       ].join("|");
     }
 
-    function buildLooseStoryIdentityKey(story) {
-      return [
-        normalizeStoryKeyPart(story && (story.title || story.headline || "")),
-        normalizeStoryKeyPart(story && story.category),
-        normalizeStoryKeyPart(story && story.brand),
-        normalizeStoryKeyPart(story && story.slug)
-      ].join("|");
-    }
-
-    function storiesShareIdentity(left, right) {
-      if (!left || !right) return false;
-      const leftId = String(left.id || "").trim();
-      const rightId = String(right.id || "").trim();
-      if (leftId && rightId) return leftId === rightId;
-      const leftSlug = normalizeStoryKeyPart(left.slug);
-      const rightSlug = normalizeStoryKeyPart(right.slug);
-      if (leftSlug && rightSlug) return leftSlug === rightSlug;
-      const leftKey = buildStoryIdentityKey(left);
-      const rightKey = buildStoryIdentityKey(right);
-      if (leftKey.replace(/\|/g, "") && rightKey.replace(/\|/g, "")) {
-        return leftKey === rightKey;
-      }
-      const leftLooseKey = buildLooseStoryIdentityKey(left);
-      const rightLooseKey = buildLooseStoryIdentityKey(right);
-      return leftLooseKey.replace(/\|/g, "") && leftLooseKey === rightLooseKey;
-    }
-
-    function isPublicStoryImageCandidate(value) {
-      const normalized = normalizePublicStoryImageUrl(value);
-      return Boolean(
-        normalized
-        && (
-          normalized.startsWith("https://")
-          || normalized.startsWith("http://")
-        )
-      );
-    }
-
     function getStoryStableKey(story) {
       if (!story) return "";
       if (story.id) return "id:" + String(story.id);
@@ -3075,7 +3037,7 @@
       const storyId = story && story.id ? String(story.id) : "";
       const storyKey = buildStoryIdentityKey(story || {});
       return (entries || []).find((entry) => {
-        if (storyId) return String(entry.id) === storyId;
+        if (storyId && String(entry.id) === storyId) return true;
         if (storyKey && entry.story_key === storyKey) return true;
         return false;
       }) || null;
@@ -3083,7 +3045,6 @@
 
     function mergeHydratedStory(story, hydratedStory) {
       if (!hydratedStory) return story;
-      if (!storiesShareIdentity(story, hydratedStory)) return story;
       const baseTitle = story && story.title ? story.title : "";
       const hydratedTitle = String(hydratedStory.title || "").trim();
       const storyImageUrl = normalizePublicStoryImageUrl(story && story.image_url || "");
@@ -3137,7 +3098,6 @@
     function getSnapshotStoryImageUrl(story) {
       const snapshot = getRemoteStorySnapshot(story);
       if (!snapshot) return "";
-      if (!storiesShareIdentity(story, snapshot)) return "";
       const imageUrl = String(
         snapshot.image_url
         || snapshot.image
@@ -3151,7 +3111,6 @@
     function getHydratedStoryImageUrl(story) {
       const hydrationEntry = findStoryHydrationEntry(story, readStoryHydrationCache());
       if (!hydrationEntry) return "";
-      if (!storiesShareIdentity(story, hydrationEntry)) return "";
       const imageUrl = String(hydrationEntry.image_url || "").trim();
       return imageUrl && !isSessionOnlyImageUrl(imageUrl) ? imageUrl : "";
     }
@@ -5023,9 +4982,9 @@
       document.body.classList.toggle("worldcup-active", active);
       if (worldcupPage) worldcupPage.hidden = !active;
       if (active) {
-        fetchWorldCupLiveData();
         renderWorldCupPage();
         syncWorldCupMetadata();
+        fetchWorldCupLiveData();
       } else if (!activeArticleStoryId) {
         syncDocumentMetadata(null);
       }
@@ -5541,7 +5500,6 @@
       const slug = String(meta.slug || createSlug(title)).trim();
       const contentType = String(meta.content_type || "article").trim().toLowerCase() === "video" ? "video" : "article";
       return {
-        id: String(meta.id || story && story.id || "").trim(),
         title,
         excerpt,
         body,
@@ -5558,9 +5516,6 @@
     function mergeStoryWithRemoteMeta(story, meta) {
       const normalizedMeta = normalizeStoryMeta(meta, story);
       if (!story || !normalizedMeta) return story;
-      if (!storiesShareIdentity(story, normalizedMeta)) {
-        return story;
-      }
       return Object.assign({}, story, {
         title: normalizedMeta.title || story.title || "",
         excerpt: normalizedMeta.excerpt || story.excerpt || "",
@@ -5734,7 +5689,6 @@
         .map(normalizePublicStoryImageUrl)
         .map((value) => String(value || "").trim())
         .filter(Boolean)
-        .filter(isPublicStoryImageCandidate)
         .filter((value) => !knownBrokenStoryImages.has(value))
         .filter((value) => !isSessionOnlyImageUrl(value))
         .filter((value, index, values) => values.indexOf(value) === index);
@@ -6732,9 +6686,7 @@
     window.setInterval(updateEditionLabels, 60000);
     renderWorldCupWidget();
     fetchWorldCupLiveData();
-    window.setInterval(() => {
-      fetchWorldCupLiveData();
-    }, 300000);
+    window.setInterval(fetchWorldCupLiveData, 300000);
     window.setInterval(() => {
       if (!worldcupWidget || !worldcupWidget.innerHTML.trim()) {
         renderWorldCupWidget();
