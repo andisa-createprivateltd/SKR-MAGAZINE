@@ -6497,13 +6497,11 @@
           return manifestEntry;
         };
         let remoteManifestStory = null;
-        const shouldBypassSupabaseEdit = Boolean(livePublishContext && isEditing);
-        const remotePersistResult = shouldBypassSupabaseEdit
-          ? { ok: false, error: null, data: null }
+        const shouldUseReplacementInsert = Boolean(livePublishContext && isEditing);
+        const remotePersistResult = shouldUseReplacementInsert
+          ? await persistStoryToSupabase(payload, "")
           : await persistStoryToSupabase(payload, isEditing ? editingStoryId : "");
-        if (shouldBypassSupabaseEdit) {
-          remoteManifestStory = await persistToRemoteManifest();
-        } else if (!remotePersistResult.ok) {
+        if (!remotePersistResult.ok) {
           if (isRecoverableStoryInsertError(remotePersistResult.error)) {
             if (livePublishContext) {
               remoteManifestStory = await persistToRemoteManifest();
@@ -6518,7 +6516,7 @@
         const remoteStoryId = String(
           (remoteManifestStory && remoteManifestStory.id)
           || (persistedRemoteStory && persistedRemoteStory.id)
-          || (isEditing ? editingStoryId : "")
+          || ((isEditing && !shouldUseReplacementInsert) ? editingStoryId : "")
           || ""
         ).trim();
         if (remoteStoryId) {
