@@ -6496,14 +6496,19 @@
           }
           return manifestEntry;
         };
-        const remotePersistResult = await persistStoryToSupabase(payload, isEditing ? editingStoryId : "");
         let remoteManifestStory = null;
-        if (!remotePersistResult.ok) {
+        const shouldBypassSupabaseEdit = Boolean(livePublishContext && isEditing);
+        const remotePersistResult = shouldBypassSupabaseEdit
+          ? { ok: false, error: null, data: null }
+          : await persistStoryToSupabase(payload, isEditing ? editingStoryId : "");
+        if (shouldBypassSupabaseEdit) {
+          remoteManifestStory = await persistToRemoteManifest();
+        } else if (!remotePersistResult.ok) {
           if (isRecoverableStoryInsertError(remotePersistResult.error)) {
             if (livePublishContext) {
               remoteManifestStory = await persistToRemoteManifest();
             } else {
-            await persistLocally();
+              await persistLocally();
             }
           } else {
             throw remotePersistResult.error;
