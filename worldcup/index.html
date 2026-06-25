@@ -4068,6 +4068,12 @@
       return window.location.protocol === "http:" || window.location.protocol === "https:";
     }
 
+    function isLivePublishContext() {
+      if (!isHttpLikeProtocol()) return false;
+      const hostname = String(window.location.hostname || "").toLowerCase();
+      return Boolean(hostname && hostname !== "localhost" && hostname !== "127.0.0.1");
+    }
+
     function getSiteBaseUrl() {
       return isHttpLikeProtocol() ? window.location.origin : STATIC_SITE_ORIGIN;
     }
@@ -5980,6 +5986,7 @@
 
     async function publishStory() {
       const localOnlyMode = !supabaseClient;
+      const livePublishContext = isLivePublishContext();
       if (localOnlyMode) {
         console.warn("SKR stories are saving locally because Supabase is unavailable in this session.");
       }
@@ -6023,6 +6030,9 @@
         formError.hidden = true;
         submitBtn.disabled = true;
         try {
+        if (localOnlyMode && livePublishContext) {
+          throw new Error("Live publishing is unavailable because Supabase is not connected. This post was not published.");
+        }
         if (localOnlyMode) {
           setMessage("status", isEditing
             ? (uploadMode === "video" ? "Updating video on this device only" : "Updating story on this device only")
@@ -6081,7 +6091,7 @@
             contentType: selectedFile.type || "image/jpeg"
           });
           if (upload.error) {
-            if (isRecoverableStorageError(upload.error)) {
+            if (isRecoverableStorageError(upload.error) && !livePublishContext) {
               setMessage("status", uploadMode === "video" ? "Image bucket missing — saving thumbnail directly" : "Bucket missing — saving image directly");
               publicUrl = await fileToPortableImageDataUrl(selectedFile);
             } else {
@@ -6099,7 +6109,7 @@
             contentType: selectedVideoFile.type || "video/mp4"
           });
           if (videoUpload.error) {
-            if (isRecoverableStorageError(videoUpload.error)) {
+            if (isRecoverableStorageError(videoUpload.error) && !livePublishContext) {
               setMessage("status", "Video bucket missing — saving media directly");
               videoUrl = fileToObjectUrl(selectedVideoFile);
             } else {
@@ -6143,7 +6153,7 @@
         };
         const remotePersistResult = await persistStoryToSupabase(payload, isEditing ? editingStoryId : "");
         if (!remotePersistResult.ok) {
-          if (isRecoverableStoryInsertError(remotePersistResult.error)) {
+          if (isRecoverableStoryInsertError(remotePersistResult.error) && !livePublishContext) {
             await persistLocally();
           } else {
             throw remotePersistResult.error;
