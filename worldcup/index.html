@@ -2860,6 +2860,7 @@
     let localPodcastEpisodes = [];
     let localStories = [];
     let isLoggedIn = false;
+    let adminSessionPassword = "";
     let newsState = {};
     let newsLastUpdatedAt = null;
     let newsApiKey = "";
@@ -3448,6 +3449,31 @@
       if (!normalized) return false;
       const hash = await hashString(normalized);
       return hash === ADMIN_PASSWORD_HASH;
+    }
+
+    async function persistStoryViaAdminApi(payload, options = {}) {
+      const password = String(adminSessionPassword || "").trim();
+      if (!password) {
+        throw new Error("Admin session expired. Log in again before saving.");
+      }
+      const response = await window.fetch("/api/story-admin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          password,
+          mode: options.mode || "publish",
+          payload,
+          sourceStoryId: String(options.sourceStoryId || "").trim(),
+          sourceStory: options.sourceStory || null
+        })
+      });
+      const json = await response.json().catch(() => ({}));
+      if (!response.ok || !json || !json.ok) {
+        throw new Error(String(json && (json.message || json.error) || "Story publish failed"));
+      }
+      return json;
     }
 
     function revealAdminEntry() {
@@ -6478,6 +6504,29 @@
             : null,
           slug: createSlug(title)
         };
+        if (livePublishContext && replacementEditMode) {
+          setMessage("status", "Republishing story");
+          const adminPersistResult = await persistStoryViaAdminApi(payload, {
+            mode: "republish",
+            sourceStoryId,
+            sourceStory: existingStory ? {
+              id: String(existingStory.id || "").trim(),
+              created_at: existingStory.created_at || new Date().toISOString(),
+              image_url: existingStory.image_url || "",
+              video_url: existingStory.video_url || null,
+              video_duration: existingStory.video_duration == null ? null : Number(existingStory.video_duration) || null
+            } : null
+          });
+          if (adminPersistResult && adminPersistResult.story) {
+            queuePendingStoryHydration(adminPersistResult.story);
+          }
+          setProgress(100);
+          await sleep(400);
+          await loadStories(false);
+          resetForm();
+          setMessage("success", uploadMode === "video" ? "Video republished successfully" : "Story republished successfully");
+          return;
+        }
         const persistLocally = async () => {
           if (isEditing) {
             await updateStoryLocally(editingStoryId, payload);
@@ -6956,6 +7005,7 @@
     closeAdminOverlay.addEventListener("click", () => closeOverlay(adminOverlay));
     logoutBtn.addEventListener("click", () => {
       isLoggedIn = false;
+      adminSessionPassword = "";
       hideAdminEntry();
       closeOverlay(adminOverlay);
     });
@@ -6969,6 +7019,7 @@
       const isValid = await verifyAdminPassword(pwInput.value);
       if (isValid) {
         isLoggedIn = true;
+        adminSessionPassword = String(pwInput.value || "").trim();
         clearAdminLockState();
         revealAdminEntry();
         loginError.textContent = "Incorrect password";
