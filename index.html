@@ -6490,7 +6490,7 @@
           remoteStorySnapshotCache.set(manifestStoryId, Object.assign({}, manifestEntry));
           if (manifestEntry) {
             const remoteMetaResult = await saveStoryMetaToRemote(manifestStoryId, manifestEntry, manifestEntry);
-            if (!remoteMetaResult.ok) {
+            if (!remoteMetaResult.ok && !livePublishContext) {
               throw remoteMetaResult.error || new Error("Remote story metadata update failed");
             }
           }
@@ -6543,6 +6543,8 @@
           const remoteMetaResult = await saveStoryMetaToRemote(remoteStoryId, payload, hydratedSavedStory);
           if (remoteMetaResult.ok && remoteMetaResult.meta) {
             hydratedSavedStory = mergeStoryWithRemoteMeta(hydratedSavedStory, remoteMetaResult.meta);
+          } else if (!livePublishContext) {
+            throw remoteMetaResult.error || new Error("Remote story metadata update failed");
           }
         }
         setProgress(100);
