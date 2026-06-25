@@ -2576,6 +2576,7 @@
     const ADMIN_LOCK_MS = 10 * 60 * 1000;
     const BUCKET_NAME = "skr-images";
     const STORY_META_PREFIX = "stories/meta";
+    const STORY_MANIFEST_PATH = "stories/manifest.json";
     const TABLE_NAME = "stories";
     const MAX_PUBLIC_STORIES = 8;
     const PODCASTS_TABLE = "podcasts";
@@ -5473,12 +5474,21 @@
         const error = primaryLoad.error;
         console.log("SKR stories response", { tableName: TABLE_NAME, data, error });
         if (error) {
+          let manifestStories = [];
+          if (supabaseClient && isRecoverableStoryInsertError(error)) {
+            manifestStories = await fetchStoryManifestFromRemote();
+          }
           if (!suppressErrorMessage && !suppressRemoteStoryErrors) {
             setMessage("error", describeSupabaseError(error));
           }
           remoteStorySnapshotCache.clear();
-          stories = await loadLocalStories();
-          stories = await removeBrokenStoryImages(stories);
+          if (manifestStories.length) {
+            stories = applyStoryHydrationCache(manifestStories);
+            stories = await removeBrokenStoryImages(stories);
+          } else {
+            stories = await loadLocalStories();
+            stories = await removeBrokenStoryImages(stories);
+          }
         } else {
           const remoteStories = await hydrateRemoteStoryMetadata(data || []);
           console.log("SKR stories before render", remoteStories);
@@ -5618,6 +5628,93 @@
 
     function getStoryMetaPath(storyId) {
       return STORY_META_PREFIX + "/" + encodeURIComponent(String(storyId || "").trim()) + ".json";
+    }
+
+    function normalizeStoryManifestEntry(entry) {
+      if (!entry || typeof entry !== "object") return null;
+      const title = String(entry.title || entry.headline || "").trim();
+      const id = String(entry.id || "").trim();
+      if (!id || !title) return null;
+      return {
+        id,
+        created_at: String(entry.created_at || entry.updated_at || new Date().toISOString()).trim(),
+        title,
+        excerpt: String(entry.excerpt || "").trim(),
+        body: String(entry.body || entry.article_body || entry.content || "").trim(),
+        category: String(entry.category || "").trim(),
+        brand: String(entry.brand || "").trim(),
+        image_url: String(entry.image_url || "").trim(),
+        slug: String(entry.slug || createSlug(title)).trim() || createSlug(title),
+        content_type: String(entry.content_type || "article").trim() || "article",
+        video_url: entry.video_url || null,
+        video_duration: entry.video_duration == null ? null : Number(entry.video_duration) || null
+      };
+    }
+
+    async function fetchStoryManifestFromRemote() {
+      if (!window.fetch) return [];
+      try {
+        const manifestUrl = getPublicBucketUrl(STORY_MANIFEST_PATH);
+        for (let attempt = 0; attempt < 2; attempt += 1) {
+          const response = await window.fetch(manifestUrl, { cache: "no-store" });
+          if (response.ok) {
+            const json = await response.json();
+            const items = Array.isArray(json && json.stories) ? json.stories : [];
+            return items.map(normalizeStoryManifestEntry).filter(Boolean);
+          }
+          if (attempt === 0) {
+            await sleep(240);
+          }
+        }
+      } catch (error) {
+        console.warn("SKR manifest fetch failed", error);
+      }
+      return [];
+    }
+
+    async function saveStoryManifestEntry(entry) {
+      if (!supabaseClient) return { ok: false };
+      const normalizedEntry = normalizeStoryManifestEntry(entry);
+      if (!normalizedEntry) return { ok: false };
+      const existingStories = await fetchStoryManifestFromRemote();
+      const nextStories = [normalizedEntry]
+        .concat(existingStories.filter((item) => String(item.id) !== String(normalizedEntry.id)))
+        .sort((left, right) => new Date(right.created_at || 0) - new Date(left.created_at || 0))
+        .slice(0, MAX_PUBLIC_STORIES);
+      const manifest = {
+        updated_at: new Date().toISOString(),
+        stories: nextStories
+      };
+      const blob = new Blob([JSON.stringify(manifest)], { type: "application/json" });
+      const response = await supabaseClient.storage.from(BUCKET_NAME).upload(STORY_MANIFEST_PATH, blob, {
+        upsert: true,
+        cacheControl: "0",
+        contentType: "application/json"
+      });
+      if (response.error) return { ok: false, error: response.error };
+      return { ok: true, stories: nextStories };
+    }
+
+    async function removeStoryManifestEntry(storyId) {
+      if (!supabaseClient) return;
+      const normalizedId = String(storyId || "").trim();
+      if (!normalizedId) return;
+      const existingStories = await fetchStoryManifestFromRemote();
+      const nextStories = existingStories.filter((item) => String(item.id) !== normalizedId);
+      const manifest = {
+        updated_at: new Date().toISOString(),
+        stories: nextStories
+      };
+      const blob = new Blob([JSON.stringify(manifest)], { type: "application/json" });
+      try {
+        await supabaseClient.storage.from(BUCKET_NAME).upload(STORY_MANIFEST_PATH, blob, {
+          upsert: true,
+          cacheControl: "0",
+          contentType: "application/json"
+        });
+      } catch (error) {
+        console.warn("SKR manifest remove failed", error);
+      }
     }
 
     function getPublicBucketUrl(path) {
@@ -6151,22 +6248,59 @@
           usedLocalFallback = true;
           suppressRemoteStoryErrors = true;
         };
+        const persistToRemoteManifest = async () => {
+          const manifestStoryId = String(isEditing ? editingStoryId : ("manifest-story-" + Date.now())).trim();
+          const manifestEntry = normalizeStoryManifestEntry({
+            id: manifestStoryId,
+            created_at: existingStory && existingStory.created_at ? existingStory.created_at : new Date().toISOString(),
+            title,
+            excerpt,
+            body,
+            category,
+            brand,
+            image_url: publicUrl,
+            slug: createSlug(title),
+            content_type: uploadMode === "video" ? "video" : "article",
+            video_url: uploadMode === "video" ? videoUrl : null,
+            video_duration: uploadMode === "video"
+              ? (videoDurationSeconds || Number(existingStory && existingStory.video_duration || 0) || null)
+              : null
+          });
+          const manifestResult = await saveStoryManifestEntry(manifestEntry);
+          if (!manifestResult.ok) {
+            throw manifestResult.error || new Error("Remote story manifest update failed");
+          }
+          remoteStorySnapshotCache.set(manifestStoryId, Object.assign({}, manifestEntry));
+          if (manifestEntry) {
+            const remoteMetaResult = await saveStoryMetaToRemote(manifestStoryId, manifestEntry, manifestEntry);
+            if (!remoteMetaResult.ok) {
+              throw remoteMetaResult.error || new Error("Remote story metadata update failed");
+            }
+          }
+          return manifestEntry;
+        };
         const remotePersistResult = await persistStoryToSupabase(payload, isEditing ? editingStoryId : "");
+        let remoteManifestStory = null;
         if (!remotePersistResult.ok) {
-          if (isRecoverableStoryInsertError(remotePersistResult.error) && !livePublishContext) {
+          if (isRecoverableStoryInsertError(remotePersistResult.error)) {
+            if (livePublishContext) {
+              remoteManifestStory = await persistToRemoteManifest();
+            } else {
             await persistLocally();
+            }
           } else {
             throw remotePersistResult.error;
           }
         }
         const persistedRemoteStory = remotePersistResult.data || null;
         const remoteStoryId = String(
-          (persistedRemoteStory && persistedRemoteStory.id)
+          (remoteManifestStory && remoteManifestStory.id)
+          || (persistedRemoteStory && persistedRemoteStory.id)
           || (isEditing ? editingStoryId : "")
           || ""
         ).trim();
         if (remoteStoryId) {
-          remoteStorySnapshotCache.set(remoteStoryId, Object.assign({}, persistedRemoteStory || {}, {
+          remoteStorySnapshotCache.set(remoteStoryId, Object.assign({}, remoteManifestStory || persistedRemoteStory || {}, {
             id: remoteStoryId,
             title: payload.title,
             excerpt: payload.excerpt,
@@ -6181,9 +6315,9 @@
           }));
         }
         let hydratedSavedStory = isEditing
-          ? buildStoryViewModel(existingStory || persistedRemoteStory || {}, payload, remoteStoryId || editingStoryId, false)
-          : buildStoryViewModel(persistedRemoteStory || {}, payload, remoteStoryId, false);
-        if (remoteStoryId) {
+          ? buildStoryViewModel(existingStory || remoteManifestStory || persistedRemoteStory || {}, payload, remoteStoryId || editingStoryId, false)
+          : buildStoryViewModel(remoteManifestStory || persistedRemoteStory || {}, payload, remoteStoryId, false);
+        if (remoteStoryId && !remoteManifestStory) {
           const remoteMetaResult = await saveStoryMetaToRemote(remoteStoryId, payload, hydratedSavedStory);
           if (remoteMetaResult.ok && remoteMetaResult.meta) {
             hydratedSavedStory = mergeStoryWithRemoteMeta(hydratedSavedStory, remoteMetaResult.meta);
@@ -6208,6 +6342,14 @@
             : (uploadMode === "video"
                 ? "Video saved on this device only — shared storage unavailable"
                 : "Story saved on this device only — shared storage unavailable"));
+          return;
+        }
+        if (remoteManifestStory) {
+          await loadStories(false);
+          resetForm();
+          setMessage("success", isEditing
+            ? (uploadMode === "video" ? "Video updated successfully" : "Story updated successfully")
+            : (uploadMode === "video" ? "Video published successfully" : "Story published successfully"));
           return;
         }
         if (isEditing && selectedFile && existingStory && existingStory.image_url && publicUrl) {
@@ -6369,9 +6511,10 @@
         const storagePath = extractStoragePath(story.image_url);
         if (storagePath) {
           const removeImage = await supabaseClient.storage.from(BUCKET_NAME).remove([storagePath]);
-          if (removeImage.error) throw removeImage.error;
-        }
-        await removeStoryMetaFromRemote(id);
+        if (removeImage.error) throw removeImage.error;
+      }
+      await removeStoryMetaFromRemote(id);
+        await removeStoryManifestEntry(id);
         removeStoryHydrationEntry(story);
         await loadStories();
         pendingDeleteStoryId = "";
