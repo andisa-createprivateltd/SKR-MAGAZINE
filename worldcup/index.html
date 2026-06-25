@@ -3067,6 +3067,54 @@
       return "";
     }
 
+    function mergeStoryRecords(preferredStory, fallbackStory) {
+      const preferred = preferredStory || {};
+      const fallback = fallbackStory || {};
+      const mergedTitle = String(preferred.title || preferred.headline || fallback.title || fallback.headline || "").trim();
+      const merged = Object.assign({}, fallback, preferred);
+      merged.id = preferred.id || fallback.id || "";
+      merged.created_at = preferred.created_at || fallback.created_at || new Date().toISOString();
+      merged.title = mergedTitle;
+      merged.headline = mergedTitle;
+      merged.excerpt = String(preferred.excerpt || fallback.excerpt || "").trim();
+      merged.body = String(preferred.body || preferred.article_body || preferred.content || fallback.body || fallback.article_body || fallback.content || "").trim();
+      merged.article_body = merged.body;
+      merged.content = merged.body;
+      merged.category = String(preferred.category || fallback.category || "").trim();
+      merged.brand = String(preferred.brand || fallback.brand || "").trim();
+      merged.image_url = String(preferred.image_url || preferred.image || preferred.cover_image || preferred.hero_image || fallback.image_url || fallback.image || fallback.cover_image || fallback.hero_image || "").trim();
+      merged.image = merged.image_url;
+      merged.cover_image = merged.image_url;
+      merged.hero_image = merged.image_url;
+      merged.slug = String(preferred.slug || fallback.slug || createSlug(mergedTitle)).trim() || createSlug(mergedTitle);
+      merged.content_type = String(preferred.content_type || fallback.content_type || "article").trim() || "article";
+      merged.video_url = preferred.video_url || fallback.video_url || null;
+      merged.video_duration = preferred.video_duration == null
+        ? (fallback.video_duration == null ? null : Number(fallback.video_duration) || null)
+        : Number(preferred.video_duration) || null;
+      return merged;
+    }
+
+    function mergeStoryCollections(preferredStories, fallbackStories) {
+      const mergedStories = [];
+      const mergeOrAppend = (story, preferIncoming) => {
+        if (!story || !getStoryDisplayTitle(story, "").trim()) return;
+        const existingIndex = mergedStories.findIndex((item) => storiesShareIdentity(item, story));
+        if (existingIndex === -1) {
+          mergedStories.push(story);
+          return;
+        }
+        mergedStories[existingIndex] = preferIncoming
+          ? mergeStoryRecords(story, mergedStories[existingIndex])
+          : mergeStoryRecords(mergedStories[existingIndex], story);
+      };
+      (Array.isArray(fallbackStories) ? fallbackStories : []).forEach((story) => mergeOrAppend(story, false));
+      (Array.isArray(preferredStories) ? preferredStories : []).forEach((story) => mergeOrAppend(story, true));
+      return mergedStories
+        .slice()
+        .sort((left, right) => new Date(right.created_at || 0).getTime() - new Date(left.created_at || 0).getTime());
+    }
+
     function sanitizeStoryHydrationEntry(story) {
       const title = String(story && (story.title || story.headline || "") || "");
       return {
@@ -5435,10 +5483,14 @@
           });
           return;
         }
-        const primaryLoad = await supabaseClient
-          .from(TABLE_NAME)
-          .select("*")
-          .order("created_at", { ascending: false });
+        const shouldConsultManifest = isLivePublishContext();
+        const [primaryLoad, manifestStories] = await Promise.all([
+          supabaseClient
+            .from(TABLE_NAME)
+            .select("*")
+            .order("created_at", { ascending: false }),
+          shouldConsultManifest ? fetchStoryManifestFromRemote() : Promise.resolve([])
+        ]);
         remoteStorySnapshotCache.clear();
         console.log("SKR Supabase raw rows", primaryLoad.data || []);
         (primaryLoad.data || []).forEach((story) => {
@@ -5474,26 +5526,20 @@
         const error = primaryLoad.error;
         console.log("SKR stories response", { tableName: TABLE_NAME, data, error });
         if (error) {
-          let manifestStories = [];
-          if (supabaseClient && isRecoverableStoryInsertError(error)) {
-            manifestStories = await fetchStoryManifestFromRemote();
-          }
           if (!suppressErrorMessage && !suppressRemoteStoryErrors) {
             setMessage("error", describeSupabaseError(error));
           }
           remoteStorySnapshotCache.clear();
-          if (manifestStories.length) {
-            stories = applyStoryHydrationCache(manifestStories);
-            stories = await removeBrokenStoryImages(stories);
-          } else {
-            stories = await loadLocalStories();
-            stories = await removeBrokenStoryImages(stories);
-          }
+          const localFallbackStories = await loadLocalStories();
+          const mergedFallbackStories = mergeStoryCollections(manifestStories, localFallbackStories);
+          stories = applyStoryHydrationCache(mergedFallbackStories.length ? mergedFallbackStories : localFallbackStories);
+          stories = await removeBrokenStoryImages(stories);
         } else {
           const remoteStories = await hydrateRemoteStoryMetadata(data || []);
-          console.log("SKR stories before render", remoteStories);
-          await pruneLocalStoryCacheAgainstRemote(remoteStories);
-          stories = applyStoryHydrationCache(remoteStories);
+          const mergedRemoteStories = mergeStoryCollections(manifestStories, remoteStories);
+          console.log("SKR stories before render", mergedRemoteStories);
+          await pruneLocalStoryCacheAgainstRemote(mergedRemoteStories);
+          stories = applyStoryHydrationCache(mergedRemoteStories);
           await repairRemoteStoryMetadataFromHydration(stories);
           applyPendingStoryHydration();
           stories = await removeBrokenStoryImages(stories);
