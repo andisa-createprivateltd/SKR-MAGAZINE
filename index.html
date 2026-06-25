@@ -3571,7 +3571,15 @@
     function stringifySupabaseError(error) {
       if (!error) return "";
       if (typeof error === "string") return error;
-      if (error.message) return String(error.message);
+      const parts = [
+        error.message,
+        error.details,
+        error.hint,
+        error.code,
+        error.error_description,
+        error.error
+      ].filter(Boolean).map((value) => String(value));
+      if (parts.length) return parts.join(" | ");
       try {
         return JSON.stringify(error);
       } catch (stringifyError) {
