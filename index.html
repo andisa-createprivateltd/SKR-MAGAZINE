@@ -1000,6 +1000,42 @@
     .wc-match-card.final {
       border-color: rgba(201,168,76,0.42);
     }
+    .wc-odds-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.35rem;
+      margin-top: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .wc-odds-cell {
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.02);
+      padding: 0.45rem 0.4rem 0.4rem;
+      min-width: 0;
+    }
+    .wc-odds-label {
+      display: block;
+      color: var(--mid);
+      margin-bottom: 0.2rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .wc-odds-value {
+      display: block;
+      color: #dedad2;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .wc-odds-note {
+      margin-top: 0.75rem;
+      color: var(--mid);
+    }
+    .wc-mini-odds {
+      margin-top: 0.65rem;
+    }
     .wc-teams {
       display: grid;
       gap: 0.45rem;
@@ -2722,6 +2758,7 @@
     const WORLD_CUP_FINAL_MS = Date.parse("2026-07-19T19:00:00Z");
     const WORLD_CUP_MATCH_WINDOW_MS = 2 * 60 * 60 * 1000;
     const WORLD_CUP_API_ENDPOINT = "/api/worldcup";
+    const WORLD_CUP_ODDS_ENDPOINT = "/api/worldcup-odds";
     const WORLD_CUP_MATCHES = [];
     const WORLD_CUP_GROUPS = [];
     const WORLD_CUP_FLAGS = {
@@ -2850,6 +2887,8 @@
     let worldCupLiveData = null;
     let worldCupLiveDataPromise = null;
     let worldCupLastLoadedAt = 0;
+    const worldCupOddsCache = new Map();
+    const worldCupOddsPending = new Map();
 
     const nav = document.getElementById("nav");
     const featureGrid = document.getElementById("featureGrid");
@@ -4818,6 +4857,117 @@
       return "Upcoming";
     }
 
+    function normalizeWorldCupOddsTeam(value) {
+      const aliases = {
+        "cote d ivoire": "ivory coast",
+        "cote divoire": "ivory coast",
+        "korea republic": "south korea",
+        "united states": "usa",
+        "united states of america": "usa",
+        "ir iran": "iran",
+        "turkey": "turkiye"
+      };
+      const normalized = String(value || "")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9]+/g, " ")
+        .trim();
+      return aliases[normalized] || normalized;
+    }
+
+    function getWorldCupOddsKey(match) {
+      return [
+        normalizeWorldCupOddsTeam(match && match.home),
+        normalizeWorldCupOddsTeam(match && match.away),
+        String(match && match.startsAt || "").slice(0, 10)
+      ].join("|");
+    }
+
+    function shouldRequestWorldCupOdds(match) {
+      const startsAtMs = getWorldCupMatchTimestamp(match);
+      if (Number.isNaN(startsAtMs)) return false;
+      const now = Date.now();
+      return startsAtMs > now - (12 * 60 * 60 * 1000) && startsAtMs < now + (45 * 24 * 60 * 60 * 1000);
+    }
+
+    function formatWorldCupOddsPercent(value) {
+      const number = Number(value);
+      if (!Number.isFinite(number)) return "—";
+      return number.toFixed(0) + "%";
+    }
+
+    function renderWorldCupOddsRow(match, compact) {
+      const odds = worldCupOddsCache.get(getWorldCupOddsKey(match));
+      if (!shouldRequestWorldCupOdds(match)) {
+        return '<p class="wc-odds-note">Odds not priced yet</p>';
+      }
+      if (!odds || odds.status === "loading") {
+        return '<p class="wc-odds-note">Odds loading</p>';
+      }
+      if (odds.status !== "ok") {
+        return '<p class="wc-odds-note">Odds unavailable</p>';
+      }
+      const wrapperClass = compact ? "wc-mini-odds wc-odds-row" : "wc-odds-row";
+      const homeLabel = odds.sourceUrl
+        ? '<a class="wc-odds-label" href="' + escapeHtml(odds.sourceUrl) + '" target="_blank" rel="noreferrer">' + escapeHtml(match.home) + '</a>'
+        : '<span class="wc-odds-label">' + escapeHtml(match.home) + '</span>';
+      return '<div class="' + wrapperClass + '">' +
+        '<div class="wc-odds-cell">' + homeLabel + '<span class="wc-odds-value">' + escapeHtml(formatWorldCupOddsPercent(odds.home)) + '</span></div>' +
+        '<div class="wc-odds-cell"><span class="wc-odds-label">Draw</span><span class="wc-odds-value">' + escapeHtml(formatWorldCupOddsPercent(odds.draw)) + '</span></div>' +
+        '<div class="wc-odds-cell"><span class="wc-odds-label">' + escapeHtml(match.away) + '</span><span class="wc-odds-value">' + escapeHtml(formatWorldCupOddsPercent(odds.away)) + '</span></div>' +
+      '</div>';
+    }
+
+    function refreshWorldCupViewsAfterOdds() {
+      renderWorldCupWidget();
+      if (isWorldCupLocation()) {
+        renderWorldCupPage();
+      }
+    }
+
+    async function loadWorldCupOdds(match) {
+      const key = getWorldCupOddsKey(match);
+      if (!key.replace(/\|/g, "") || worldCupOddsCache.has(key) || worldCupOddsPending.has(key) || !shouldRequestWorldCupOdds(match)) {
+        return;
+      }
+      worldCupOddsCache.set(key, { status: "loading" });
+      const query = new URLSearchParams({
+        home: String(match.home || ""),
+        away: String(match.away || ""),
+        startsAt: String(match.startsAt || "")
+      });
+      const task = fetch(WORLD_CUP_ODDS_ENDPOINT + "?" + query.toString(), {
+        headers: { Accept: "application/json" }
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("World Cup odds returned " + response.status);
+          }
+          return response.json();
+        })
+        .then((payload) => {
+          worldCupOddsCache.set(key, payload && typeof payload === "object" ? payload : { status: "unavailable" });
+          refreshWorldCupViewsAfterOdds();
+        })
+        .catch(() => {
+          worldCupOddsCache.set(key, { status: "unavailable" });
+          refreshWorldCupViewsAfterOdds();
+        })
+        .finally(() => {
+          worldCupOddsPending.delete(key);
+        });
+      worldCupOddsPending.set(key, task);
+    }
+
+    function queueWorldCupOdds(matches) {
+      (matches || []).forEach((match) => {
+        if (shouldRequestWorldCupOdds(match)) {
+          void loadWorldCupOdds(match);
+        }
+      });
+    }
+
     function getWorldCupCountdownParts(now) {
       const currentTime = typeof now === "number" ? now : Date.now();
       if (currentTime < worldCupStartMs) {
@@ -4924,15 +5074,18 @@
 
     function renderWorldCupMiniMatch(match) {
       const status = formatWorldCupStatusText(match);
+      queueWorldCupOdds([match]);
       return '<article class="wc-mini-match">' +
         '<div class="wc-match-line wc-mini-teams"><span class="wc-mini-team">' + renderWorldCupTeamLabel(match.home, match.homeFlag) + '</span><span class="wc-versus">v</span><span class="wc-mini-team away">' + renderWorldCupTeamLabel(match.away, match.awayFlag) + '</span></div>' +
         '<p class="wc-match-meta">' + escapeHtml(match.group) + ' · ' + escapeHtml(formatWorldCupKickoff(match)) + '<br>' + escapeHtml(match.venue) + ' · ' + escapeHtml(status) + '</p>' +
+        renderWorldCupOddsRow(match, true) +
       '</article>';
     }
 
     function renderWorldCupMatchCard(match) {
       const statusText = formatWorldCupStatusText(match);
       const status = match.computedStatus === "live" ? '<span class="wc-live-dot"></span>Live' : escapeHtml(statusText);
+      queueWorldCupOdds([match]);
       return '<article class="wc-match-card' + (match.isFinal ? " final" : "") + '">' +
         '<p class="wc-match-meta">' + escapeHtml(match.group) + '</p>' +
         '<div class="wc-teams">' +
@@ -4940,6 +5093,7 @@
           '<div class="wc-team"><span>' + renderWorldCupTeamLabel(match.away, match.awayFlag) + '</span><span class="wc-score">' + (match.awayScore ?? "—") + '</span></div>' +
         '</div>' +
         '<p class="wc-match-meta">' + status + '<br>' + escapeHtml(formatWorldCupKickoff(match)) + '<br>' + escapeHtml(match.venue) + '</p>' +
+        renderWorldCupOddsRow(match, false) +
       '</article>';
     }
 
