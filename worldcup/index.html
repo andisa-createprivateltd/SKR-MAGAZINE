@@ -2870,6 +2870,8 @@
     let suppressRemoteStoryErrors = false;
     let activeArticleStoryId = "";
     let editingStoryId = "";
+    let editingSourceStoryId = "";
+    let replacementEditMode = false;
     let pendingDeleteStoryId = "";
     let pendingStoryHydration = null;
     let pendingArticleLocator = null;
@@ -4073,9 +4075,11 @@
       uploadModeButtons.forEach((button) => button.classList.toggle("active", button.dataset.uploadMode === mode));
       videoUploadGroup.style.display = mode === "video" ? "flex" : "none";
       coverAssetLabel.textContent = mode === "video" ? "Thumbnail image" : "Story image";
-      submitBtn.textContent = editingStoryId
-        ? (mode === "video" ? "Update Video" : "Update Story")
-        : (mode === "video" ? "Publish Video" : "Publish Story");
+      submitBtn.textContent = replacementEditMode
+        ? (mode === "video" ? "Republish Video" : "Republish Story")
+        : editingStoryId
+          ? (mode === "video" ? "Update Video" : "Update Story")
+          : (mode === "video" ? "Publish Video" : "Publish Story");
       if (mode !== "video") {
         selectedVideoFile = null;
         videoInput.value = "";
@@ -4096,9 +4100,11 @@
     }
 
     function syncSubmitLabel() {
-      submitBtn.textContent = editingStoryId
-        ? (uploadMode === "video" ? "Update Video" : "Update Story")
-        : (uploadMode === "video" ? "Publish Video" : "Publish Story");
+      submitBtn.textContent = replacementEditMode
+        ? (uploadMode === "video" ? "Republish Video" : "Republish Story")
+        : editingStoryId
+          ? (uploadMode === "video" ? "Update Video" : "Update Story")
+          : (uploadMode === "video" ? "Publish Video" : "Publish Story");
     }
 
     function formatDuration(seconds) {
@@ -5538,6 +5544,8 @@
 
     function resetForm() {
       editingStoryId = "";
+      editingSourceStoryId = "";
+      replacementEditMode = false;
       pendingDeleteStoryId = "";
       formCategory.value = "Lifestyle";
       formBrand.value = "";
@@ -5578,7 +5586,9 @@
       const story = stories.find((item) => String(item.id) === String(id));
       if (!story) return;
       const drivesWorldCupHero = getWorldCupHeroPriority(story) > 0;
-      editingStoryId = String(story.id);
+      replacementEditMode = isLivePublishContext();
+      editingSourceStoryId = String(story.id || "");
+      editingStoryId = replacementEditMode ? "" : String(story.id);
       pendingDeleteStoryId = "";
       formCategory.value = story.category || "Lifestyle";
       formBrand.value = story.brand || "";
@@ -5609,9 +5619,13 @@
         setVideoDurationState("", "Select an MP4, MOV, or WEBM under 60 seconds.");
       }
       clearStoryMessages();
-      setMessage("status", drivesWorldCupHero
-        ? "Editing story — saving here will update the World Cup hero"
-        : "Editing story — update the fields and save");
+      setMessage("status", replacementEditMode
+        ? (drivesWorldCupHero
+            ? "Republishing story as a new live version — the World Cup hero will refresh when you save"
+            : "Republishing story as a new live version — review the fields and save")
+        : (drivesWorldCupHero
+            ? "Editing story — saving here will update the World Cup hero"
+            : "Editing story — update the fields and save"));
       switchTab("upload");
       formTitle.scrollIntoView({ behavior: "smooth", block: "center" });
       renderAdminList();
@@ -6310,11 +6324,15 @@
       const category = formCategory.value;
       const brand = formBrand.value.trim();
       const isEditing = Boolean(editingStoryId);
-      const existingStory = isEditing
-        ? stories.find((item) => String(item.id) === String(editingStoryId))
+      const sourceStoryId = String(editingStoryId || editingSourceStoryId || "").trim();
+      const existingStory = sourceStoryId
+        ? stories.find((item) => String(item.id) === sourceStoryId)
         : null;
+      const canReuseExistingImage = Boolean(existingStory && existingStory.image_url);
+      const canReuseExistingVideo = Boolean(existingStory && existingStory.video_url);
+      const canReuseExistingVideoDuration = Boolean(existingStory && Number(existingStory.video_duration || 0) > 0);
       if (uploadMode === "article" && !selectedFile) {
-        if (isEditing && existingStory && existingStory.image_url) {
+        if (canReuseExistingImage) {
           // Keep the existing image when editing an article without selecting a new file.
         } else {
           setMessage("error", "Please select an image first");
@@ -6322,7 +6340,7 @@
         }
       }
       if (uploadMode === "video" && !selectedVideoFile) {
-        if (isEditing && existingStory && existingStory.video_url) {
+        if (canReuseExistingVideo) {
           // Keep the existing video when editing without selecting a new file.
         } else {
           setMessage("error", "Please select a video file first");
@@ -6330,7 +6348,7 @@
         }
       }
       if (uploadMode === "video" && !videoDurationSeconds) {
-        if (!(isEditing && existingStory && Number(existingStory.video_duration || 0) > 0)) {
+        if (!canReuseExistingVideoDuration) {
           setMessage("error", "Confirm a video under 60 seconds before publishing");
           return;
         }
@@ -6348,7 +6366,9 @@
           throw new Error("Live publishing is unavailable because Supabase is not connected. This post was not published.");
         }
         if (localOnlyMode) {
-          setMessage("status", isEditing
+          setMessage("status", replacementEditMode
+            ? (uploadMode === "video" ? "Republishing video on this device only" : "Republishing story on this device only")
+            : isEditing
             ? (uploadMode === "video" ? "Updating video on this device only" : "Updating story on this device only")
             : (uploadMode === "video" ? "Saving video on this device only" : "Saving story on this device only"));
           setProgress(50);
@@ -6384,7 +6404,9 @@
           renderAdminList();
           setProgress(100);
           resetForm();
-          setMessage("success", isEditing
+          setMessage("success", replacementEditMode
+            ? (uploadMode === "video" ? "Video republished on this device only" : "Story republished on this device only")
+            : isEditing
             ? (uploadMode === "video" ? "Video updated on this device only" : "Story updated on this device only")
             : (uploadMode === "video" ? "Video saved on this device only" : "Story saved on this device only"));
           return;
@@ -6557,7 +6579,11 @@
           }
           resetForm();
           clearStoryMessages();
-          setMessage("success", isEditing
+          setMessage("success", replacementEditMode
+            ? (uploadMode === "video"
+                ? "Video republished on this device only — shared storage unavailable"
+                : "Story republished on this device only — shared storage unavailable")
+            : isEditing
             ? (uploadMode === "video"
                 ? "Video updated on this device only — shared storage unavailable"
                 : "Story updated on this device only — shared storage unavailable")
@@ -6580,9 +6606,11 @@
         queuePendingStoryHydration(hydratedSavedStory);
         await loadStories(false);
         resetForm();
-        setMessage("success", isEditing
-          ? (uploadMode === "video" ? "Video updated successfully" : "Story updated successfully")
-          : (uploadMode === "video" ? "Video published successfully" : "Story published successfully"));
+        setMessage("success", replacementEditMode
+          ? (uploadMode === "video" ? "Video republished successfully" : "Story republished successfully")
+          : isEditing
+            ? (uploadMode === "video" ? "Video updated successfully" : "Story updated successfully")
+            : (uploadMode === "video" ? "Video published successfully" : "Story published successfully"));
       } catch (error) {
         setProgress(0);
         setMessage("error", describeSupabaseError(error));
