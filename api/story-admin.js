@@ -6,6 +6,8 @@ const STORY_MANIFEST_PATH = "stories/manifest.json";
 const STORY_META_PREFIX = "stories/meta";
 const TABLE_NAME = "stories";
 const MAX_PUBLIC_STORIES = 8;
+const SKR_FALLBACK_SUPABASE_URL = "https://cfonxqjjpfjyvperqoee.supabase.co";
+const SKR_FALLBACK_SUPABASE_ANON_KEY = "sb_publishable_lNRLpvRUqHbQQOFncDew6g_MqaoxW6M";
 
 function setHeaders(res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -190,10 +192,20 @@ module.exports = async function handler(req, res) {
   if (req.method === "OPTIONS") return res.status(204).end();
   if (req.method !== "POST") return json(res, 405, { ok: false, error: "method_not_allowed" });
 
-  const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || "";
-  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
+  const supabaseUrl =
+    process.env.SKR_SUPABASE_URL ||
+    process.env.SUPABASE_URL ||
+    process.env.NEXT_PUBLIC_SUPABASE_URL ||
+    SKR_FALLBACK_SUPABASE_URL;
+  const serviceKey =
+    process.env.SKR_SUPABASE_SERVICE_ROLE_KEY ||
+    process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    process.env.SKR_SUPABASE_ANON_KEY ||
+    process.env.SUPABASE_ANON_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+    SKR_FALLBACK_SUPABASE_ANON_KEY;
   if (!supabaseUrl || !serviceKey) {
-    return json(res, 500, { ok: false, error: "missing_server_env", message: "Missing Supabase server credentials." });
+    return json(res, 500, { ok: false, error: "missing_server_env", message: "Missing Supabase credentials." });
   }
 
   const body = req.body && typeof req.body === "object" ? req.body : {};
