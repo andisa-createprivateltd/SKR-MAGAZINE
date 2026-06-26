@@ -90,10 +90,19 @@ function buildStoryResponse(story, payload) {
 function buildCompatibleStoryPayload(payload, errorMessage) {
   const raw = String(errorMessage || "").toLowerCase();
   const nextPayload = Object.assign({}, payload);
+  const missingColumns = [];
+  const missingColumnPattern = /could not find the '([^']+)' column/g;
+  let match = null;
+  while ((match = missingColumnPattern.exec(raw))) {
+    if (match[1]) missingColumns.push(match[1]);
+  }
+  missingColumns.forEach((column) => {
+    delete nextPayload[column];
+  });
   if (
     raw.includes("column stories.title does not exist")
     || raw.includes("column title does not exist")
-    || raw.includes("headline")
+    || missingColumns.includes("title")
   ) {
     nextPayload.headline = nextPayload.title;
     delete nextPayload.title;
