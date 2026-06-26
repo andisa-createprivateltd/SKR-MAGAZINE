@@ -6506,20 +6506,48 @@
         };
         if (livePublishContext && replacementEditMode) {
           setMessage("status", "Republishing story");
-          const adminPersistResult = await persistStoryViaAdminApi(payload, {
-            mode: "republish",
-            sourceStoryId,
-            sourceStory: existingStory ? {
-              id: String(existingStory.id || "").trim(),
-              created_at: existingStory.created_at || new Date().toISOString(),
-              image_url: existingStory.image_url || "",
-              video_url: existingStory.video_url || null,
-              video_duration: existingStory.video_duration == null ? null : Number(existingStory.video_duration) || null
-            } : null
-          });
-          if (adminPersistResult && adminPersistResult.story) {
-            queuePendingStoryHydration(adminPersistResult.story);
+          const liveRowPayload = {
+            title: payload.title,
+            excerpt: payload.excerpt,
+            category: payload.category,
+            brand: payload.brand,
+            image_url: payload.image_url
+          };
+          const liveInsert = await supabaseClient
+            .from(TABLE_NAME)
+            .insert(liveRowPayload)
+            .select("*")
+            .single();
+          if (liveInsert.error || !liveInsert.data) {
+            throw liveInsert.error || new Error("Supabase rejected the story publish.");
           }
+          const liveStoryId = String(liveInsert.data.id || "").trim();
+          const liveCreatedAt = existingStory && existingStory.created_at
+            ? existingStory.created_at
+            : (liveInsert.data.created_at || new Date().toISOString());
+          const republishedStory = buildStoryViewModel(liveInsert.data, payload, liveStoryId, false);
+          const liveMetaResult = await saveStoryMetaToRemote(liveStoryId, payload, republishedStory);
+          if (!liveMetaResult.ok) {
+            throw liveMetaResult.error || new Error("Remote story metadata update failed");
+          }
+          const liveManifestResult = await saveStoryManifestEntry({
+            id: liveStoryId,
+            created_at: liveCreatedAt,
+            title: payload.title,
+            excerpt: payload.excerpt,
+            body: payload.body,
+            category: payload.category,
+            brand: payload.brand,
+            image_url: payload.image_url,
+            slug: payload.slug,
+            content_type: payload.content_type,
+            video_url: payload.video_url,
+            video_duration: payload.video_duration
+          });
+          if (!liveManifestResult.ok) {
+            throw liveManifestResult.error || new Error("Remote story manifest update failed");
+          }
+          queuePendingStoryHydration(republishedStory);
           setProgress(100);
           await sleep(400);
           await loadStories(false);
